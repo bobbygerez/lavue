@@ -12,7 +12,7 @@ return [
     | any other location as required by the application or its packages.
     */
 
-    'name' => env('APP_NAME', 'Laravel'),
+    'name' => 'Laravel',
 
     /*
     |--------------------------------------------------------------------------
@@ -176,6 +176,16 @@ return [
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
+        App\Providers\RegionServiceProvider::class,
+        App\Providers\ProvinceServiceProvider::class,
+        App\Providers\CityServiceProvider::class,
+        App\Providers\BarangayServiceProvider::class,
+        App\Providers\MainCategoryServiceProvider::class,
+        App\Providers\OptimusServiceProvider::class,
+        App\Providers\MerchantCategoryServiceProvider::class,
+        App\Providers\MerchantSubcategoryServiceProvider::class,
+        App\Providers\ProductServiceProvider::class,
+        Intervention\Image\ImageServiceProvider::class
 
     ],
 
@@ -225,6 +235,8 @@ return [
         'URL' => Illuminate\Support\Facades\URL::class,
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
+        'Obfuscate' => App\Facades\OptimusFacade::class,
+        'Img' => Intervention\Image\Facades\Image::class
 
     ],
 

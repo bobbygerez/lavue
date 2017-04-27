@@ -3,27 +3,26 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
-use Illuminate\Support\Facades\Schema;
 
-class AppServiceProvider extends ServiceProvider
+class RegionServiceProvider extends ServiceProvider
 {
     /**
-     * Bootstrap any application services.
+     * Bootstrap the application services.
      *
      * @return void
      */
     public function boot()
     {
-        Schema::defaultStringLength(191);
+        //
     }
 
     /**
-     * Register any application services.
+     * Register the application services.
      *
      * @return void
      */
     public function register()
     {
-        //
+         $this->app->bind('App\Repo\Region\RegionInterface', 'App\Repo\Region\RegionRepository');
     }
 }

@@ -2,7 +2,7 @@
 <html>
 
 <head>
-    <title>the box - Category</title>
+    <title>Lavue</title>
     <meta content="text/html;charset=utf-8" http-equiv="Content-Type">
     <meta content="utf-8" http-equiv="encoding">
     <meta name="keywords" content="Template, html, premium, themeforest" />
