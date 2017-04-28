@@ -1,9 +1,13 @@
+.capitalize-text{
+	text-transform: capitalize;
+}
 
-// Fonts
-@import url(https://fonts.googleapis.com/css?family=Raleway:300,400,600);
+.company-quote{
+	font-size: 36px;
+	color: gray;
+}
 
-// Variables
-@import "variables";
 
-// Bootstrap
-@import "node_modules/bootstrap-sass/assets/stylesheets/bootstrap";
+.pagination li{
+  margin: 0px;
+}

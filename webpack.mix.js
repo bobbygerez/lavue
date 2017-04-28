@@ -21,6 +21,7 @@ mix.styles([
     'public/template1/css/styles.css',
     'public/template1/css/mystyles.css',
     'public/template1/css/public/css',
+    'public/css/app.css',
 ], 'public/template1/css/all.css');
 
 
@@ -34,5 +35,6 @@ mix.scripts([
     'public/template1/js/owl-carousel.js',
     'public/template1/js/magnific.js',
     'public/template1/js/custom.js',
+    'public/js/app.js'
 ], 'public/template1/js/all.js');
 

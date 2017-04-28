@@ -14365,3 +14365,17 @@ undefinedundefined.owl-height {
 /****** End of Owl Slider ******/
 
 /*YOUR CUSTOM STYLES*/
+.capitalize-text {
+  text-transform: capitalize;
+}
+
+.company-quote {
+  font-size: 36px;
+  color: gray;
+}
+
+.pagination li {
+  margin: 0px;
+}
+
+/*# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbInJlc291cmNlcy9hc3NldHMvc2Fzcy9hcHAuc2NzcyJdLCJzb3VyY2VzQ29udGVudCI6WyIuY2FwaXRhbGl6ZS10ZXh0e1xuXHR0ZXh0LXRyYW5zZm9ybTogY2FwaXRhbGl6ZTtcbn1cblxuLmNvbXBhbnktcXVvdGV7XG5cdGZvbnQtc2l6ZTogMzZweDtcblx0Y29sb3I6IGdyYXk7XG59XG5cblxuLnBhZ2luYXRpb24gbGl7XG4gIG1hcmdpbjogMHB4O1xufSJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFBQSxBQUFBLGdCQUFnQixDQUFBO0VBQ2YsY0FBYyxFQUFFLFVBQVU7Q0FDMUI7O0FBRUQsQUFBQSxjQUFjLENBQUE7RUFDYixTQUFTLEVBQUUsSUFBSTtFQUNmLEtBQUssRUFBRSxJQUFJO0NBQ1g7O0FBR0QsQUFBWSxXQUFELENBQUMsRUFBRSxDQUFBO0VBQ1osTUFBTSxFQUFFLEdBQUc7Q0FDWiJ9 */
