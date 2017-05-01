@@ -1,7 +1,7 @@
-
 import Vue from 'vue'
 import axios from 'axios'
 import Paginate from 'vuejs-paginate'
+import lodash from 'lodash';
 Vue.component('paginate', Paginate)
 var app = new Vue({
   el: '#app',
@@ -10,6 +10,7 @@ var app = new Vue({
   		{ value : 50 , class: 'amount'},
   		{ value : 2000, class: 'amount2'}
   	],
+  	
   	products: {},
   	provinces : {},
 	province : '',
@@ -22,41 +23,71 @@ var app = new Vue({
 	mainCategoryId: '',
 	merchantCategoryId: '',
 	merchantSubId: '',
-	products: {},
+	products: {}
+	,
 	productLastPage: 1,
 	query: {
 		fieldName: 'created_at',
 		page: 1,
 		from: '',
 		to: '',
-		per_page: 10,
+		per_page: 5,
 		direction: 'asc',
 	},
 	sortBy: ['desc', 'asc']
 	,
+	chunk: 3,
 	price_start: '',
 	price_end: '',
 	showNumberProducts: [10,15,20,25,30],
 	windowLocation: window.location.origin + '/',
-
+	loading: true,
 
   },
-
   
   created(){
 
 			this.fetchedProductData()
+			this.products = this.products[0]
 			this.fetchedProvinceData()
 
 		},
 		methods: {
 
-			pagination: function(){
-
-			},
-
 			 clickCallback: function(pageNum) {
-      			console.log(pageNum)
+      			var vm = this
+      			this.products = [
+									{
+										data: 
+
+											[
+												{ product: 
+													[
+														{ 
+															photos: [
+																{ is_primary: true},
+																{ path: ''}
+															] 
+														},
+														{ 
+															prices: [
+																{ is_primary: true},
+																{ price: ''}
+															] 
+														}
+													] 
+												}
+											]
+										
+									}
+
+
+								]
+      			this.query.page = pageNum
+      			this.fetchedProductData()
+      			this.loading = true
+      			
+
       		},
 
 			elementClick: function(e){
@@ -124,36 +155,26 @@ var app = new Vue({
 							break
 					}
 
-
 				axios.get( this.windowLocation + '/api/products' + `?mainCategoryId=${this.mainCategoryId}&merchantCategoryId=${this.merchantCategoryId}&merchantSubId=${this.merchantSubId}&provCode=${this.province}&citymunCode=${this.city}&brgyCode=${this.brgy}&per_page=${this.query.per_page}&page=${this.query.page}&sortBy=${this.query.direction}&fieldName=${this.query.fieldName}`)
 					.then(function(response){
 						
+						
 						Vue.set(vm.$data, 'products', response.data.products)
 						vm.$data.productLastPage = response.data.products.last_page
+						Vue.set(vm.$data, 'loading', false)
+						
+
 					})
 					.catch(function(response){
 						console.log(response)
 					})
+			
 			}
 
 		},
 
-		computed:{
-			 totalPages: function() {
-	          return Math.ceil(this.resultCount / this.itemsPerPage)
-	        }
-		},
-
-
 		watch: {
 
-			rangeProduct : {
-				handler: function(val, oldVal){
-
-					alert('somethingchange')
-				},
-				deep: true
-			},
 			query: {
 
 				handler: function(val, oldVal){

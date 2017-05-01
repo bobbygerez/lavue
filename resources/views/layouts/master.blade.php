@@ -226,19 +226,21 @@
 
         <div class="container" id="app">
             <header class="page-header">
-                <h1 class="page-title">Lavue <span class="company-quote">- Build your trust</span> </h1> 
+                <h1 class="page-title">Lavue <span class="company-quote">- Build your trust</span></h1> 
+
                 <div class="col-md-4">
+
                     <ol class="breadcrumb page-breadcrumb">
                         <li><a href="{{ url('/') }}">Home</a>
                         </li>
                     </ol>
                 </div>
-                <div class="col-md-8">
+                <div class="col-md-8" v-cloak >
 
                     <div class="row">
 
-                        <span class="category-pagination-sign pull-left" style="padding: 15px; display: inline-block;">Showing 1 - 12 from 58 items</span>
-                        <nav class="pull-right">
+                        <span class="category-pagination-sign pull-left" style="padding: 15px; display: inline-block;" >Showing @{{ (products.from * chunk)-3 }} - @{{ products.to * chunk}} from @{{ products.total * chunk}} items</span>
+                        <nav class="pull-right" >
                         <paginate
                             :page-count="productLastPage"
                             :container-class="'pagination'"
@@ -250,11 +252,12 @@
                     </nav>
                 </div>
             </header>
+
             <div class="row">
                 <div class="col-md-3">
                     <aside class="category-filters">
                         <div class="category-filters-section">
-                            <h3 class="widget-title-sm">Category</h3>
+                            <h3 class="widget-title-sm">Locations</h3>
                             <select class="form-control">
                                 <option>asdf asdf</option>
                             </select>
@@ -414,12 +417,14 @@
                     </aside>
                 </div>
                 <div class="col-md-9">
+                    <i  v-if="loading" class="fa fa-spinner fa-spin"></i>
+                    <span v-else>
                     <span v-for="product in products.data" >
-                    <div class="row" data-gutter="15" >
-                        <div class="col-md-4" v-for="prod in product">
-                            <div class="product" >
+                    <div class="row" data-gutter="15" v-cloak>
+                         <div class="col-md-4" v-for="prod in product">
+                            <div class="product ">
                                 <ul class="product-labels"></ul>
-                                <div class="product-img-wrap" v-for="photo in prod.photos" v-if="photo.is_primary">
+                                <div class="product-img-wrap" v-for="photo in prod.photos" v-show="photo.is_primary">
                                     <img class="product-img-primary" :src="windowLocation + photo.path" alt="Image Alternative text" title="Image Title" />
                                     <img class="product-img-alt" :src="windowLocation + photo.path" alt="Image Alternative text" title="Image Title" />
                                 </div>
@@ -437,8 +442,9 @@
                                         <li class="rated"><i class="fa fa-star"></i>
                                         </li>
                                     </ul>
-                                    <h5 class="product-caption-title">Apple iPhone 5c - 16GB - GSM Factory Unlocked White Blue Green Pink Yellow</h5>
-                                    <div class="product-caption-price"><span class="product-caption-price-new">$127</span>
+                                    <h5 class="product-caption-title">@{{ prod.name }}</h5>
+                                    <div class="product-caption-price" v-for="price in prod.prices" v-if="price.is_primary" >
+                                    <span class="product-caption-price-new" v-html="price.price"></span>
                                     </div>
                                     <ul class="product-caption-feature-list">
                                         <li>Free Shipping</li>
@@ -449,10 +455,12 @@
                        
                     </div>
                     <div class="clearfix"></div>
-                    <span>
+                    </span>
+                    </span>
+                   
                    
                 </div>
-            </div>
+
         </div>
         <div class="gap"></div>
 

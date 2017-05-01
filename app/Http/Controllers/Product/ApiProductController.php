@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Repo\Product\ProductInterface;
 use App\Repo\MainCategory\MainCategoryInterface;
+use App\Repo\Province\ProvinceInterface;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Obfuscate;
 
@@ -13,9 +14,11 @@ class ApiProductController extends Controller
 {
     protected $product;
     protected $mainCategory;
+    protected $province;
 
-    public function __construct(ProductInterface $product, MainCategoryInterface $mainCategory){
+    public function __construct(ProductInterface $product, MainCategoryInterface $mainCategory, ProvinceInterface $province){
 
+        $this->province = $province;
     	$this->product = $product;
         $this->mainCategory = $mainCategory;
     }
@@ -39,7 +42,6 @@ class ApiProductController extends Controller
     public function backUp(){
 
           $maincategories = $this->mainCategory->where('id', $request->input('mainCategoryId'))->with(['merchantCategory.merchantSubcategory.products.photos', 'merchantCategory.merchantSubcategory.products.prices'])->first();
-
             $collection = [];
             $price;
             $photo;
