@@ -489,7 +489,8 @@
                         </ul>
                     </div>
                     <div class="col-md-3">
-                        <h4 class="widget-title-sm">Popular Tags</h4>
+                        <h4 class="widget-title-sm">Popular Tags </h4>
+                        <span class="ppgli">{{ $products->links() }}</span>
                         <ul class="main-footer-tag-list">
                             <li><a href="#">New Season</a>
                             </li>

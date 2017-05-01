@@ -26,6 +26,8 @@ class ApiProductController extends Controller
     public function getData(){
 
         $request =  app()->make('request');
+
+        $provinces = $this->province->all();
         $products = $this->product->orderBy($request->fieldName, $request->sortBy)->with(['prices', 'photos'])->get()->chunk(3)->toArray();
 
         $products = collect($products);
@@ -33,7 +35,8 @@ class ApiProductController extends Controller
         $paginate = new LengthAwarePaginator($products->forPage($request->page, $request->per_page), $products->count(), $request->per_page, $request->page );
         return response()->json([
 
-                'products' => $paginate
+                'products' => $paginate,
+                'provinces' => $provinces
 
             ]);
     }

@@ -43,10 +43,11 @@ var app = new Vue({
 	windowLocation: window.location.origin + '/',
 	loading: true,
 
+
   },
   
   created(){
-
+  			this.clickCallback(1)
 			this.fetchedProductData()
 			this.products = this.products[0]
 			this.fetchedProvinceData()
@@ -79,6 +80,9 @@ var app = new Vue({
 												}
 											]
 										
+									},
+									{
+										from: 0
 									}
 
 
@@ -160,6 +164,7 @@ var app = new Vue({
 						
 						
 						Vue.set(vm.$data, 'products', response.data.products)
+						Vue.set(vm.$data, 'provinces', response.data.provinces)
 						vm.$data.productLastPage = response.data.products.last_page
 						Vue.set(vm.$data, 'loading', false)
 						

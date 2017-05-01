@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Repo\MainCategory\MainCategoryInterface;
 use App\Repo\MerchantCategory\MerchantCategoryInterface;
 use App\Repo\MerchantSubcategory\MerchantSubcategoryInterface;
+use App\Repo\Product\ProductInterface;
 use Obfuscate;
 
 class NavController extends Controller
@@ -15,18 +16,20 @@ class NavController extends Controller
     protected $merchantCategory;
     protected $merchantSubcategory;
 
-	public function __construct(MainCategoryInterface $mainCategory, MerchantCategoryInterface $merchantCategory, MerchantSubcategoryInterface $merchantSubcategory){
+	public function __construct(MainCategoryInterface $mainCategory, MerchantCategoryInterface $merchantCategory, MerchantSubcategoryInterface $merchantSubcategory, ProductInterface $product){
         
 		$this->mainCategory = $mainCategory;
         $this->merchantCategory = $merchantCategory;
         $this->merchantSubcategory = $merchantSubcategory;
+        $this->product = $product;
 	}
     
     public function home(){
 
     	$mainCategories = $this->mainCategory->with(['merchantCategory', 'merchantCategory.merchantSubcategory'])->get();
-    	
-    	return view('templates.template3.index', compact('mainCategories'));
+    	$products = $this->product->orderBy('created_at', 'asc')->with(['prices', 'photos'])->paginate(15);
+
+    	return view('templates.template3.index', compact('mainCategories', 'products'));
     }
 
     public function mainCategories($maincategoryName, $maincategoryId){
