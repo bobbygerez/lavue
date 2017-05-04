@@ -226,8 +226,6 @@
 
         <div class="container" id="app">
             <header class="page-header">
-                <h1 class="page-title">Lavue <span class="company-quote">- Build your trust</span></h1> 
-
                 <div class="col-md-4">
 
                     <ol class="breadcrumb page-breadcrumb">
@@ -239,7 +237,8 @@
 
                     <div class="row">
 
-                        <span class="category-pagination-sign pull-left" style="padding: 15px; display: inline-block;" >Showing @{{ (products.from * chunk)-3 }} - @{{ products.to * chunk}} from @{{ products.total * chunk}} items</span>
+                        <span class="category-pagination-sign pull-left" style="padding: 15px; float:right" v-if="products.from > 0">Showing @{{ (products.from * chunk)-3 }} - @{{ products.to * chunk}} from @{{ products.total * chunk}} items</span>
+                        <span class="category-pagination-sign pull-left" style="padding: 15px; float:right" v-else>No items found!</span>
                         <nav class="pull-right" >
                         <paginate
                             :page-count="productLastPage"
@@ -258,8 +257,13 @@
                     <aside class="category-filters">
                         <div class="category-filters-section">
                             <h3 class="widget-title-sm">Locations</h3>
-                            <select class="form-control">
-                                <option>asdf asdf</option>
+                            <select class="form-control location-margin" v-model="province" >
+                                <option value="">Select Province</option>
+                                <option v-for="province in provinces" :value="province.provCode">@{{ province.provDesc }}</option>
+                            </select>
+                            <select class="form-control" v-model="city" v-show="cityVisible">
+                                <option value="">Select City</option>
+                                <option v-for="city in cities" :value="city.citymunCode">@{{ city.citymunDesc }}</option>
                             </select>
                         </div>
                         <div class="category-filters-section">
@@ -424,7 +428,7 @@
                          <div class="col-md-4" v-for="prod in product">
                             <div class="product ">
                                 <ul class="product-labels"></ul>
-                                <div class="product-img-wrap" v-for="photo in prod.photos" v-show="photo.is_primary">
+                                <div class="product-img-wrap" v-for="photo in prod.product.photos" v-show="photo.is_primary">
                                     <img class="product-img-primary" :src="windowLocation + photo.path" alt="Image Alternative text" title="Image Title" />
                                     <img class="product-img-alt" :src="windowLocation + photo.path" alt="Image Alternative text" title="Image Title" />
                                 </div>
@@ -442,8 +446,8 @@
                                         <li class="rated"><i class="fa fa-star"></i>
                                         </li>
                                     </ul>
-                                    <h5 class="product-caption-title">@{{ prod.name }}</h5>
-                                    <div class="product-caption-price" v-for="price in prod.prices" v-if="price.is_primary" >
+                                    <h5 class="product-caption-title">@{{ prod.product.name }}</h5>
+                                    <div class="product-caption-price" v-for="price in prod.product.prices" v-if="price.is_primary" >
                                     <span class="product-caption-price-new" v-html="price.price"></span>
                                     </div>
                                     <ul class="product-caption-feature-list">
@@ -490,7 +494,6 @@
                     </div>
                     <div class="col-md-3">
                         <h4 class="widget-title-sm">Popular Tags </h4>
-                        <span class="ppgli">{{ $products->links() }}</span>
                         <ul class="main-footer-tag-list">
                             <li><a href="#">New Season</a>
                             </li>

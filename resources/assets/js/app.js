@@ -1,7 +1,6 @@
 import Vue from 'vue'
 import axios from 'axios'
 import Paginate from 'vuejs-paginate'
-import lodash from 'lodash';
 Vue.component('paginate', Paginate)
 var app = new Vue({
   el: '#app',
@@ -16,10 +15,7 @@ var app = new Vue({
 	province : '',
 	cities: {},
 	city: '',
-	barangays: {},
-	brgy: '',
-	cityInvisible: true,
-	brgyInvisible: true,
+	cityVisible: false,
 	mainCategoryId: '',
 	merchantCategoryId: '',
 	merchantSubId: '',
@@ -50,7 +46,6 @@ var app = new Vue({
   			this.clickCallback(1)
 			this.fetchedProductData()
 			this.products = this.products[0]
-			this.fetchedProvinceData()
 
 		},
 		methods: {
@@ -126,21 +121,6 @@ var app = new Vue({
 				}
 			},
 
-			fetchedProvinceData(){
-				var vm = this
-				axios.get(window.location.origin + '/api/provinces')
-				.then(function(response){
-
-					Vue.set(vm.$data, 'provinces', response.data.provinces)
-				})
-				.catch( function(response){
-
-					console.log(response)
-				})
-
-
-			},
-
 			fetchedProductData(){
 				var vm = this
 				var pathArray = window.location.pathname.split( '/' );
@@ -159,7 +139,7 @@ var app = new Vue({
 							break
 					}
 
-				axios.get( this.windowLocation + '/api/products' + `?mainCategoryId=${this.mainCategoryId}&merchantCategoryId=${this.merchantCategoryId}&merchantSubId=${this.merchantSubId}&provCode=${this.province}&citymunCode=${this.city}&brgyCode=${this.brgy}&per_page=${this.query.per_page}&page=${this.query.page}&sortBy=${this.query.direction}&fieldName=${this.query.fieldName}`)
+				axios.get( this.windowLocation + '/api/products' + `?mainCategoryId=${this.mainCategoryId}&merchantCategoryId=${this.merchantCategoryId}&merchantSubId=${this.merchantSubId}&provCode=${this.province}&citymunCode=${this.city}&per_page=${this.query.per_page}&page=${this.query.page}&sortBy=${this.query.direction}&fieldName=${this.query.fieldName}`)
 					.then(function(response){
 						
 						
@@ -194,52 +174,38 @@ var app = new Vue({
 			province: function(){
 
 				var vm = this
+				this.loading = true;
+				if(this.province != ''){
 
-				if(this.province != '')
-					this.cityInvisible = false
-
-				else
-					this.cityInvisible = true
-					this.brgyInvisible = true
-
-				if(this.province != '')
 					axios.get(window.location.origin + '/api/cities/' + this.province)
 					.then(function(response){
 
-						Vue.set(vm.$data, 'cities', response.data.cities);
+						Vue.set(vm.$data, 'cities', response.data.cities)
 					})
 					.catch( function(response){
 
 						console.log(response)
 					})
 
+					this.cityVisible = true
+				}
+
+				else{
+					this.cityVisible = false
+				}
+
+				this.fetchedProductData()
+
 				
 			},
-
 			city: function(){
-
-				if(this.city != '')
-					this.brgyInvisible = false
-				else
-					this.brgyInvisible = true
-				var vm = this
-				axios.get(window.location.origin + '/api/barangays/' + this.city)
-				.then(function(response){
-
-					Vue.set(vm.$data, 'barangays', response.data.barangays)
-				})
-				.catch( function(response){
-
-					console.log(response)
-				})
-
+				
+				this.loading = true;
 				this.fetchedProductData()
-			},
 
-			brgy: function(){
 
-				this.fetchedProductData()
-			},
+				
+			}
 			
 		}
 })

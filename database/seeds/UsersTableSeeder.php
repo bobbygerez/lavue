@@ -25,9 +25,6 @@ class UsersTableSeeder extends Seeder
         $faker = Faker\Factory::create();
 
         DB::statement('SET FOREIGN_KEY_CHECKS=0;');
-
-        $product = new Product();
-        $product->merchantSubcategory()->detach();
         
 		User::truncate();
         MainCategory::truncate();
@@ -40,13 +37,15 @@ class UsersTableSeeder extends Seeder
         Branch::truncate();
         Merchant::truncate();
 		DB::statement('SET FOREIGN_KEY_CHECKS=1;');
-        
+        $citymunCode = 72201;
         for ($i=1; $i < 10 ; $i++) { 
 
              $name = explode(' ', $faker->name);
-         	
-        	 $user = User::create([
+         	 
 
+        	 $user = User::create([
+                    'provCode' => '0722',
+                    'citymunCode' => '0' . $citymunCode++,
         	 		'firstname' => $name[0],
                     'lastname' => $name[1],
         	 		'email' => $faker->email,
@@ -124,6 +123,7 @@ class UsersTableSeeder extends Seeder
                                 for($abcd=0; $abcd < 2; $abcd++){
                                  $product =  Product::create([
                                     'user_id' => $user->id,
+                                    'merchant_subcategory_id' => $merchantSubcategory->id,
                                     'name' => $faker->word . ' ' . $faker->word,
                                     'model_number' => $faker->isbn13,
                                     'unit_id' => $unit->id,
@@ -156,8 +156,6 @@ class UsersTableSeeder extends Seeder
                                             'is_primary' => 1
                                         ]);
                                     
-
-                                $product->merchantSubcategory()->attach($product->id, ['merchant_subcategory_id' => $merchantSubcategory->id ]);
 
                                 
                                  } /** END LOOP $abcd **/

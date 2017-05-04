@@ -18,6 +18,10 @@ class CreateProductsTable extends Migration
             $table->integer('user_id')->unsigned()->nullable();
             $table->foreign('user_id')->references('id')
                 ->on('users');
+            $table->integer('merchant_subcategory_id')->unsigned()->nullable();
+            $table->foreign('merchant_subcategory_id')->references('id')
+                ->on('merchant_subcategories');
+            $table->integer('city_id')->nullable();
             $table->string('model_number');
             $table->string('name');
             $table->integer('unit_id')->unsigned()->nullable();

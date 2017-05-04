@@ -32,4 +32,9 @@ class User extends Authenticatable
         return $this->belongsToMany('App\Role', 'role_user', 'user_id', 'role_id');
 
     }
+
+    public function products(){
+
+        return $this->hasMany('App\Product', 'user_id', 'id');
+    }
 }
