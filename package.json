@@ -19,6 +19,8 @@
     "vue": "^2.1.10"
   },
   "dependencies": {
-    "vuejs-paginate": "^0.9.0"
+    "vue": "^2.3.3",
+    "vuejs-paginate": "^0.9.0",
+    "vuex": "^2.3.1"
   }
 }

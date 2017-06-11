@@ -16,13 +16,8 @@ Route::group(['prefix' => 'api'], function(){
 	
 
 	/** Categories **/
-	Route::get('maincategories/{maincategory_id}', 'AjaxCategoriesController@mainCategories');
-	Route::get('merchant-categories/{merchantcategory_id}', 'AjaxCategoriesController@merchantCategories');
-	Route::get('merchant-subcategories/{merchantsubcategory_id}', 'AjaxCategoriesController@merchantSubcategories');
-	Route::get('sample', 'AjaxCategoriesController@getData');
+	Route::get('main-categories', 'Nav\NavController@mainCategories');
 
-	/** Products **/
-	Route::get('products', 'Product\ApiProductController@getData');
 
 });
 
@@ -44,4 +39,9 @@ Route::get('sample', function(){
 	});
 
 	dd(base_url().$img->response());
+});
+
+Route::get('vuejs', function(){
+
+	return view('vuejs.index');
 });

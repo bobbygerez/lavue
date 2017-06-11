@@ -19,6 +19,7 @@
 </head>
 
 <body>
+    <div id="app">
     <div class="global-wrapper clearfix" id="global-wrapper">
         <div class="navbar-before mobile-hidden">
             <div class="container">
@@ -126,145 +127,69 @@
                         Lavue
                     </a>
                 </div>
-                <div class="collapse navbar-collapse" id="main-nav-collapse">
-                    <ul class="nav navbar-nav">
-                        <li class="dropdown"><a href="#"><i class="fa fa-reorder"></i>&nbsp; All Categories<i class="drop-caret" data-toggle="dropdown"></i></a>
-                            <ul class="dropdown-menu dropdown-menu-category">
-                                @foreach($mainCategories as $mainCat)
-                                <li><a href="{{ url('browse/'.$mainCat->name, Obfuscate::encode($mainCat->id) ) }}" class="capitalize-text"><i class="fa fa-plug dropdown-menu-category-icon"></i>{{ $mainCat->getOriginal('name') }}</a>
-                                    <div class="dropdown-menu-category-section">
-                                        <div class="dropdown-menu-category-section-inner">
-                                            <div class="dropdown-menu-category-section-content">
-                                                <div class="row">
-                                                    @foreach($mainCat->merchantCategory as $merchantCat)
-                                                    <div class="col-md-6">
-                                                        <h5 class="dropdown-menu-category-title"><a href="#"> {{ $merchantCat->name }}</a></h5>
-                                                        <ul class="dropdown-menu-category-list">
-                                                            @foreach($merchantCat->merchantSubcategory as $merchantSub)
-                                                            <li><a href="#">{{ $merchantSub->name }}</a>
-                                                                <p>{{ $merchantSub->desc }}</p>
-                                                            </li>
-                                                            @endforeach
-                                                        </ul>
-                                                    </div>
-                                                    @endforeach
-                                                    
-                                                </div>
-                                            </div>
-                                            <img class="dropdown-menu-category-section-theme-img" src="img/test_cat/5-i.png" alt="Image Alternative text" title="Image Title" />
-                                        </div>
-                                    </div>
-                                </li>
-                                @endforeach
-                            </ul>
-                        </li>
-                    </ul>
-                    <form class="navbar-form navbar-left navbar-main-search" role="search">
-                        <div class="form-group">
-                            <input class="form-control" type="text" placeholder="Search the Entire Store..." />
-                        </div>
-                        <a class="fa fa-search navbar-main-search-submit" href="#"></a>
-                    </form>
-                    <ul class="nav navbar-nav navbar-right">
-                        <li><a href="#nav-login-dialog" data-effect="mfp-move-from-top" class="popup-text">Sign In</a>
-                        </li>
-                        <li><a href="#nav-account-dialog" data-effect="mfp-move-from-top" class="popup-text">Create Account</a>
-                        </li>
-                        <li class="dropdown">
-                            <a class="fa fa-shopping-cart" href="shopping-cart.html"></a>
-                            <ul class="dropdown-menu dropdown-menu-shipping-cart">
-                                <li>
-                                    <a class="dropdown-menu-shipping-cart-img" href="#">
-                                        <img src="img/100x100.png" alt="Image Alternative text" title="Image Title" />
-                                    </a>
-                                    <div class="dropdown-menu-shipping-cart-inner">
-                                        <p class="dropdown-menu-shipping-cart-price">$45</p>
-                                        <p class="dropdown-menu-shipping-cart-item"><a href="#">Gucci Patent Leather Open Toe Platform</a>
-                                        </p>
-                                    </div>
-                                </li>
-                                <li>
-                                    <a class="dropdown-menu-shipping-cart-img" href="#">
-                                        <img src="img/100x100.png" alt="Image Alternative text" title="Image Title" />
-                                    </a>
-                                    <div class="dropdown-menu-shipping-cart-inner">
-                                        <p class="dropdown-menu-shipping-cart-price">$57</p>
-                                        <p class="dropdown-menu-shipping-cart-item"><a href="#">Nikon D5200 24.1 MP Digital SLR Camera</a>
-                                        </p>
-                                    </div>
-                                </li>
-                                <li>
-                                    <a class="dropdown-menu-shipping-cart-img" href="#">
-                                        <img src="img/100x100.png" alt="Image Alternative text" title="Image Title" />
-                                    </a>
-                                    <div class="dropdown-menu-shipping-cart-inner">
-                                        <p class="dropdown-menu-shipping-cart-price">$66</p>
-                                        <p class="dropdown-menu-shipping-cart-item"><a href="#">Apple 11.6" MacBook Air Notebook </a>
-                                        </p>
-                                    </div>
-                                </li>
-                                <li>
-                                    <a class="dropdown-menu-shipping-cart-img" href="#">
-                                        <img src="img/100x100.png" alt="Image Alternative text" title="Image Title" />
-                                    </a>
-                                    <div class="dropdown-menu-shipping-cart-inner">
-                                        <p class="dropdown-menu-shipping-cart-price">$76</p>
-                                        <p class="dropdown-menu-shipping-cart-item"><a href="#">Fossil Women's Original Boyfriend</a>
-                                        </p>
-                                    </div>
-                                </li>
-                                <li>
-                                    <p class="dropdown-menu-shipping-cart-total">Total: $150</p>
-                                    <button class="dropdown-menu-shipping-cart-checkout btn btn-primary">Checkout</button>
-                                </li>
-                            </ul>
-                        </li>
-                    </ul>
-                </div>
+                <main-nav></main-nav>
             </div>
         </nav>
 
         <div class="container" id="app">
-            <header class="page-header">
-                <div class="col-md-4">
-
-                    <ol class="breadcrumb page-breadcrumb">
-                        <li><a href="{{ url('/') }}">Home</a>
-                        </li>
-                    </ol>
-                </div>
-                <div class="col-md-8" v-cloak >
-
-                    <div class="row">
-
-                        <span class="category-pagination-sign pull-left" style="padding: 15px; float:right" v-if="products.from > 0">Showing @{{ (products.from * chunk)-3 }} - @{{ products.to * chunk}} from @{{ products.total * chunk}} items</span>
-                        <span class="category-pagination-sign pull-left" style="padding: 15px; float:right" v-else>No items found!</span>
-                        <nav class="pull-right" >
-                        <paginate
-                            :page-count="productLastPage"
-                            :container-class="'pagination'"
-                            :prev-text="'prev'"
-                            :next-text="'next'"
-                            :click-handler="clickCallback">
-                        </paginate>
-                        <nav>
-                    </nav>
-                </div>
+             <header class="page-header">
+                <h1 class="page-title">Man's Fashion</h1>
+                <ol class="breadcrumb page-breadcrumb">
+                    <li><a href="#">Home</a>
+                    </li>
+                    <li><a href="#">Fashion</a>
+                    </li>
+                    <li class="active">Man</li>
+                </ol>
+                <ul class="category-selections clearfix">
+                    <li>
+                        <a class="fa fa-th-large category-selections-icon active" href="#"></a>
+                    </li>
+                    <li>
+                        <a class="fa fa-th-list category-selections-icon" href="#"></a>
+                    </li>
+                    <li><span class="category-selections-sign">Sort by :</span>
+                        <select class="category-selections-select">
+                            <option selected>Newest First</option>
+                            <option>Best Sellers</option>
+                            <option>Trending Now</option>
+                            <option>Best Raited</option>
+                            <option>Price : Lowest First</option>
+                            <option>Price : Highest First</option>
+                            <option>Title : A - Z</option>
+                            <option>Title : Z - A</option>
+                        </select>
+                    </li>
+                    <li><span class="category-selections-sign">Items :</span>
+                        <select class="category-selections-select">
+                            <option>9 / page</option>
+                            <option selected>12 / page</option>
+                            <option>18 / page</option>
+                            <option>All</option>
+                        </select>
+                    </li>
+                </ul>
             </header>
 
             <div class="row">
                 <div class="col-md-3">
                     <aside class="category-filters">
                         <div class="category-filters-section">
-                            <h3 class="widget-title-sm">Locations</h3>
-                            <select class="form-control location-margin" v-model="province" >
-                                <option value="">Select Province</option>
-                                <option v-for="province in provinces" :value="province.provCode">@{{ province.provDesc }}</option>
-                            </select>
-                            <select class="form-control" v-model="city" v-show="cityVisible">
-                                <option value="">Select City</option>
-                                <option v-for="city in cities" :value="city.citymunCode">@{{ city.citymunDesc }}</option>
-                            </select>
+                            <h3 class="widget-title-sm">Category</h3>
+                            <ul class="cateogry-filters-list">
+                                <li><a href="#">Clothing</a>
+                                </li>
+                                <li><a href="#">Shoes</a>
+                                </li>
+                                <li><a href="#">Accessories</a>
+                                </li>
+                                <li><a href="#">Jewerly</a>
+                                </li>
+                                <li><a href="#">Watches</a>
+                                </li>
+                                <li><a href="#">Fine Jewerly</a>
+                                </li>
+                            </ul>
                         </div>
                         <div class="category-filters-section">
                             <h3 class="widget-title-sm">Price</h3>
@@ -274,17 +199,17 @@
                             <h3 class="widget-title-sm">Relese Date</h3>
                             <div class="checkbox">
                                 <label>
-                                    <input class="i-check" type="checkbox" />Last 30 days<span class="category-filters-amount">(100)</span>
+                                    <input class="i-check" type="checkbox" />Last 30 days<span class="category-filters-amount">(89)</span>
                                 </label>
                             </div>
                             <div class="checkbox">
                                 <label>
-                                    <input class="i-check" type="checkbox" />Last 90 days<span class="category-filters-amount">(59)</span>
+                                    <input class="i-check" type="checkbox" />Last 90 days<span class="category-filters-amount">(49)</span>
                                 </label>
                             </div>
                             <div class="checkbox">
                                 <label>
-                                    <input class="i-check" type="checkbox" />Comming Soon<span class="category-filters-amount">(94)</span>
+                                    <input class="i-check" type="checkbox" />Comming Soon<span class="category-filters-amount">(67)</span>
                                 </label>
                             </div>
                         </div>
@@ -292,88 +217,77 @@
                             <h3 class="widget-title-sm">Brand</h3>
                             <div class="checkbox">
                                 <label>
-                                    <input class="i-check" type="checkbox" />Apple<span class="category-filters-amount">(10)</span>
+                                    <input class="i-check" type="checkbox" />191 United<span class="category-filters-amount">(55)</span>
                                 </label>
                             </div>
                             <div class="checkbox">
                                 <label>
-                                    <input class="i-check" type="checkbox" />Samsung<span class="category-filters-amount">(15)</span>
+                                    <input class="i-check" type="checkbox" />Adidas<span class="category-filters-amount">(46)</span>
                                 </label>
                             </div>
                             <div class="checkbox">
                                 <label>
-                                    <input class="i-check" type="checkbox" />LG<span class="category-filters-amount">(86)</span>
+                                    <input class="i-check" type="checkbox" />Balmain<span class="category-filters-amount">(83)</span>
                                 </label>
                             </div>
                             <div class="checkbox">
                                 <label>
-                                    <input class="i-check" type="checkbox" />Sony<span class="category-filters-amount">(62)</span>
+                                    <input class="i-check" type="checkbox" />Diesel<span class="category-filters-amount">(84)</span>
                                 </label>
                             </div>
                             <div class="checkbox">
                                 <label>
-                                    <input class="i-check" type="checkbox" />Micosoft<span class="category-filters-amount">(49)</span>
+                                    <input class="i-check" type="checkbox" />Enzo<span class="category-filters-amount">(100)</span>
                                 </label>
                             </div>
                             <div class="checkbox">
                                 <label>
-                                    <input class="i-check" type="checkbox" />Dell<span class="category-filters-amount">(75)</span>
+                                    <input class="i-check" type="checkbox" />Gap<span class="category-filters-amount">(56)</span>
                                 </label>
                             </div>
                             <div class="checkbox">
                                 <label>
-                                    <input class="i-check" type="checkbox" />HP<span class="category-filters-amount">(22)</span>
-                                </label>
-                            </div>
-                        </div>
-                        <div class="category-filters-section">
-                            <h3 class="widget-title-sm">Carrier</h3>
-                            <div class="checkbox">
-                                <label>
-                                    <input class="i-check" type="checkbox" />AT&amp;T<span class="category-filters-amount">(32)</span>
+                                    <input class="i-check" type="checkbox" />Hanes<span class="category-filters-amount">(66)</span>
                                 </label>
                             </div>
                             <div class="checkbox">
                                 <label>
-                                    <input class="i-check" type="checkbox" />Verizon<span class="category-filters-amount">(37)</span>
+                                    <input class="i-check" type="checkbox" />Jockey<span class="category-filters-amount">(51)</span>
                                 </label>
                             </div>
                             <div class="checkbox">
                                 <label>
-                                    <input class="i-check" type="checkbox" />Sprint<span class="category-filters-amount">(86)</span>
+                                    <input class="i-check" type="checkbox" />Just Cavalli<span class="category-filters-amount">(32)</span>
                                 </label>
                             </div>
                             <div class="checkbox">
                                 <label>
-                                    <input class="i-check" type="checkbox" />T-Mobile<span class="category-filters-amount">(80)</span>
+                                    <input class="i-check" type="checkbox" />Lacoste<span class="category-filters-amount">(13)</span>
                                 </label>
                             </div>
                             <div class="checkbox">
                                 <label>
-                                    <input class="i-check" type="checkbox" />Virgin Mobile<span class="category-filters-amount">(66)</span>
-                                </label>
-                            </div>
-                        </div>
-                        <div class="category-filters-section">
-                            <h3 class="widget-title-sm">Operating System</h3>
-                            <div class="checkbox">
-                                <label>
-                                    <input class="i-check" type="checkbox" />Android<span class="category-filters-amount">(41)</span>
+                                    <input class="i-check" type="checkbox" />Lee<span class="category-filters-amount">(65)</span>
                                 </label>
                             </div>
                             <div class="checkbox">
                                 <label>
-                                    <input class="i-check" type="checkbox" />iOS<span class="category-filters-amount">(18)</span>
+                                    <input class="i-check" type="checkbox" />Nike<span class="category-filters-amount">(15)</span>
                                 </label>
                             </div>
                             <div class="checkbox">
                                 <label>
-                                    <input class="i-check" type="checkbox" />Windows 8<span class="category-filters-amount">(98)</span>
+                                    <input class="i-check" type="checkbox" />Paul Jones<span class="category-filters-amount">(87)</span>
                                 </label>
                             </div>
                             <div class="checkbox">
                                 <label>
-                                    <input class="i-check" type="checkbox" />BlackberryOS<span class="category-filters-amount">(40)</span>
+                                    <input class="i-check" type="checkbox" />Puma<span class="category-filters-amount">(40)</span>
+                                </label>
+                            </div>
+                            <div class="checkbox">
+                                <label>
+                                    <input class="i-check" type="checkbox" />Shark<span class="category-filters-amount">(63)</span>
                                 </label>
                             </div>
                         </div>
@@ -381,22 +295,22 @@
                             <h3 class="widget-title-sm">Discount</h3>
                             <div class="checkbox">
                                 <label>
-                                    <input class="i-check" type="checkbox" />10% Off or More<span class="category-filters-amount">(99)</span>
+                                    <input class="i-check" type="checkbox" />10% Off or More<span class="category-filters-amount">(98)</span>
                                 </label>
                             </div>
                             <div class="checkbox">
                                 <label>
-                                    <input class="i-check" type="checkbox" />25% Off or More<span class="category-filters-amount">(59)</span>
+                                    <input class="i-check" type="checkbox" />25% Off or More<span class="category-filters-amount">(96)</span>
                                 </label>
                             </div>
                             <div class="checkbox">
                                 <label>
-                                    <input class="i-check" type="checkbox" />50% Off or More<span class="category-filters-amount">(62)</span>
+                                    <input class="i-check" type="checkbox" />50% Off or More<span class="category-filters-amount">(78)</span>
                                 </label>
                             </div>
                             <div class="checkbox">
                                 <label>
-                                    <input class="i-check" type="checkbox" />75% Off or More<span class="category-filters-amount">(10)</span>
+                                    <input class="i-check" type="checkbox" />75% Off or More<span class="category-filters-amount">(95)</span>
                                 </label>
                             </div>
                         </div>
@@ -404,33 +318,29 @@
                             <h3 class="widget-title-sm">Features</h3>
                             <div class="checkbox">
                                 <label>
-                                    <input class="i-check" type="checkbox" />New<span class="category-filters-amount">(29)</span>
+                                    <input class="i-check" type="checkbox" />New<span class="category-filters-amount">(59)</span>
                                 </label>
                             </div>
                             <div class="checkbox">
                                 <label>
-                                    <input class="i-check" type="checkbox" />Featured<span class="category-filters-amount">(97)</span>
+                                    <input class="i-check" type="checkbox" />Featured<span class="category-filters-amount">(45)</span>
                                 </label>
                             </div>
                             <div class="checkbox">
                                 <label>
-                                    <input class="i-check" type="checkbox" />On Sale<span class="category-filters-amount">(99)</span>
+                                    <input class="i-check" type="checkbox" />On Sale<span class="category-filters-amount">(35)</span>
                                 </label>
                             </div>
                         </div>
                     </aside>
                 </div>
                 <div class="col-md-9">
-                    <i  v-if="loading" class="fa fa-spinner fa-spin"></i>
-                    <span v-else>
-                    <span v-for="product in products.data" >
-                    <div class="row" data-gutter="15" v-cloak>
-                         <div class="col-md-4" v-for="prod in product">
-                            <div class="product ">
+                    <div class="row" data-gutter="15">
+                        <div class="col-md-4">
+                            <div class="product product-sm-left ">
                                 <ul class="product-labels"></ul>
-                                <div class="product-img-wrap" v-for="photo in prod.product.photos" v-show="photo.is_primary">
-                                    <img class="product-img-primary" :src="windowLocation + photo.path" alt="Image Alternative text" title="Image Title" />
-                                    <img class="product-img-alt" :src="windowLocation + photo.path" alt="Image Alternative text" title="Image Title" />
+                                <div class="product-img-wrap">
+                                    <img class="product-img" src="{{ asset('template1/img/500x500.png') }}" alt="Image Alternative text" title="Image Title" />
                                 </div>
                                 <a class="product-link" href="#"></a>
                                 <div class="product-caption">
@@ -443,12 +353,11 @@
                                         </li>
                                         <li class="rated"><i class="fa fa-star"></i>
                                         </li>
-                                        <li class="rated"><i class="fa fa-star"></i>
+                                        <li><i class="fa fa-star"></i>
                                         </li>
                                     </ul>
-                                    <h5 class="product-caption-title">@{{ prod.product.name }}</h5>
-                                    <div class="product-caption-price" v-for="price in prod.product.prices" v-if="price.is_primary" >
-                                    <span class="product-caption-price-new" v-html="price.price"></span>
+                                    <h5 class="product-caption-title">Rock & Republic Bootcut Jeans Henlee Stonewashed Blue New Mens Jean Denim New</h5>
+                                    <div class="product-caption-price"><span class="product-caption-price-new">$96</span>
                                     </div>
                                     <ul class="product-caption-feature-list">
                                         <li>Free Shipping</li>
@@ -457,14 +366,33 @@
                             </div>
                         </div>
                        
+                       
                     </div>
-                    <div class="clearfix"></div>
-                    </span>
-                    </span>
-                   
-                   
+                    <div class="row">
+                        <div class="col-md-6">
+                            <p class="category-pagination-sign">58 items found in Cell Phones. Showing 1 - 12</p>
+                        </div>
+                        <div class="col-md-6">
+                            <nav>
+                                <ul class="pagination category-pagination pull-right">
+                                    <li class="active"><a href="#">1</a>
+                                    </li>
+                                    <li><a href="#">2</a>
+                                    </li>
+                                    <li><a href="#">3</a>
+                                    </li>
+                                    <li><a href="#">4</a>
+                                    </li>
+                                    <li><a href="#">5</a>
+                                    </li>
+                                    <li class="last"><a href="#"><i class="fa fa-long-arrow-right"></i></a>
+                                    </li>
+                                </ul>
+                            </nav>
+                        </div>
+                    </div>
                 </div>
-
+            </div>
         </div>
         <div class="gap"></div>
 
@@ -552,7 +480,7 @@
                     <li><a href="#">Payments & Refunds</a>
                     </li>
                 </ul>
-                <img class="main-footer-img" src="img/test_footer2-i.png" alt="Image Alternative text" title="Image Title" />
+                <img class="main-footer-img" src="{{ asset('template1/img/test_footer2-i.png') }}" alt="Image Alternative text" title="Image Title" />
             </div>
         </footer>
         <div class="copyright-area">
@@ -564,22 +492,22 @@
                     <div class="col-md-6">
                         <ul class="payment-icons-list">
                             <li>
-                                <img src="img/payment/visa-straight-32px.png" alt="Image Alternative text" title="Pay with Visa" />
+                                <img src="{{ asset('template1/img/payment/visa-straight-32px.png') }}" alt="Image Alternative text" title="Pay with Visa" />
                             </li>
                             <li>
-                                <img src="img/payment/mastercard-straight-32px.png" alt="Image Alternative text" title="Pay with Mastercard" />
+                                <img src="{{ asset('template1/img/payment/mastercard-straight-32px.png') }}" alt="Image Alternative text" title="Pay with Mastercard" />
                             </li>
                             <li>
-                                <img src="img/payment/paypal-straight-32px.png" alt="Image Alternative text" title="Pay with Paypal" />
+                                <img src="{{ asset('template1/img/payment/paypal-straight-32px.png') }}" alt="Image Alternative text" title="Pay with Paypal" />
                             </li>
                             <li>
-                                <img src="img/payment/visa-electron-straight-32px.png" alt="Image Alternative text" title="Pay with Visa-electron" />
+                                <img src="{{ asset('template1/img/payment/visa-electron-straight-32px.png') }}" alt="Image Alternative text" title="Pay with Visa-electron" />
                             </li>
                             <li>
-                                <img src="img/payment/maestro-straight-32px.png" alt="Image Alternative text" title="Pay with Maestro" />
+                                <img src="{{ asset('template1/img/payment/maestro-straight-32px.png') }}" alt="Image Alternative text" title="Pay with Maestro" />
                             </li>
                             <li>
-                                <img src="img/payment/discover-straight-32px.png" alt="Image Alternative text" title="Pay with Discover" />
+                                <img src="{{ asset('template1/img/payment/discover-straight-32px.png') }}" alt="Image Alternative text" title="Pay with Discover" />
                             </li>
                         </ul>
                     </div>
@@ -587,11 +515,8 @@
             </div>
         </div>
     </div>
-    
+    </div>
     <script src="{{ asset('template1/js/all.js') }}"></script>
-
-
-
 
 
 </body>
