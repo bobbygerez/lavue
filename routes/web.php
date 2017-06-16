@@ -21,27 +21,8 @@ Route::group(['prefix' => 'api'], function(){
 
 });
 
-Route::get('/', ['route' => 'home', 'uses' => 'NavController@home']);
+Route::get('/', ['route' => 'home', 'uses' => 'Nav\NavController@home']);
 
-Route::group(['prefix' => 'browse'], function(){
-
-	Route::get('{maincategory}/{maincategory_id}', 'NavController@mainCategories');
-	Route::get('{maincategory}/{merchantcategory}/{merchantcategory_id}', 'NavController@merchantCategories');
-	Route::get('{maincategory}/{merchantcategory}/{merchantsub}/{merchantsub_id}', 'NavController@merchantSubcategories');
-});
-
-Route::get('sample', function(){
-
-	$img = Img::make( 'images/uploads/' . rand(1,67) . '.jpg' )->resize(200, 238, function($constraint){
-
-		$constraint->aspectRatio();
-    	$constraint->upsize();
-	});
-
-	dd(base_url().$img->response());
-});
-
-Route::get('vuejs', function(){
-
-	return view('vuejs.index');
-});
+//Registration Routes
+Route::post('register', 'Auth\RegisterController@register');
+Route::get('logout', 'Auth\LoginController@logout');

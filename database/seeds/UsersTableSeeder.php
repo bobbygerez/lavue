@@ -44,11 +44,9 @@ class UsersTableSeeder extends Seeder
          	 
 
         	 $user = User::create([
-                    'provCode' => '0722',
-                    'citymunCode' => '0' . $citymunCode++,
-        	 		'firstname' => $name[0],
-                    'lastname' => $name[1],
+        	 		'name' => $name[0],
         	 		'email' => $faker->email,
+                    'phone_number' => $faker->e164PhoneNumber,
         	 		'password' => Hash::make(1234)
 
         	 	]);

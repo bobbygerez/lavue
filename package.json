@@ -19,6 +19,7 @@
     "vue": "^2.1.10"
   },
   "dependencies": {
+    "vee-validate": "^2.0.0-rc.5",
     "vue": "^2.3.3",
     "vuejs-paginate": "^0.9.0",
     "vuex": "^2.3.1"

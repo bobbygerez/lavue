@@ -26,12 +26,17 @@ class NavController extends Controller
 
 	 public function mainCategories(){
 
-    	$mainCategories = $this->mainCategory->with(['merchantCategory'])->get();
+    	$mainCategories = $this->mainCategory->with(['merchantCategory.merchantSubcategory'])->get();
 
     	return response()->json([
 
     			'maincategories' => $mainCategories
     		]);
 
+    }
+
+    public function home(){
+        
+        return view('templates.template3.index');
     }
 }

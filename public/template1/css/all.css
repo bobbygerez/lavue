@@ -8860,7 +8860,8 @@ hr {
 }
 .dropdown-menu-category-section {
   width: 600px;
-  height: 491px;
+ /* height: 491px;*/
+ height: auto;
   position: absolute;
   top: 0;
   left: 230px;

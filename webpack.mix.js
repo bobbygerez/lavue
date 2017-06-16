@@ -25,16 +25,4 @@ mix.styles([
 ], 'public/template1/css/all.css');
 
 
-mix.scripts([
-    'public/template1/js/jquery.js',
-    'public/template1/js/bootstrap.js',
-    'public/template1/js/icheck.js',
-    'public/template1/js/ionrangeslider.js',
-    'public/template1/js/jqzoom.js',
-    'public/template1/js/card-payment.js',
-    'public/template1/js/owl-carousel.js',
-    'public/template1/js/magnific.js',
-    'public/template1/js/custom.js',
-    'public/js/app.js'
-], 'public/template1/js/all.js');
 

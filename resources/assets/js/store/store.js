@@ -21,5 +21,9 @@ export const store = new Vuex.Store({
 	},
 	getters: {
 
+		maincategories(){
+
+			return store.state.maincategories
+		}
 	}
 })
