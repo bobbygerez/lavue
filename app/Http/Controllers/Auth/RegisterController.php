@@ -72,4 +72,76 @@ class RegisterController extends Controller
             'password' => bcrypt($data['password']),
         ]);
     }
+
+    public function emailUnique(){
+
+        $request = app()->make('request');
+
+        $validator =  Validator::make($request->all(), [
+                'email' => 'unique:users'
+            ]);
+
+        if($validator->fails()){
+            $email = $validator->messages();
+            
+            return response()->json([
+                    'email' => $email->toArray()['email'][0],
+                    'success' => false
+                ]);
+        }
+
+        return response()->json([
+                'success' => true
+            ]);
+    }
+
+    public function phoneUnique(){
+
+        $request = app()->make('request');
+        $validator =  Validator::make($request->all(), [
+                'phone_number' => 'unique:users'
+            ]);
+
+        if($validator->fails()){
+
+            $email = $validator->messages();
+            
+            return response()->json([
+                    'phone_number' => $email->toArray()['phone_number'][0],
+                    'success' => false
+                ]);
+        }
+
+        return response()->json([
+                'success' => true
+            ]);
+    }
+
+     public function register() {
+
+        $request = app()->make('request');
+
+        $validator = $this->validator($request->all());
+
+        if($validator->fails()){
+            return response()->json([
+                 $validator->errors()->getMessages(), 
+                'error' => true
+                ]);
+        }
+        
+        $this->create($request->all());
+
+        return response()->json([
+
+                'message' => 'We have send a confirmation link to your email!', 
+                'error' => false
+
+            ]);
+
+        //$this->guard()->login($user);
+
+        //return $this->registered($request, $user)
+         //   ?: redirect($this->redirectPath());
+    }
 }

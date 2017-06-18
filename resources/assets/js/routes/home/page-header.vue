@@ -1,6 +1,6 @@
 <template>
 	<header class="page-header">
-                <h1 class="page-title">Electronics</h1>
+                <h3 class="page-title">Electronics</h3>
                 <ol class="breadcrumb page-breadcrumb">
                     <li><a href="#">Home</a>
                     </li>
@@ -36,3 +36,10 @@
                 </ul>
             </header>
 </template>
+
+<style type="text/css" scoped>
+    .page-title {
+
+        font-size: 40px;
+    }
+</style>

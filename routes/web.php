@@ -14,8 +14,9 @@ Route::group(['prefix' => 'api'], function(){
 
 	/** Products **/
 	
-
-	/** Categories **/
+	Route::post('login', 'Auth\LoginController@login');
+	Route::post('phone/unique', 'Auth\RegisterController@phoneUnique');
+	Route::post('email/unique', 'Auth\RegisterController@emailUnique');
 	Route::get('main-categories', 'Nav\NavController@mainCategories');
 
 

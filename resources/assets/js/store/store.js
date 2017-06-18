@@ -7,13 +7,17 @@ export const store = new Vuex.Store({
 
 	state: {
 
-		maincategories: {}
+		maincategories: {},
+		alertMessage: ''
 	},
 	mutations: {
 
 		maincategories(state, maincategories){
 
 			store.state.maincategories = maincategories
+		},
+		alertMessage(state, alertMessage){
+			store.state.alertMessage = alertMessage
 		}
 	},
 	actions: {
@@ -24,6 +28,10 @@ export const store = new Vuex.Store({
 		maincategories(){
 
 			return store.state.maincategories
+		},
+		alertMessage(){
+
+			return store.state.alertMessage
 		}
 	}
 })
