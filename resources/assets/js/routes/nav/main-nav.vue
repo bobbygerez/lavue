@@ -44,8 +44,7 @@
                     <a class="fa fa-search navbar-main-search-submit" href="#"></a>
                 </form>
                 <ul class="nav navbar-nav navbar-right">
-                    <li><a href="#nav-login-dialog" data-effect="mfp-move-from-top" class="popup-text">Sign In</a>
-                    </li>
+                    <sign-in></sign-in>
                     <li><a href="#nav-account-dialog" data-effect="mfp-move-from-top" class="popup-text">Create Account</a>
                     </li>
                     <li class="dropdown">
@@ -105,6 +104,7 @@
 </template>
 <script type="text/javascript">
     import axios from 'axios'
+    import signIn from '../home/sign-in'
 
     export default {
 
@@ -114,6 +114,9 @@
 
             windowLocation: window.location.origin + '/'
         }
+    },
+    components:{
+        signIn
     },
     created(){
 

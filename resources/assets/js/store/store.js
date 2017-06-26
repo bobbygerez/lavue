@@ -6,12 +6,22 @@ Vue.use(Vuex)
 export const store = new Vuex.Store({
 
 	state: {
-
+		userDashboard: '#',
+		user: {
+			name: 'Sign-in',
+			id: ''
+		},
 		maincategories: {},
 		alertMessage: ''
 	},
 	mutations: {
+		userDashboard(state, userDashboard){
+			store.state.userDashboard = userDashboard
+		},
+		user(state, user){
 
+			store.state.user = user
+		},
 		maincategories(state, maincategories){
 
 			store.state.maincategories = maincategories
@@ -24,7 +34,14 @@ export const store = new Vuex.Store({
 
 	},
 	getters: {
+		userDashboard(){
 
+			return store.state.userDashboard
+		},
+		user(){
+
+			return store.state.user
+		},
 		maincategories(){
 
 			return store.state.maincategories

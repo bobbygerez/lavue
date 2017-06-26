@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
 use Auth;
-
+use Obfuscate;
 class LoginController extends Controller
 {
     /*
@@ -58,7 +58,7 @@ class LoginController extends Controller
         return response()->json([
 
             'message' => 'You have successfully Log-in!',
-            'user' => Auth::User()->name,
+            'user' => ['name' => Auth::User()->name, 'id' => Obfuscate::encode(Auth::User()->id)],
             'error' => false
 
             ]);
@@ -71,9 +71,9 @@ class LoginController extends Controller
      */
     protected function sendFailedLoginResponse() {
         return response()->json([
-            'message' =>  'Authentication Failed!',
+            'message' =>  'Invalid Username or Password',
             'error' => true
-            ]);
+            ], 422);
     }
 
     /**
