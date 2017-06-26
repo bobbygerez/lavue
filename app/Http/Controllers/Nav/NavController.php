@@ -8,6 +8,8 @@ use App\Repo\MainCategory\MainCategoryInterface;
 use App\Repo\MerchantCategory\MerchantCategoryInterface;
 use App\Repo\MerchantSubcategory\MerchantSubcategoryInterface;
 use App\Repo\Product\ProductInterface;
+use Obfuscate;
+use Auth;
 
 class NavController extends Controller
 {
@@ -38,5 +40,24 @@ class NavController extends Controller
     public function home(){
         
         return view('templates.template3.index');
+    }
+
+    public function getUser(){
+
+        if( Auth::check() ){
+
+            return response()->json([
+
+            'message' => 'You have successfully Log-in!',
+            'user' => ['name' => Auth::User()->name, 'id' => Obfuscate::encode(Auth::User()->id)],
+            'error' => false
+
+            ]);
+        }
+
+        return response()->json([
+                'error' => true
+            ]);
+        
     }
 }

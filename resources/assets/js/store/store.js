@@ -12,9 +12,20 @@ export const store = new Vuex.Store({
 			id: ''
 		},
 		maincategories: {},
-		alertMessage: ''
+		alertMessage: '',
+		loginText: true,
+		pageTitle: '',
+		baseUrl: window.location.origin + '/'
+		
 	},
 	mutations: {
+		
+		pageTitle(state, pageTitle){
+
+		},
+		loginText(state, loginText){
+			state.loginText = loginText
+		},
 		userDashboard(state, userDashboard){
 			store.state.userDashboard = userDashboard
 		},
@@ -34,6 +45,20 @@ export const store = new Vuex.Store({
 
 	},
 	getters: {
+
+		baseUrl(){
+
+			return store.state.baseUrl
+		},
+		pageTitle(){
+
+			return store.state.pageTitle
+		},
+		
+		loginText(){
+
+			return store.state.loginText
+		},
 		userDashboard(){
 
 			return store.state.userDashboard

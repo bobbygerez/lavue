@@ -19,11 +19,13 @@ Route::group(['prefix' => 'api'], function(){
 	Route::post('email/unique', 'Auth\RegisterController@emailUnique');
 	Route::get('main-categories', 'Nav\NavController@mainCategories');
 
+	Route::get('category-products', 'Category\CategoryController@products');
+
 
 });
 
 Route::get('/', ['route' => 'home', 'uses' => 'Nav\NavController@home']);
-
+Route::post('home', 'Nav\NavController@getUser');
 //Registration Routes
 Route::post('register', 'Auth\RegisterController@register');
 Route::get('logout', 'Auth\LoginController@logout');

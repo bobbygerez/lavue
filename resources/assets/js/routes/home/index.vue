@@ -7,3 +7,19 @@
 		</div>
 	</div>
 </template>
+
+<script type="text/javascript">
+
+import PageHeader from './page-header.vue'
+import CategoryFilters from './category-filters.vue'
+import CategoryResults from './category-results.vue'
+
+	export default{
+
+		components: {
+			PageHeader,
+		  	CategoryFilters,
+		  	CategoryResults
+		}
+	}
+</script>

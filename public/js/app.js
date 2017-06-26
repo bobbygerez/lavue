@@ -63,68 +63,11 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 81);
+/******/ 	return __webpack_require__(__webpack_require__.s = 75);
 /******/ })
 /************************************************************************/
 /******/ ([
 /* 0 */
-/***/ (function(module, exports) {
-
-// this module is a runtime utility for cleaner component module output and will
-// be included in the final webpack user bundle
-
-module.exports = function normalizeComponent (
-  rawScriptExports,
-  compiledTemplate,
-  scopeId,
-  cssModules
-) {
-  var esModule
-  var scriptExports = rawScriptExports = rawScriptExports || {}
-
-  // ES6 modules interop
-  var type = typeof rawScriptExports.default
-  if (type === 'object' || type === 'function') {
-    esModule = rawScriptExports
-    scriptExports = rawScriptExports.default
-  }
-
-  // Vue.extend constructor export interop
-  var options = typeof scriptExports === 'function'
-    ? scriptExports.options
-    : scriptExports
-
-  // render functions
-  if (compiledTemplate) {
-    options.render = compiledTemplate.render
-    options.staticRenderFns = compiledTemplate.staticRenderFns
-  }
-
-  // scopedId
-  if (scopeId) {
-    options._scopeId = scopeId
-  }
-
-  // inject cssModules
-  if (cssModules) {
-    var computed = Object.create(options.computed || null)
-    Object.keys(cssModules).forEach(function (key) {
-      var module = cssModules[key]
-      computed[key] = function () { return module }
-    })
-    options.computed = computed
-  }
-
-  return {
-    esModule: esModule,
-    exports: scriptExports,
-    options: options
-  }
-}
-
-
-/***/ }),
-/* 1 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -430,6 +373,63 @@ module.exports = {
 
 
 /***/ }),
+/* 1 */
+/***/ (function(module, exports) {
+
+// this module is a runtime utility for cleaner component module output and will
+// be included in the final webpack user bundle
+
+module.exports = function normalizeComponent (
+  rawScriptExports,
+  compiledTemplate,
+  scopeId,
+  cssModules
+) {
+  var esModule
+  var scriptExports = rawScriptExports = rawScriptExports || {}
+
+  // ES6 modules interop
+  var type = typeof rawScriptExports.default
+  if (type === 'object' || type === 'function') {
+    esModule = rawScriptExports
+    scriptExports = rawScriptExports.default
+  }
+
+  // Vue.extend constructor export interop
+  var options = typeof scriptExports === 'function'
+    ? scriptExports.options
+    : scriptExports
+
+  // render functions
+  if (compiledTemplate) {
+    options.render = compiledTemplate.render
+    options.staticRenderFns = compiledTemplate.staticRenderFns
+  }
+
+  // scopedId
+  if (scopeId) {
+    options._scopeId = scopeId
+  }
+
+  // inject cssModules
+  if (cssModules) {
+    var computed = Object.create(options.computed || null)
+    Object.keys(cssModules).forEach(function (key) {
+      var module = cssModules[key]
+      computed[key] = function () { return module }
+    })
+    options.computed = computed
+  }
+
+  return {
+    esModule: esModule,
+    exports: scriptExports,
+    options: options
+  }
+}
+
+
+/***/ }),
 /* 2 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -437,283 +437,6 @@ module.exports = __webpack_require__(17);
 
 /***/ }),
 /* 3 */
-/***/ (function(module, exports) {
-
-/*
-	MIT License http://www.opensource.org/licenses/mit-license.php
-	Author Tobias Koppers @sokra
-*/
-// css base code, injected by the css-loader
-module.exports = function() {
-	var list = [];
-
-	// return the list of modules as css string
-	list.toString = function toString() {
-		var result = [];
-		for(var i = 0; i < this.length; i++) {
-			var item = this[i];
-			if(item[2]) {
-				result.push("@media " + item[2] + "{" + item[1] + "}");
-			} else {
-				result.push(item[1]);
-			}
-		}
-		return result.join("");
-	};
-
-	// import a list of modules into the list
-	list.i = function(modules, mediaQuery) {
-		if(typeof modules === "string")
-			modules = [[null, modules, ""]];
-		var alreadyImportedModules = {};
-		for(var i = 0; i < this.length; i++) {
-			var id = this[i][0];
-			if(typeof id === "number")
-				alreadyImportedModules[id] = true;
-		}
-		for(i = 0; i < modules.length; i++) {
-			var item = modules[i];
-			// skip already imported module
-			// this implementation is not 100% perfect for weird media query combinations
-			//  when a module is imported multiple times with different media queries.
-			//  I hope this will never occur (Hey this way we have smaller bundles)
-			if(typeof item[0] !== "number" || !alreadyImportedModules[item[0]]) {
-				if(mediaQuery && !item[2]) {
-					item[2] = mediaQuery;
-				} else if(mediaQuery) {
-					item[2] = "(" + item[2] + ") and (" + mediaQuery + ")";
-				}
-				list.push(item);
-			}
-		}
-	};
-	return list;
-};
-
-
-/***/ }),
-/* 4 */
-/***/ (function(module, exports, __webpack_require__) {
-
-/*
-  MIT License http://www.opensource.org/licenses/mit-license.php
-  Author Tobias Koppers @sokra
-  Modified by Evan You @yyx990803
-*/
-
-var hasDocument = typeof document !== 'undefined'
-
-if (typeof DEBUG !== 'undefined' && DEBUG) {
-  if (!hasDocument) {
-    throw new Error(
-    'vue-style-loader cannot be used in a non-browser environment. ' +
-    "Use { target: 'node' } in your Webpack config to indicate a server-rendering environment."
-  ) }
-}
-
-var listToStyles = __webpack_require__(78)
-
-/*
-type StyleObject = {
-  id: number;
-  parts: Array<StyleObjectPart>
-}
-
-type StyleObjectPart = {
-  css: string;
-  media: string;
-  sourceMap: ?string
-}
-*/
-
-var stylesInDom = {/*
-  [id: number]: {
-    id: number,
-    refs: number,
-    parts: Array<(obj?: StyleObjectPart) => void>
-  }
-*/}
-
-var head = hasDocument && (document.head || document.getElementsByTagName('head')[0])
-var singletonElement = null
-var singletonCounter = 0
-var isProduction = false
-var noop = function () {}
-
-// Force single-tag solution on IE6-9, which has a hard limit on the # of <style>
-// tags it will allow on a page
-var isOldIE = typeof navigator !== 'undefined' && /msie [6-9]\b/.test(navigator.userAgent.toLowerCase())
-
-module.exports = function (parentId, list, _isProduction) {
-  isProduction = _isProduction
-
-  var styles = listToStyles(parentId, list)
-  addStylesToDom(styles)
-
-  return function update (newList) {
-    var mayRemove = []
-    for (var i = 0; i < styles.length; i++) {
-      var item = styles[i]
-      var domStyle = stylesInDom[item.id]
-      domStyle.refs--
-      mayRemove.push(domStyle)
-    }
-    if (newList) {
-      styles = listToStyles(parentId, newList)
-      addStylesToDom(styles)
-    } else {
-      styles = []
-    }
-    for (var i = 0; i < mayRemove.length; i++) {
-      var domStyle = mayRemove[i]
-      if (domStyle.refs === 0) {
-        for (var j = 0; j < domStyle.parts.length; j++) {
-          domStyle.parts[j]()
-        }
-        delete stylesInDom[domStyle.id]
-      }
-    }
-  }
-}
-
-function addStylesToDom (styles /* Array<StyleObject> */) {
-  for (var i = 0; i < styles.length; i++) {
-    var item = styles[i]
-    var domStyle = stylesInDom[item.id]
-    if (domStyle) {
-      domStyle.refs++
-      for (var j = 0; j < domStyle.parts.length; j++) {
-        domStyle.parts[j](item.parts[j])
-      }
-      for (; j < item.parts.length; j++) {
-        domStyle.parts.push(addStyle(item.parts[j]))
-      }
-      if (domStyle.parts.length > item.parts.length) {
-        domStyle.parts.length = item.parts.length
-      }
-    } else {
-      var parts = []
-      for (var j = 0; j < item.parts.length; j++) {
-        parts.push(addStyle(item.parts[j]))
-      }
-      stylesInDom[item.id] = { id: item.id, refs: 1, parts: parts }
-    }
-  }
-}
-
-function createStyleElement () {
-  var styleElement = document.createElement('style')
-  styleElement.type = 'text/css'
-  head.appendChild(styleElement)
-  return styleElement
-}
-
-function addStyle (obj /* StyleObjectPart */) {
-  var update, remove
-  var styleElement = document.querySelector('style[data-vue-ssr-id~="' + obj.id + '"]')
-
-  if (styleElement) {
-    if (isProduction) {
-      // has SSR styles and in production mode.
-      // simply do nothing.
-      return noop
-    } else {
-      // has SSR styles but in dev mode.
-      // for some reason Chrome can't handle source map in server-rendered
-      // style tags - source maps in <style> only works if the style tag is
-      // created and inserted dynamically. So we remove the server rendered
-      // styles and inject new ones.
-      styleElement.parentNode.removeChild(styleElement)
-    }
-  }
-
-  if (isOldIE) {
-    // use singleton mode for IE9.
-    var styleIndex = singletonCounter++
-    styleElement = singletonElement || (singletonElement = createStyleElement())
-    update = applyToSingletonTag.bind(null, styleElement, styleIndex, false)
-    remove = applyToSingletonTag.bind(null, styleElement, styleIndex, true)
-  } else {
-    // use multi-style-tag mode in all other cases
-    styleElement = createStyleElement()
-    update = applyToTag.bind(null, styleElement)
-    remove = function () {
-      styleElement.parentNode.removeChild(styleElement)
-    }
-  }
-
-  update(obj)
-
-  return function updateStyle (newObj /* StyleObjectPart */) {
-    if (newObj) {
-      if (newObj.css === obj.css &&
-          newObj.media === obj.media &&
-          newObj.sourceMap === obj.sourceMap) {
-        return
-      }
-      update(obj = newObj)
-    } else {
-      remove()
-    }
-  }
-}
-
-var replaceText = (function () {
-  var textStore = []
-
-  return function (index, replacement) {
-    textStore[index] = replacement
-    return textStore.filter(Boolean).join('\n')
-  }
-})()
-
-function applyToSingletonTag (styleElement, index, remove, obj) {
-  var css = remove ? '' : obj.css
-
-  if (styleElement.styleSheet) {
-    styleElement.styleSheet.cssText = replaceText(index, css)
-  } else {
-    var cssNode = document.createTextNode(css)
-    var childNodes = styleElement.childNodes
-    if (childNodes[index]) styleElement.removeChild(childNodes[index])
-    if (childNodes.length) {
-      styleElement.insertBefore(cssNode, childNodes[index])
-    } else {
-      styleElement.appendChild(cssNode)
-    }
-  }
-}
-
-function applyToTag (styleElement, obj) {
-  var css = obj.css
-  var media = obj.media
-  var sourceMap = obj.sourceMap
-
-  if (media) {
-    styleElement.setAttribute('media', media)
-  }
-
-  if (sourceMap) {
-    // https://developer.chrome.com/devtools/docs/javascript-debugging
-    // this makes source maps inside style tags work properly in Chrome
-    css += '\n/*# sourceURL=' + sourceMap.sources[0] + ' */'
-    // http://stackoverflow.com/a/26603875
-    css += '\n/*# sourceMappingURL=data:application/json;base64,' + btoa(unescape(encodeURIComponent(JSON.stringify(sourceMap)))) + ' */'
-  }
-
-  if (styleElement.styleSheet) {
-    styleElement.styleSheet.cssText = css
-  } else {
-    while (styleElement.firstChild) {
-      styleElement.removeChild(styleElement.firstChild)
-    }
-    styleElement.appendChild(document.createTextNode(css))
-  }
-}
-
-
-/***/ }),
-/* 5 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10408,16 +10131,16 @@ Vue$3.compile = compileToFunctions;
 
 module.exports = Vue$3;
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(80)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(74)))
 
 /***/ }),
-/* 6 */
+/* 4 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 /* WEBPACK VAR INJECTION */(function(process) {
 
-var utils = __webpack_require__(1);
+var utils = __webpack_require__(0);
 var normalizeHeaderName = __webpack_require__(31);
 
 var PROTECTION_PREFIX = /^\)\]\}',?\n/;
@@ -10509,21 +10232,77 @@ utils.forEach(['post', 'put', 'patch'], function forEachMethodWithData(method) {
 
 module.exports = defaults;
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(46)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(45)))
 
 /***/ }),
-/* 7 */
+/* 5 */
+/***/ (function(module, exports) {
+
+/*
+	MIT License http://www.opensource.org/licenses/mit-license.php
+	Author Tobias Koppers @sokra
+*/
+// css base code, injected by the css-loader
+module.exports = function() {
+	var list = [];
+
+	// return the list of modules as css string
+	list.toString = function toString() {
+		var result = [];
+		for(var i = 0; i < this.length; i++) {
+			var item = this[i];
+			if(item[2]) {
+				result.push("@media " + item[2] + "{" + item[1] + "}");
+			} else {
+				result.push(item[1]);
+			}
+		}
+		return result.join("");
+	};
+
+	// import a list of modules into the list
+	list.i = function(modules, mediaQuery) {
+		if(typeof modules === "string")
+			modules = [[null, modules, ""]];
+		var alreadyImportedModules = {};
+		for(var i = 0; i < this.length; i++) {
+			var id = this[i][0];
+			if(typeof id === "number")
+				alreadyImportedModules[id] = true;
+		}
+		for(i = 0; i < modules.length; i++) {
+			var item = modules[i];
+			// skip already imported module
+			// this implementation is not 100% perfect for weird media query combinations
+			//  when a module is imported multiple times with different media queries.
+			//  I hope this will never occur (Hey this way we have smaller bundles)
+			if(typeof item[0] !== "number" || !alreadyImportedModules[item[0]]) {
+				if(mediaQuery && !item[2]) {
+					item[2] = mediaQuery;
+				} else if(mediaQuery) {
+					item[2] = "(" + item[2] + ") and (" + mediaQuery + ")";
+				}
+				list.push(item);
+			}
+		}
+	};
+	return list;
+};
+
+
+/***/ }),
+/* 6 */
 /***/ (function(module, exports, __webpack_require__) {
 
 
 /* styles */
-__webpack_require__(75)
+__webpack_require__(70)
 
-var Component = __webpack_require__(0)(
+var Component = __webpack_require__(1)(
   /* script */
   __webpack_require__(34),
   /* template */
-  __webpack_require__(64),
+  __webpack_require__(61),
   /* scopeId */
   null,
   /* cssModules */
@@ -10550,13 +10329,234 @@ module.exports = Component.exports
 
 
 /***/ }),
+/* 7 */
+/***/ (function(module, exports, __webpack_require__) {
+
+/*
+  MIT License http://www.opensource.org/licenses/mit-license.php
+  Author Tobias Koppers @sokra
+  Modified by Evan You @yyx990803
+*/
+
+var hasDocument = typeof document !== 'undefined'
+
+if (typeof DEBUG !== 'undefined' && DEBUG) {
+  if (!hasDocument) {
+    throw new Error(
+    'vue-style-loader cannot be used in a non-browser environment. ' +
+    "Use { target: 'node' } in your Webpack config to indicate a server-rendering environment."
+  ) }
+}
+
+var listToStyles = __webpack_require__(72)
+
+/*
+type StyleObject = {
+  id: number;
+  parts: Array<StyleObjectPart>
+}
+
+type StyleObjectPart = {
+  css: string;
+  media: string;
+  sourceMap: ?string
+}
+*/
+
+var stylesInDom = {/*
+  [id: number]: {
+    id: number,
+    refs: number,
+    parts: Array<(obj?: StyleObjectPart) => void>
+  }
+*/}
+
+var head = hasDocument && (document.head || document.getElementsByTagName('head')[0])
+var singletonElement = null
+var singletonCounter = 0
+var isProduction = false
+var noop = function () {}
+
+// Force single-tag solution on IE6-9, which has a hard limit on the # of <style>
+// tags it will allow on a page
+var isOldIE = typeof navigator !== 'undefined' && /msie [6-9]\b/.test(navigator.userAgent.toLowerCase())
+
+module.exports = function (parentId, list, _isProduction) {
+  isProduction = _isProduction
+
+  var styles = listToStyles(parentId, list)
+  addStylesToDom(styles)
+
+  return function update (newList) {
+    var mayRemove = []
+    for (var i = 0; i < styles.length; i++) {
+      var item = styles[i]
+      var domStyle = stylesInDom[item.id]
+      domStyle.refs--
+      mayRemove.push(domStyle)
+    }
+    if (newList) {
+      styles = listToStyles(parentId, newList)
+      addStylesToDom(styles)
+    } else {
+      styles = []
+    }
+    for (var i = 0; i < mayRemove.length; i++) {
+      var domStyle = mayRemove[i]
+      if (domStyle.refs === 0) {
+        for (var j = 0; j < domStyle.parts.length; j++) {
+          domStyle.parts[j]()
+        }
+        delete stylesInDom[domStyle.id]
+      }
+    }
+  }
+}
+
+function addStylesToDom (styles /* Array<StyleObject> */) {
+  for (var i = 0; i < styles.length; i++) {
+    var item = styles[i]
+    var domStyle = stylesInDom[item.id]
+    if (domStyle) {
+      domStyle.refs++
+      for (var j = 0; j < domStyle.parts.length; j++) {
+        domStyle.parts[j](item.parts[j])
+      }
+      for (; j < item.parts.length; j++) {
+        domStyle.parts.push(addStyle(item.parts[j]))
+      }
+      if (domStyle.parts.length > item.parts.length) {
+        domStyle.parts.length = item.parts.length
+      }
+    } else {
+      var parts = []
+      for (var j = 0; j < item.parts.length; j++) {
+        parts.push(addStyle(item.parts[j]))
+      }
+      stylesInDom[item.id] = { id: item.id, refs: 1, parts: parts }
+    }
+  }
+}
+
+function createStyleElement () {
+  var styleElement = document.createElement('style')
+  styleElement.type = 'text/css'
+  head.appendChild(styleElement)
+  return styleElement
+}
+
+function addStyle (obj /* StyleObjectPart */) {
+  var update, remove
+  var styleElement = document.querySelector('style[data-vue-ssr-id~="' + obj.id + '"]')
+
+  if (styleElement) {
+    if (isProduction) {
+      // has SSR styles and in production mode.
+      // simply do nothing.
+      return noop
+    } else {
+      // has SSR styles but in dev mode.
+      // for some reason Chrome can't handle source map in server-rendered
+      // style tags - source maps in <style> only works if the style tag is
+      // created and inserted dynamically. So we remove the server rendered
+      // styles and inject new ones.
+      styleElement.parentNode.removeChild(styleElement)
+    }
+  }
+
+  if (isOldIE) {
+    // use singleton mode for IE9.
+    var styleIndex = singletonCounter++
+    styleElement = singletonElement || (singletonElement = createStyleElement())
+    update = applyToSingletonTag.bind(null, styleElement, styleIndex, false)
+    remove = applyToSingletonTag.bind(null, styleElement, styleIndex, true)
+  } else {
+    // use multi-style-tag mode in all other cases
+    styleElement = createStyleElement()
+    update = applyToTag.bind(null, styleElement)
+    remove = function () {
+      styleElement.parentNode.removeChild(styleElement)
+    }
+  }
+
+  update(obj)
+
+  return function updateStyle (newObj /* StyleObjectPart */) {
+    if (newObj) {
+      if (newObj.css === obj.css &&
+          newObj.media === obj.media &&
+          newObj.sourceMap === obj.sourceMap) {
+        return
+      }
+      update(obj = newObj)
+    } else {
+      remove()
+    }
+  }
+}
+
+var replaceText = (function () {
+  var textStore = []
+
+  return function (index, replacement) {
+    textStore[index] = replacement
+    return textStore.filter(Boolean).join('\n')
+  }
+})()
+
+function applyToSingletonTag (styleElement, index, remove, obj) {
+  var css = remove ? '' : obj.css
+
+  if (styleElement.styleSheet) {
+    styleElement.styleSheet.cssText = replaceText(index, css)
+  } else {
+    var cssNode = document.createTextNode(css)
+    var childNodes = styleElement.childNodes
+    if (childNodes[index]) styleElement.removeChild(childNodes[index])
+    if (childNodes.length) {
+      styleElement.insertBefore(cssNode, childNodes[index])
+    } else {
+      styleElement.appendChild(cssNode)
+    }
+  }
+}
+
+function applyToTag (styleElement, obj) {
+  var css = obj.css
+  var media = obj.media
+  var sourceMap = obj.sourceMap
+
+  if (media) {
+    styleElement.setAttribute('media', media)
+  }
+
+  if (sourceMap) {
+    // https://developer.chrome.com/devtools/docs/javascript-debugging
+    // this makes source maps inside style tags work properly in Chrome
+    css += '\n/*# sourceURL=' + sourceMap.sources[0] + ' */'
+    // http://stackoverflow.com/a/26603875
+    css += '\n/*# sourceMappingURL=data:application/json;base64,' + btoa(unescape(encodeURIComponent(JSON.stringify(sourceMap)))) + ' */'
+  }
+
+  if (styleElement.styleSheet) {
+    styleElement.styleSheet.cssText = css
+  } else {
+    while (styleElement.firstChild) {
+      styleElement.removeChild(styleElement.firstChild)
+    }
+    styleElement.appendChild(document.createTextNode(css))
+  }
+}
+
+
+/***/ }),
 /* 8 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var utils = __webpack_require__(1);
+var utils = __webpack_require__(0);
 var settle = __webpack_require__(23);
 var buildURL = __webpack_require__(26);
 var parseHeaders = __webpack_require__(32);
@@ -14565,34 +14565,28 @@ function VueFixer (vue) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue__ = __webpack_require__(5);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue__ = __webpack_require__(3);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_vue__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_axios__ = __webpack_require__(2);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_axios__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__routes_nav_navbar_before_vue__ = __webpack_require__(58);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__routes_nav_navbar_before_vue__ = __webpack_require__(55);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__routes_nav_navbar_before_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__routes_nav_navbar_before_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__routes_nav_main_nav_vue__ = __webpack_require__(57);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__routes_nav_main_nav_vue__ = __webpack_require__(54);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__routes_nav_main_nav_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3__routes_nav_main_nav_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__routes_home_login_dialog_vue__ = __webpack_require__(52);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__routes_home_login_dialog_vue__ = __webpack_require__(50);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__routes_home_login_dialog_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4__routes_home_login_dialog_vue__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__routes_home_account_dialog_vue__ = __webpack_require__(48);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__routes_home_account_dialog_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5__routes_home_account_dialog_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__routes_home_password_recovery_vue__ = __webpack_require__(55);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__routes_home_password_recovery_vue__ = __webpack_require__(52);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__routes_home_password_recovery_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_6__routes_home_password_recovery_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__routes_home_page_header_vue__ = __webpack_require__(54);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__routes_home_page_header_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_7__routes_home_page_header_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__routes_home_category_filters_vue__ = __webpack_require__(49);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__routes_home_category_filters_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_8__routes_home_category_filters_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__routes_home_category_results_vue__ = __webpack_require__(50);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__routes_home_category_results_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_9__routes_home_category_results_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__routes_home_main_footer_vue__ = __webpack_require__(53);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__routes_home_main_footer_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_10__routes_home_main_footer_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__routes_home_copyright_area_vue__ = __webpack_require__(51);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__routes_home_copyright_area_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_11__routes_home_copyright_area_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12_vue_router__ = __webpack_require__(73);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__routes_routes_vue__ = __webpack_require__(59);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__routes_routes_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_13__routes_routes_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__store_store_js__ = __webpack_require__(41);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__routes_home_main_footer_vue__ = __webpack_require__(51);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__routes_home_main_footer_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_7__routes_home_main_footer_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__routes_home_copyright_area_vue__ = __webpack_require__(49);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__routes_home_copyright_area_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_8__routes_home_copyright_area_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9_vue_router__ = __webpack_require__(68);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__routes_routes_vue__ = __webpack_require__(56);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__routes_routes_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_10__routes_routes_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__store_store_js__ = __webpack_require__(41);
 
 
 
@@ -14607,30 +14601,39 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 
 
-
-
-__WEBPACK_IMPORTED_MODULE_0_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_12_vue_router__["a" /* default */]);
-var router = new __WEBPACK_IMPORTED_MODULE_12_vue_router__["a" /* default */]({
-  routes: __WEBPACK_IMPORTED_MODULE_13__routes_routes_vue__["routes"] // short for routes: routes
+__WEBPACK_IMPORTED_MODULE_0_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_9_vue_router__["a" /* default */]);
+var router = new __WEBPACK_IMPORTED_MODULE_9_vue_router__["a" /* default */]({
+  routes: __WEBPACK_IMPORTED_MODULE_10__routes_routes_vue__["routes"] // short for routes: routes
 });
 
 var app = new __WEBPACK_IMPORTED_MODULE_0_vue___default.a({
   router: router,
-  store: __WEBPACK_IMPORTED_MODULE_14__store_store_js__["a" /* store */],
-  data: {
-    a: 'asdf'
-  },
+  store: __WEBPACK_IMPORTED_MODULE_11__store_store_js__["a" /* store */],
   components: {
     NavbarBefore: __WEBPACK_IMPORTED_MODULE_2__routes_nav_navbar_before_vue___default.a,
     MainNav: __WEBPACK_IMPORTED_MODULE_3__routes_nav_main_nav_vue___default.a,
     LoginDialog: __WEBPACK_IMPORTED_MODULE_4__routes_home_login_dialog_vue___default.a,
     AccountDialog: __WEBPACK_IMPORTED_MODULE_5__routes_home_account_dialog_vue___default.a,
     PasswordRecovery: __WEBPACK_IMPORTED_MODULE_6__routes_home_password_recovery_vue___default.a,
-    PageHeader: __WEBPACK_IMPORTED_MODULE_7__routes_home_page_header_vue___default.a,
-    CategoryFilters: __WEBPACK_IMPORTED_MODULE_8__routes_home_category_filters_vue___default.a,
-    CategoryResults: __WEBPACK_IMPORTED_MODULE_9__routes_home_category_results_vue___default.a,
-    MainFooter: __WEBPACK_IMPORTED_MODULE_10__routes_home_main_footer_vue___default.a,
-    CopyrightArea: __WEBPACK_IMPORTED_MODULE_11__routes_home_copyright_area_vue___default.a
+    MainFooter: __WEBPACK_IMPORTED_MODULE_7__routes_home_main_footer_vue___default.a,
+    CopyrightArea: __WEBPACK_IMPORTED_MODULE_8__routes_home_copyright_area_vue___default.a
+  },
+  created: function created() {
+
+    this.checkLogin();
+  },
+
+
+  methods: {
+    checkLogin: function checkLogin() {
+      var store = this.$store;
+      __WEBPACK_IMPORTED_MODULE_1_axios___default.a.post(window.location.origin + '/home').then(function (response) {
+        if (response.data.error === false) {
+          store.commit('user', response.data.user);
+          store.commit('loginText', false);
+        }
+      }).catch(function (response) {});
+    }
   }
 
 }).$mount('#global-wrapper');
@@ -14648,10 +14651,10 @@ var app = new __WEBPACK_IMPORTED_MODULE_0_vue___default.a({
 "use strict";
 
 
-var utils = __webpack_require__(1);
+var utils = __webpack_require__(0);
 var bind = __webpack_require__(12);
 var Axios = __webpack_require__(19);
-var defaults = __webpack_require__(6);
+var defaults = __webpack_require__(4);
 
 /**
  * Create an instance of Axios
@@ -14771,8 +14774,8 @@ module.exports = CancelToken;
 "use strict";
 
 
-var defaults = __webpack_require__(6);
-var utils = __webpack_require__(1);
+var defaults = __webpack_require__(4);
+var utils = __webpack_require__(0);
 var InterceptorManager = __webpack_require__(20);
 var dispatchRequest = __webpack_require__(21);
 var isAbsoluteURL = __webpack_require__(29);
@@ -14863,7 +14866,7 @@ module.exports = Axios;
 "use strict";
 
 
-var utils = __webpack_require__(1);
+var utils = __webpack_require__(0);
 
 function InterceptorManager() {
   this.handlers = [];
@@ -14922,10 +14925,10 @@ module.exports = InterceptorManager;
 "use strict";
 
 
-var utils = __webpack_require__(1);
+var utils = __webpack_require__(0);
 var transformData = __webpack_require__(24);
 var isCancel = __webpack_require__(10);
-var defaults = __webpack_require__(6);
+var defaults = __webpack_require__(4);
 
 /**
  * Throws a `Cancel` if cancellation has been requested.
@@ -15066,7 +15069,7 @@ module.exports = function settle(resolve, reject, response) {
 "use strict";
 
 
-var utils = __webpack_require__(1);
+var utils = __webpack_require__(0);
 
 /**
  * Transform the data for a request or a response
@@ -15136,7 +15139,7 @@ module.exports = btoa;
 "use strict";
 
 
-var utils = __webpack_require__(1);
+var utils = __webpack_require__(0);
 
 function encode(val) {
   return encodeURIComponent(val).
@@ -15230,7 +15233,7 @@ module.exports = function combineURLs(baseURL, relativeURL) {
 "use strict";
 
 
-var utils = __webpack_require__(1);
+var utils = __webpack_require__(0);
 
 module.exports = (
   utils.isStandardBrowserEnv() ?
@@ -15311,7 +15314,7 @@ module.exports = function isAbsoluteURL(url) {
 "use strict";
 
 
-var utils = __webpack_require__(1);
+var utils = __webpack_require__(0);
 
 module.exports = (
   utils.isStandardBrowserEnv() ?
@@ -15386,7 +15389,7 @@ module.exports = (
 "use strict";
 
 
-var utils = __webpack_require__(1);
+var utils = __webpack_require__(0);
 
 module.exports = function normalizeHeaderName(headers, normalizedName) {
   utils.forEach(headers, function processHeader(value, name) {
@@ -15405,7 +15408,7 @@ module.exports = function normalizeHeaderName(headers, normalizedName) {
 "use strict";
 
 
-var utils = __webpack_require__(1);
+var utils = __webpack_require__(0);
 
 /**
  * Parse headers into an object
@@ -15661,13 +15664,13 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue__ = __webpack_require__(5);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue__ = __webpack_require__(3);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_vue__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_axios__ = __webpack_require__(2);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_axios__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_vee_validate__ = __webpack_require__(13);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_vee_validate___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_vee_validate__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_vue_strap_src_alert__ = __webpack_require__(7);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_vue_strap_src_alert__ = __webpack_require__(6);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_vue_strap_src_alert___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_vue_strap_src_alert__);
 //
 //
@@ -15835,11 +15838,11 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_2_vee_
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue__ = __webpack_require__(5);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue__ = __webpack_require__(3);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_vue__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vee_validate__ = __webpack_require__(13);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vee_validate___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_vee_validate__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_vue_strap_src_alert__ = __webpack_require__(7);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_vue_strap_src_alert__ = __webpack_require__(6);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_vue_strap_src_alert___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_vue_strap_src_alert__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_axios__ = __webpack_require__(2);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_axios__);
@@ -15961,181 +15964,7 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_1_vee_
 });
 
 /***/ }),
-/* 38 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_axios__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_axios__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vue_strap_src_modal__ = __webpack_require__(47);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vue_strap_src_modal___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_vue_strap_src_modal__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_vue_strap_src_alert__ = __webpack_require__(7);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_vue_strap_src_alert___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_vue_strap_src_alert__);
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
-
-
-
-
-/* harmony default export */ __webpack_exports__["default"] = ({
-	data: function data() {
-
-		return {
-
-			loginModal: false,
-			email: '',
-			password: '',
-			location: window.location.origin + '/',
-			alertLogin: false,
-			alertType: '',
-			alertTitle: '',
-			faWarning: false,
-			faSuccess: false,
-			loginText: true
-
-		};
-	},
-	created: function created() {},
-
-	components: {
-
-		modal: __WEBPACK_IMPORTED_MODULE_1_vue_strap_src_modal___default.a, alert: __WEBPACK_IMPORTED_MODULE_2_vue_strap_src_alert___default.a
-	},
-	computed: {
-		alertMessage: function alertMessage() {
-
-			return this.$store.getters.alertMessage;
-		},
-		userName: function userName() {
-
-			return this.$store.getters.userName;
-		},
-		user: function user() {
-
-			return this.$store.getters.user;
-		}
-	},
-	methods: {
-		showLoginModal: function showLoginModal(e) {
-			e.preventDefault();
-			this.loginModal = true;
-		},
-		login: function login(e) {
-
-			var store = this.$store;
-			var vm = this;
-			e.preventDefault();
-			__WEBPACK_IMPORTED_MODULE_0_axios___default.a.post(this.location + 'api/login', {
-
-				email: this.email,
-				password: this.password
-			}).then(function (response) {
-
-				vm.alertType = 'success';
-				vm.alertTitle = 'Authentication Success';
-				vm.faSuccess = true;
-				store.commit('alertMessage', response.data.message);
-				store.commit('user', response.data.user);
-				vm.alertLogin = true;
-
-				setTimeout(function () {
-					vm.loginModal = false;
-					vm.loginText = false;
-				}, 5000);
-			}).catch(function (error) {
-				console.log(error);
-				store.commit('alertMessage', error.response.data);
-				vm.alertTitle = 'Authentication Failed!';
-				vm.alertType = 'danger';
-				vm.alertLogin = true;
-			});
-		},
-		validateBeforeSubmit: function validateBeforeSubmit(e) {
-			var vm = this;
-			var store = this.$store;
-
-			this.$validator.validateAll().then(function () {
-
-				vm.login(e);
-			}).catch(function () {
-				vm.alertTitle = 'Authentication Failed!';
-				vm.alertType = 'danger';
-				vm.alertLogin = true;
-				vm.faWarning = true;
-				store.commit('alertMessage', 'Please correct all fields!');
-			});
-		}
-	}
-});
-
-/***/ }),
+/* 38 */,
 /* 39 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -16143,60 +15972,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_axios__ = __webpack_require__(2);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_axios__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__home_sign_in__ = __webpack_require__(56);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__home_sign_in___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__home_sign_in__);
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__home_navbar_right__ = __webpack_require__(90);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__home_navbar_right___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__home_navbar_right__);
 //
 //
 //
@@ -16263,7 +16040,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     },
 
     components: {
-        signIn: __WEBPACK_IMPORTED_MODULE_1__home_sign_in___default.a
+        navbarRight: __WEBPACK_IMPORTED_MODULE_1__home_navbar_right___default.a
     },
     created: function created() {
 
@@ -16293,23 +16070,35 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__dashboard_profile__ = __webpack_require__(84);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__dashboard_profile___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__dashboard_profile__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__home_category_subcategory__ = __webpack_require__(99);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__home_category_subcategory___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__home_category_subcategory__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__home_category_maincategory__ = __webpack_require__(95);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__home_category_maincategory___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__home_category_maincategory__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__home_category_category__ = __webpack_require__(97);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__home_category_category___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__home_category_category__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__dashboard_profile_vue__ = __webpack_require__(47);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__dashboard_profile_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3__dashboard_profile_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__home_index_vue__ = __webpack_require__(79);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__home_index_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4__home_index_vue__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "routes", function() { return routes; });
 
 
 
 
-var routes = [{ path: '/user/:id', component: __WEBPACK_IMPORTED_MODULE_0__dashboard_profile___default.a }];
+
+
+
+
+var routes = [{ path: '/', component: __WEBPACK_IMPORTED_MODULE_4__home_index_vue___default.a }, { path: '/user/:id', component: __WEBPACK_IMPORTED_MODULE_3__dashboard_profile_vue___default.a }, { path: '/category/:id', component: __WEBPACK_IMPORTED_MODULE_2__home_category_category___default.a }, { path: '/category/maincategory/:id', component: __WEBPACK_IMPORTED_MODULE_1__home_category_maincategory___default.a }, { path: '/category/maincategory/subcategory/:id', component: __WEBPACK_IMPORTED_MODULE_0__home_category_subcategory___default.a }];
 
 /***/ }),
 /* 41 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue__ = __webpack_require__(5);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue__ = __webpack_require__(3);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vuex__ = __webpack_require__(79);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vuex__ = __webpack_require__(73);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return store; });
 
 
@@ -16325,9 +16114,17 @@ var store = new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
 			id: ''
 		},
 		maincategories: {},
-		alertMessage: ''
+		alertMessage: '',
+		loginText: true,
+		pageTitle: '',
+		baseUrl: window.location.origin + '/'
+
 	},
 	mutations: {
+		pageTitle: function pageTitle(state, _pageTitle) {},
+		loginText: function loginText(state, _loginText) {
+			state.loginText = _loginText;
+		},
 		userDashboard: function userDashboard(state, _userDashboard) {
 			store.state.userDashboard = _userDashboard;
 		},
@@ -16345,6 +16142,18 @@ var store = new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
 	},
 	actions: {},
 	getters: {
+		baseUrl: function baseUrl() {
+
+			return store.state.baseUrl;
+		},
+		pageTitle: function pageTitle() {
+
+			return store.state.pageTitle;
+		},
+		loginText: function loginText() {
+
+			return store.state.loginText;
+		},
 		userDashboard: function userDashboard() {
 
 			return store.state.userDashboard;
@@ -16368,32 +16177,25 @@ var store = new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
 /* 42 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(3)();
+exports = module.exports = __webpack_require__(5)();
 exports.push([module.i, "\n.modal {\r\n  transition: all 0.3s ease;\n}\n.modal.in {\r\n  background-color: rgba(0,0,0,0.5);\n}\n.modal.zoom .modal-dialog {\r\n  -webkit-transform: scale(0.1);\r\n  transform: scale(0.1);\r\n  top: 300px;\r\n  opacity: 0;\r\n  transition: all 0.3s;\n}\n.modal.zoom.in .modal-dialog {\r\n  -webkit-transform: scale(1);\r\n  transform: scale(1);\r\n  -webkit-transform: translate3d(0, -300px, 0);\r\n  transform: translate3d(0, -300px, 0);\r\n  opacity: 1;\n}\r\n", ""]);
 
 /***/ }),
 /* 43 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(3)();
+exports = module.exports = __webpack_require__(5)();
 exports.push([module.i, "\n.fade-enter-active,\r\n.fade-leave-active {\r\n  transition: opacity .3s ease;\n}\n.fade-enter,\r\n.fade-leave-active {\r\n  height: 0;\r\n  opacity: 0;\n}\n.alert.top {\r\n  position: fixed;\r\n /* top: 30px;*/\r\n  top: 40%;\r\n  margin: 0 auto;\r\n  left: 0;\r\n  right: 0;\r\n  z-index: 1050;\n}\n.alert.top-right {\r\n  position: fixed;\r\n  top: 30px;\r\n  right: 50px;\r\n  z-index: 1050;\n}\r\n", ""]);
 
 /***/ }),
 /* 44 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(3)();
-exports.push([module.i, "\n.page-title[data-v-6ee57ca0] {\n\n    font-size: 40px;\n}\n", ""]);
-
-/***/ }),
-/* 45 */
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(3)();
+exports = module.exports = __webpack_require__(5)();
 exports.push([module.i, "\n.is-danger[data-v-85a6533a]{\n\n    border: 1px solid #a94442;\n}\n", ""]);
 
 /***/ }),
-/* 46 */
+/* 45 */
 /***/ (function(module, exports) {
 
 // shim for using process in browser
@@ -16583,18 +16385,18 @@ process.umask = function() { return 0; };
 
 
 /***/ }),
-/* 47 */
+/* 46 */
 /***/ (function(module, exports, __webpack_require__) {
 
 
 /* styles */
-__webpack_require__(74)
+__webpack_require__(69)
 
-var Component = __webpack_require__(0)(
+var Component = __webpack_require__(1)(
   /* script */
   __webpack_require__(35),
   /* template */
-  __webpack_require__(62),
+  __webpack_require__(59),
   /* scopeId */
   null,
   /* cssModules */
@@ -16621,18 +16423,52 @@ module.exports = Component.exports
 
 
 /***/ }),
+/* 47 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var Component = __webpack_require__(1)(
+  /* script */
+  __webpack_require__(92),
+  /* template */
+  __webpack_require__(65),
+  /* scopeId */
+  null,
+  /* cssModules */
+  null
+)
+Component.options.__file = "c:\\xampp\\htdocs\\lavue\\resources\\assets\\js\\routes\\dashboard\\profile.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
+if (Component.options.functional) {console.error("[vue-loader] profile.vue: functional components are not supported with templates, they should use render functions.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-7c90b539", Component.options)
+  } else {
+    hotAPI.reload("data-v-7c90b539", Component.options)
+  }
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
 /* 48 */
 /***/ (function(module, exports, __webpack_require__) {
 
 
 /* styles */
-__webpack_require__(77)
+__webpack_require__(71)
 
-var Component = __webpack_require__(0)(
+var Component = __webpack_require__(1)(
   /* script */
   __webpack_require__(36),
   /* template */
-  __webpack_require__(69),
+  __webpack_require__(66),
   /* scopeId */
   "data-v-85a6533a",
   /* cssModules */
@@ -16662,79 +16498,11 @@ module.exports = Component.exports
 /* 49 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var Component = __webpack_require__(0)(
+var Component = __webpack_require__(1)(
   /* script */
   null,
   /* template */
-  __webpack_require__(71),
-  /* scopeId */
-  null,
-  /* cssModules */
-  null
-)
-Component.options.__file = "c:\\xampp\\htdocs\\lavue\\resources\\assets\\js\\routes\\home\\category-filters.vue"
-if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
-if (Component.options.functional) {console.error("[vue-loader] category-filters.vue: functional components are not supported with templates, they should use render functions.")}
-
-/* hot reload */
-if (false) {(function () {
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), false)
-  if (!hotAPI.compatible) return
-  module.hot.accept()
-  if (!module.hot.data) {
-    hotAPI.createRecord("data-v-c5b76632", Component.options)
-  } else {
-    hotAPI.reload("data-v-c5b76632", Component.options)
-  }
-})()}
-
-module.exports = Component.exports
-
-
-/***/ }),
-/* 50 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var Component = __webpack_require__(0)(
-  /* script */
-  null,
-  /* template */
-  __webpack_require__(70),
-  /* scopeId */
-  null,
-  /* cssModules */
-  null
-)
-Component.options.__file = "c:\\xampp\\htdocs\\lavue\\resources\\assets\\js\\routes\\home\\category-results.vue"
-if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
-if (Component.options.functional) {console.error("[vue-loader] category-results.vue: functional components are not supported with templates, they should use render functions.")}
-
-/* hot reload */
-if (false) {(function () {
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), false)
-  if (!hotAPI.compatible) return
-  module.hot.accept()
-  if (!module.hot.data) {
-    hotAPI.createRecord("data-v-9ba7213c", Component.options)
-  } else {
-    hotAPI.reload("data-v-9ba7213c", Component.options)
-  }
-})()}
-
-module.exports = Component.exports
-
-
-/***/ }),
-/* 51 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var Component = __webpack_require__(0)(
-  /* script */
-  null,
-  /* template */
-  __webpack_require__(65),
+  __webpack_require__(62),
   /* scopeId */
   null,
   /* cssModules */
@@ -16761,14 +16529,14 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 52 */
+/* 50 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var Component = __webpack_require__(0)(
+var Component = __webpack_require__(1)(
   /* script */
   __webpack_require__(37),
   /* template */
-  __webpack_require__(61),
+  __webpack_require__(58),
   /* scopeId */
   null,
   /* cssModules */
@@ -16795,14 +16563,14 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 53 */
+/* 51 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var Component = __webpack_require__(0)(
+var Component = __webpack_require__(1)(
   /* script */
   null,
   /* template */
-  __webpack_require__(66),
+  __webpack_require__(63),
   /* scopeId */
   null,
   /* cssModules */
@@ -16829,52 +16597,14 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 54 */
+/* 52 */
 /***/ (function(module, exports, __webpack_require__) {
 
-
-/* styles */
-__webpack_require__(76)
-
-var Component = __webpack_require__(0)(
+var Component = __webpack_require__(1)(
   /* script */
   null,
   /* template */
-  __webpack_require__(68),
-  /* scopeId */
-  "data-v-6ee57ca0",
-  /* cssModules */
-  null
-)
-Component.options.__file = "c:\\xampp\\htdocs\\lavue\\resources\\assets\\js\\routes\\home\\page-header.vue"
-if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
-if (Component.options.functional) {console.error("[vue-loader] page-header.vue: functional components are not supported with templates, they should use render functions.")}
-
-/* hot reload */
-if (false) {(function () {
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), false)
-  if (!hotAPI.compatible) return
-  module.hot.accept()
-  if (!module.hot.data) {
-    hotAPI.createRecord("data-v-6ee57ca0", Component.options)
-  } else {
-    hotAPI.reload("data-v-6ee57ca0", Component.options)
-  }
-})()}
-
-module.exports = Component.exports
-
-
-/***/ }),
-/* 55 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var Component = __webpack_require__(0)(
-  /* script */
-  null,
-  /* template */
-  __webpack_require__(63),
+  __webpack_require__(60),
   /* scopeId */
   null,
   /* cssModules */
@@ -16901,48 +16631,15 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 56 */
+/* 53 */,
+/* 54 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var Component = __webpack_require__(0)(
-  /* script */
-  __webpack_require__(38),
-  /* template */
-  __webpack_require__(72),
-  /* scopeId */
-  null,
-  /* cssModules */
-  null
-)
-Component.options.__file = "c:\\xampp\\htdocs\\lavue\\resources\\assets\\js\\routes\\home\\sign-in.vue"
-if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
-if (Component.options.functional) {console.error("[vue-loader] sign-in.vue: functional components are not supported with templates, they should use render functions.")}
-
-/* hot reload */
-if (false) {(function () {
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), false)
-  if (!hotAPI.compatible) return
-  module.hot.accept()
-  if (!module.hot.data) {
-    hotAPI.createRecord("data-v-f4d3f46c", Component.options)
-  } else {
-    hotAPI.reload("data-v-f4d3f46c", Component.options)
-  }
-})()}
-
-module.exports = Component.exports
-
-
-/***/ }),
-/* 57 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var Component = __webpack_require__(0)(
+var Component = __webpack_require__(1)(
   /* script */
   __webpack_require__(39),
   /* template */
-  __webpack_require__(60),
+  __webpack_require__(57),
   /* scopeId */
   null,
   /* cssModules */
@@ -16969,14 +16666,14 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 58 */
+/* 55 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var Component = __webpack_require__(0)(
+var Component = __webpack_require__(1)(
   /* script */
   null,
   /* template */
-  __webpack_require__(67),
+  __webpack_require__(64),
   /* scopeId */
   null,
   /* cssModules */
@@ -17003,10 +16700,10 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 59 */
+/* 56 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var Component = __webpack_require__(0)(
+var Component = __webpack_require__(1)(
   /* script */
   __webpack_require__(40),
   /* template */
@@ -17036,7 +16733,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 60 */
+/* 57 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -17056,13 +16753,11 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   }, [_vm._m(1), _vm._v(" "), _c('ul', {
     staticClass: "dropdown-menu dropdown-menu-category"
   }, _vm._l((_vm.maincategories), function(maincategory) {
-    return _c('li', [_c('a', {
+    return _c('li', [_c('router-link', {
       attrs: {
-        "href": "#"
+        "to": '/category/' + maincategory.id
       }
-    }, [_c('i', {
-      staticClass: "fa fa-home dropdown-menu-category-icon"
-    }), _vm._v(_vm._s(maincategory.name))]), _vm._v(" "), _c('div', {
+    }, [_vm._v(" " + _vm._s(maincategory.name) + " ")]), _vm._v(" "), _c('div', {
       staticClass: "dropdown-menu-category-section"
     }, [_c('div', {
       staticClass: "dropdown-menu-category-section-inner"
@@ -17075,23 +16770,21 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         staticClass: "col-md-6"
       }, [_c('h5', {
         staticClass: "dropdown-menu-category-title"
-      }, [_c('a', {
+      }, [_c('router-link', {
         attrs: {
-          "href": "#"
+          "to": '/category/maincategory/' + merchantCat.id
         }
-      }, [_vm._v(_vm._s(merchantCat.name))])]), _vm._v(" "), _c('ul', {
+      }, [_vm._v(_vm._s(merchantCat.name))])], 1), _vm._v(" "), _c('ul', {
         staticClass: "dropdown-menu-category-list"
       }, _vm._l((merchantCat.merchant_subcategory), function(sub) {
-        return _c('li', [_c('a', {
+        return _c('li', [_c('router-link', {
           attrs: {
-            "href": "#"
+            "to": '/category/maincategory/subcategory/' + sub.id
           }
-        }, [_vm._v(_vm._s(sub.name))])])
+        }, [_vm._v(" " + _vm._s(sub.name) + " ")])], 1)
       }))])
-    }))])])])])
-  }))])]), _vm._v(" "), _vm._m(2), _vm._v(" "), _c('ul', {
-    staticClass: "nav navbar-nav navbar-right"
-  }, [_c('sign-in'), _vm._v(" "), _vm._m(3), _vm._v(" "), _vm._m(4)], 1)])])])
+    }))])])])], 1)
+  }))])]), _vm._v(" "), _vm._m(2), _vm._v(" "), _c('navbar-right')], 1)])])
 },staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('div', {
     staticClass: "navbar-header"
@@ -17156,113 +16849,6 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       "href": "#"
     }
   })])
-},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('li', [_c('a', {
-    staticClass: "popup-text",
-    attrs: {
-      "href": "#nav-account-dialog",
-      "data-effect": "mfp-move-from-top"
-    }
-  }, [_vm._v("Create Account")])])
-},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('li', {
-    staticClass: "dropdown"
-  }, [_c('a', {
-    staticClass: "fa fa-shopping-cart",
-    attrs: {
-      "href": "shopping-cart.html"
-    }
-  }), _vm._v(" "), _c('ul', {
-    staticClass: "dropdown-menu dropdown-menu-shipping-cart"
-  }, [_c('li', [_c('a', {
-    staticClass: "dropdown-menu-shipping-cart-img",
-    attrs: {
-      "href": "#"
-    }
-  }, [_c('img', {
-    attrs: {
-      "src": "img/100x100.png",
-      "alt": "Image Alternative text",
-      "title": "Image Title"
-    }
-  })]), _vm._v(" "), _c('div', {
-    staticClass: "dropdown-menu-shipping-cart-inner"
-  }, [_c('p', {
-    staticClass: "dropdown-menu-shipping-cart-price"
-  }, [_vm._v("$58")]), _vm._v(" "), _c('p', {
-    staticClass: "dropdown-menu-shipping-cart-item"
-  }, [_c('a', {
-    attrs: {
-      "href": "#"
-    }
-  }, [_vm._v("Gucci Patent Leather Open Toe Platform")])])])]), _vm._v(" "), _c('li', [_c('a', {
-    staticClass: "dropdown-menu-shipping-cart-img",
-    attrs: {
-      "href": "#"
-    }
-  }, [_c('img', {
-    attrs: {
-      "src": "img/100x100.png",
-      "alt": "Image Alternative text",
-      "title": "Image Title"
-    }
-  })]), _vm._v(" "), _c('div', {
-    staticClass: "dropdown-menu-shipping-cart-inner"
-  }, [_c('p', {
-    staticClass: "dropdown-menu-shipping-cart-price"
-  }, [_vm._v("$51")]), _vm._v(" "), _c('p', {
-    staticClass: "dropdown-menu-shipping-cart-item"
-  }, [_c('a', {
-    attrs: {
-      "href": "#"
-    }
-  }, [_vm._v("Nikon D5200 24.1 MP Digital SLR Camera")])])])]), _vm._v(" "), _c('li', [_c('a', {
-    staticClass: "dropdown-menu-shipping-cart-img",
-    attrs: {
-      "href": "#"
-    }
-  }, [_c('img', {
-    attrs: {
-      "src": "img/100x100.png",
-      "alt": "Image Alternative text",
-      "title": "Image Title"
-    }
-  })]), _vm._v(" "), _c('div', {
-    staticClass: "dropdown-menu-shipping-cart-inner"
-  }, [_c('p', {
-    staticClass: "dropdown-menu-shipping-cart-price"
-  }, [_vm._v("$61")]), _vm._v(" "), _c('p', {
-    staticClass: "dropdown-menu-shipping-cart-item"
-  }, [_c('a', {
-    attrs: {
-      "href": "#"
-    }
-  }, [_vm._v("Apple 11.6\" MacBook Air Notebook ")])])])]), _vm._v(" "), _c('li', [_c('a', {
-    staticClass: "dropdown-menu-shipping-cart-img",
-    attrs: {
-      "href": "#"
-    }
-  }, [_c('img', {
-    attrs: {
-      "src": "img/100x100.png",
-      "alt": "Image Alternative text",
-      "title": "Image Title"
-    }
-  })]), _vm._v(" "), _c('div', {
-    staticClass: "dropdown-menu-shipping-cart-inner"
-  }, [_c('p', {
-    staticClass: "dropdown-menu-shipping-cart-price"
-  }, [_vm._v("$99")]), _vm._v(" "), _c('p', {
-    staticClass: "dropdown-menu-shipping-cart-item"
-  }, [_c('a', {
-    attrs: {
-      "href": "#"
-    }
-  }, [_vm._v("Fossil Women's Original Boyfriend")])])])]), _vm._v(" "), _c('li', [_c('p', {
-    staticClass: "dropdown-menu-shipping-cart-total"
-  }, [_vm._v("Total: $150")]), _vm._v(" "), _c('button', {
-    staticClass: "dropdown-menu-shipping-cart-checkout btn btn-primary"
-  }, [_vm._v("Checkout")])])])])
 }]}
 module.exports.render._withStripped = true
 if (false) {
@@ -17273,7 +16859,7 @@ if (false) {
 }
 
 /***/ }),
-/* 61 */
+/* 58 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -17452,7 +17038,7 @@ if (false) {
 }
 
 /***/ }),
-/* 62 */
+/* 59 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -17537,7 +17123,7 @@ if (false) {
 }
 
 /***/ }),
-/* 63 */
+/* 60 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -17574,7 +17160,7 @@ if (false) {
 }
 
 /***/ }),
-/* 64 */
+/* 61 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -17623,7 +17209,7 @@ if (false) {
 }
 
 /***/ }),
-/* 65 */
+/* 62 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -17694,7 +17280,7 @@ if (false) {
 }
 
 /***/ }),
-/* 66 */
+/* 63 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -17868,7 +17454,7 @@ if (false) {
 }
 
 /***/ }),
-/* 67 */
+/* 64 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -17923,64 +17509,26 @@ if (false) {
 }
 
 /***/ }),
-/* 68 */
+/* 65 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _vm._m(0)
 },staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('header', {
-    staticClass: "page-header"
-  }, [_c('h3', {
-    staticClass: "page-title"
-  }, [_vm._v("Electronics")]), _vm._v(" "), _c('ol', {
-    staticClass: "breadcrumb page-breadcrumb"
-  }, [_c('li', [_c('a', {
-    attrs: {
-      "href": "#"
-    }
-  }, [_vm._v("Home")])]), _vm._v(" "), _c('li', {
-    staticClass: "active"
-  }, [_vm._v("Electronics")])]), _vm._v(" "), _c('ul', {
-    staticClass: "category-selections clearfix"
-  }, [_c('li', [_c('a', {
-    staticClass: "fa fa-th-large category-selections-icon active",
-    attrs: {
-      "href": "#"
-    }
-  })]), _vm._v(" "), _c('li', [_c('a', {
-    staticClass: "fa fa-th-list category-selections-icon",
-    attrs: {
-      "href": "#"
-    }
-  })]), _vm._v(" "), _c('li', [_c('span', {
-    staticClass: "category-selections-sign"
-  }, [_vm._v("Sort by :")]), _vm._v(" "), _c('select', {
-    staticClass: "category-selections-select"
-  }, [_c('option', {
-    attrs: {
-      "selected": ""
-    }
-  }, [_vm._v("Newest First")]), _vm._v(" "), _c('option', [_vm._v("Best Sellers")]), _vm._v(" "), _c('option', [_vm._v("Trending Now")]), _vm._v(" "), _c('option', [_vm._v("Best Raited")]), _vm._v(" "), _c('option', [_vm._v("Price : Lowest First")]), _vm._v(" "), _c('option', [_vm._v("Price : Highest First")]), _vm._v(" "), _c('option', [_vm._v("Title : A - Z")]), _vm._v(" "), _c('option', [_vm._v("Title : Z - A")])])]), _vm._v(" "), _c('li', [_c('span', {
-    staticClass: "category-selections-sign"
-  }, [_vm._v("Items :")]), _vm._v(" "), _c('select', {
-    staticClass: "category-selections-select"
-  }, [_c('option', [_vm._v("9 / page")]), _vm._v(" "), _c('option', {
-    attrs: {
-      "selected": ""
-    }
-  }, [_vm._v("12 / page")]), _vm._v(" "), _c('option', [_vm._v("18 / page")]), _vm._v(" "), _c('option', [_vm._v("All")])])])])])
+  return _c('div', {
+    staticClass: "container"
+  }, [_c('h4', [_vm._v("My Profile")])])
 }]}
 module.exports.render._withStripped = true
 if (false) {
   module.hot.accept()
   if (module.hot.data) {
-     require("vue-hot-reload-api").rerender("data-v-6ee57ca0", module.exports)
+     require("vue-hot-reload-api").rerender("data-v-7c90b539", module.exports)
   }
 }
 
 /***/ }),
-/* 69 */
+/* 66 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -18276,1469 +17824,8 @@ if (false) {
 }
 
 /***/ }),
-/* 70 */
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _vm._m(0)
-},staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('div', {
-    staticClass: "col-md-9"
-  }, [_c('div', {
-    staticClass: "row",
-    attrs: {
-      "data-gutter": "15"
-    }
-  }, [_c('div', {
-    staticClass: "col-md-3"
-  }, [_c('div', {
-    staticClass: "product "
-  }, [_c('ul', {
-    staticClass: "product-labels"
-  }), _vm._v(" "), _c('div', {
-    staticClass: "product-img-wrap"
-  }, [_c('img', {
-    staticClass: "product-img-primary",
-    attrs: {
-      "src": "img/500x500.png",
-      "alt": "Image Alternative text",
-      "title": "Image Title"
-    }
-  }), _vm._v(" "), _c('img', {
-    staticClass: "product-img-alt",
-    attrs: {
-      "src": "img/500x500.png",
-      "alt": "Image Alternative text",
-      "title": "Image Title"
-    }
-  })]), _vm._v(" "), _c('a', {
-    staticClass: "product-link",
-    attrs: {
-      "href": "#"
-    }
-  }), _vm._v(" "), _c('div', {
-    staticClass: "product-caption"
-  }, [_c('ul', {
-    staticClass: "product-caption-rating"
-  }, [_c('li', {
-    staticClass: "rated"
-  }, [_c('i', {
-    staticClass: "fa fa-star"
-  })]), _vm._v(" "), _c('li', {
-    staticClass: "rated"
-  }, [_c('i', {
-    staticClass: "fa fa-star"
-  })]), _vm._v(" "), _c('li', {
-    staticClass: "rated"
-  }, [_c('i', {
-    staticClass: "fa fa-star"
-  })]), _vm._v(" "), _c('li', {
-    staticClass: "rated"
-  }, [_c('i', {
-    staticClass: "fa fa-star"
-  })]), _vm._v(" "), _c('li', {
-    staticClass: "rated"
-  }, [_c('i', {
-    staticClass: "fa fa-star"
-  })])]), _vm._v(" "), _c('h5', {
-    staticClass: "product-caption-title"
-  }, [_vm._v("Apple iPhone 5c - 16GB - GSM Factory Unlocked White Blue Green Pink Yellow")]), _vm._v(" "), _c('div', {
-    staticClass: "product-caption-price"
-  }, [_c('span', {
-    staticClass: "product-caption-price-new"
-  }, [_vm._v("$67")])]), _vm._v(" "), _c('ul', {
-    staticClass: "product-caption-feature-list"
-  }, [_c('li', [_vm._v("Free Shipping")])])])])]), _vm._v(" "), _c('div', {
-    staticClass: "col-md-3"
-  }, [_c('div', {
-    staticClass: "product "
-  }, [_c('ul', {
-    staticClass: "product-labels"
-  }), _vm._v(" "), _c('div', {
-    staticClass: "product-img-wrap"
-  }, [_c('img', {
-    staticClass: "product-img-primary",
-    attrs: {
-      "src": "img/500x500.png",
-      "alt": "Image Alternative text",
-      "title": "Image Title"
-    }
-  }), _vm._v(" "), _c('img', {
-    staticClass: "product-img-alt",
-    attrs: {
-      "src": "img/500x500.png",
-      "alt": "Image Alternative text",
-      "title": "Image Title"
-    }
-  })]), _vm._v(" "), _c('a', {
-    staticClass: "product-link",
-    attrs: {
-      "href": "#"
-    }
-  }), _vm._v(" "), _c('div', {
-    staticClass: "product-caption"
-  }, [_c('ul', {
-    staticClass: "product-caption-rating"
-  }, [_c('li', {
-    staticClass: "rated"
-  }, [_c('i', {
-    staticClass: "fa fa-star"
-  })]), _vm._v(" "), _c('li', {
-    staticClass: "rated"
-  }, [_c('i', {
-    staticClass: "fa fa-star"
-  })]), _vm._v(" "), _c('li', {
-    staticClass: "rated"
-  }, [_c('i', {
-    staticClass: "fa fa-star"
-  })]), _vm._v(" "), _c('li', {
-    staticClass: "rated"
-  }, [_c('i', {
-    staticClass: "fa fa-star"
-  })]), _vm._v(" "), _c('li', [_c('i', {
-    staticClass: "fa fa-star"
-  })])]), _vm._v(" "), _c('h5', {
-    staticClass: "product-caption-title"
-  }, [_vm._v("Samsung Chromebook 11.6\" LED HD 16GB 1.7GHz Webcam Notebook Laptop -XE303C12-A01")]), _vm._v(" "), _c('div', {
-    staticClass: "product-caption-price"
-  }, [_c('span', {
-    staticClass: "product-caption-price-new"
-  }, [_vm._v("$137")])]), _vm._v(" "), _c('ul', {
-    staticClass: "product-caption-feature-list"
-  }, [_c('li', [_vm._v("Free Shipping")])])])])]), _vm._v(" "), _c('div', {
-    staticClass: "col-md-3"
-  }, [_c('div', {
-    staticClass: "product "
-  }, [_c('ul', {
-    staticClass: "product-labels"
-  }, [_c('li', [_vm._v("-30%")])]), _vm._v(" "), _c('div', {
-    staticClass: "product-img-wrap"
-  }, [_c('img', {
-    staticClass: "product-img-primary",
-    attrs: {
-      "src": "img/500x500.png",
-      "alt": "Image Alternative text",
-      "title": "Image Title"
-    }
-  }), _vm._v(" "), _c('img', {
-    staticClass: "product-img-alt",
-    attrs: {
-      "src": "img/500x500.png",
-      "alt": "Image Alternative text",
-      "title": "Image Title"
-    }
-  })]), _vm._v(" "), _c('a', {
-    staticClass: "product-link",
-    attrs: {
-      "href": "#"
-    }
-  }), _vm._v(" "), _c('div', {
-    staticClass: "product-caption"
-  }, [_c('ul', {
-    staticClass: "product-caption-rating"
-  }, [_c('li', {
-    staticClass: "rated"
-  }, [_c('i', {
-    staticClass: "fa fa-star"
-  })]), _vm._v(" "), _c('li', {
-    staticClass: "rated"
-  }, [_c('i', {
-    staticClass: "fa fa-star"
-  })]), _vm._v(" "), _c('li', {
-    staticClass: "rated"
-  }, [_c('i', {
-    staticClass: "fa fa-star"
-  })]), _vm._v(" "), _c('li', [_c('i', {
-    staticClass: "fa fa-star"
-  })]), _vm._v(" "), _c('li', [_c('i', {
-    staticClass: "fa fa-star"
-  })])]), _vm._v(" "), _c('h5', {
-    staticClass: "product-caption-title"
-  }, [_vm._v("New Asus X551MAV 15.6\" HD N2830 2.16GHz 4GB 500GB Windows 8 Laptop Notebook")]), _vm._v(" "), _c('div', {
-    staticClass: "product-caption-price"
-  }, [_c('span', {
-    staticClass: "product-caption-price-old"
-  }, [_vm._v("$53")]), _c('span', {
-    staticClass: "product-caption-price-new"
-  }, [_vm._v("$38")])]), _vm._v(" "), _c('ul', {
-    staticClass: "product-caption-feature-list"
-  }, [_c('li', [_vm._v("Free Shipping")])])])])]), _vm._v(" "), _c('div', {
-    staticClass: "col-md-3"
-  }, [_c('div', {
-    staticClass: "product "
-  }, [_c('ul', {
-    staticClass: "product-labels"
-  }, [_c('li', [_vm._v("hot")])]), _vm._v(" "), _c('div', {
-    staticClass: "product-img-wrap"
-  }, [_c('img', {
-    staticClass: "product-img-primary",
-    attrs: {
-      "src": "img/500x500.png",
-      "alt": "Image Alternative text",
-      "title": "Image Title"
-    }
-  }), _vm._v(" "), _c('img', {
-    staticClass: "product-img-alt",
-    attrs: {
-      "src": "img/490x500.png",
-      "alt": "Image Alternative text",
-      "title": "Image Title"
-    }
-  })]), _vm._v(" "), _c('a', {
-    staticClass: "product-link",
-    attrs: {
-      "href": "#"
-    }
-  }), _vm._v(" "), _c('div', {
-    staticClass: "product-caption"
-  }, [_c('ul', {
-    staticClass: "product-caption-rating"
-  }, [_c('li', {
-    staticClass: "rated"
-  }, [_c('i', {
-    staticClass: "fa fa-star"
-  })]), _vm._v(" "), _c('li', {
-    staticClass: "rated"
-  }, [_c('i', {
-    staticClass: "fa fa-star"
-  })]), _vm._v(" "), _c('li', {
-    staticClass: "rated"
-  }, [_c('i', {
-    staticClass: "fa fa-star"
-  })]), _vm._v(" "), _c('li', {
-    staticClass: "rated"
-  }, [_c('i', {
-    staticClass: "fa fa-star"
-  })]), _vm._v(" "), _c('li', [_c('i', {
-    staticClass: "fa fa-star"
-  })])]), _vm._v(" "), _c('h5', {
-    staticClass: "product-caption-title"
-  }, [_vm._v("Motorola XT1096 Moto X 2nd Generation 16GB Verizon Wireless gsm unlocked")]), _vm._v(" "), _c('div', {
-    staticClass: "product-caption-price"
-  }, [_c('span', {
-    staticClass: "product-caption-price-new"
-  }, [_vm._v("$113")])]), _vm._v(" "), _c('ul', {
-    staticClass: "product-caption-feature-list"
-  }, [_c('li', [_vm._v("4 left")]), _vm._v(" "), _c('li', [_vm._v("Free Shipping")])])])])])]), _vm._v(" "), _c('div', {
-    staticClass: "row",
-    attrs: {
-      "data-gutter": "15"
-    }
-  }, [_c('div', {
-    staticClass: "col-md-3"
-  }, [_c('div', {
-    staticClass: "product "
-  }, [_c('ul', {
-    staticClass: "product-labels"
-  }), _vm._v(" "), _c('div', {
-    staticClass: "product-img-wrap"
-  }, [_c('img', {
-    staticClass: "product-img-primary",
-    attrs: {
-      "src": "img/500x500.png",
-      "alt": "Image Alternative text",
-      "title": "Image Title"
-    }
-  }), _vm._v(" "), _c('img', {
-    staticClass: "product-img-alt",
-    attrs: {
-      "src": "img/500x500.png",
-      "alt": "Image Alternative text",
-      "title": "Image Title"
-    }
-  })]), _vm._v(" "), _c('a', {
-    staticClass: "product-link",
-    attrs: {
-      "href": "#"
-    }
-  }), _vm._v(" "), _c('div', {
-    staticClass: "product-caption"
-  }, [_c('ul', {
-    staticClass: "product-caption-rating"
-  }, [_c('li', {
-    staticClass: "rated"
-  }, [_c('i', {
-    staticClass: "fa fa-star"
-  })]), _vm._v(" "), _c('li', {
-    staticClass: "rated"
-  }, [_c('i', {
-    staticClass: "fa fa-star"
-  })]), _vm._v(" "), _c('li', {
-    staticClass: "rated"
-  }, [_c('i', {
-    staticClass: "fa fa-star"
-  })]), _vm._v(" "), _c('li', [_c('i', {
-    staticClass: "fa fa-star"
-  })]), _vm._v(" "), _c('li', [_c('i', {
-    staticClass: "fa fa-star"
-  })])]), _vm._v(" "), _c('h5', {
-    staticClass: "product-caption-title"
-  }, [_vm._v("Samsung Galaxy Note 4 IV 4G FACTORY UNLOCKED Black or White")]), _vm._v(" "), _c('div', {
-    staticClass: "product-caption-price"
-  }, [_c('span', {
-    staticClass: "product-caption-price-new"
-  }, [_vm._v("$91")])]), _vm._v(" "), _c('ul', {
-    staticClass: "product-caption-feature-list"
-  }, [_c('li', [_vm._v("3 left")]), _vm._v(" "), _c('li', [_vm._v("Free Shipping")])])])])]), _vm._v(" "), _c('div', {
-    staticClass: "col-md-3"
-  }, [_c('div', {
-    staticClass: "product "
-  }, [_c('ul', {
-    staticClass: "product-labels"
-  }), _vm._v(" "), _c('div', {
-    staticClass: "product-img-wrap"
-  }, [_c('img', {
-    staticClass: "product-img-primary",
-    attrs: {
-      "src": "img/500x500.png",
-      "alt": "Image Alternative text",
-      "title": "Image Title"
-    }
-  }), _vm._v(" "), _c('img', {
-    staticClass: "product-img-alt",
-    attrs: {
-      "src": "img/500x500.png",
-      "alt": "Image Alternative text",
-      "title": "Image Title"
-    }
-  })]), _vm._v(" "), _c('a', {
-    staticClass: "product-link",
-    attrs: {
-      "href": "#"
-    }
-  }), _vm._v(" "), _c('div', {
-    staticClass: "product-caption"
-  }, [_c('ul', {
-    staticClass: "product-caption-rating"
-  }, [_c('li', {
-    staticClass: "rated"
-  }, [_c('i', {
-    staticClass: "fa fa-star"
-  })]), _vm._v(" "), _c('li', {
-    staticClass: "rated"
-  }, [_c('i', {
-    staticClass: "fa fa-star"
-  })]), _vm._v(" "), _c('li', {
-    staticClass: "rated"
-  }, [_c('i', {
-    staticClass: "fa fa-star"
-  })]), _vm._v(" "), _c('li', {
-    staticClass: "rated"
-  }, [_c('i', {
-    staticClass: "fa fa-star"
-  })]), _vm._v(" "), _c('li', {
-    staticClass: "rated"
-  }, [_c('i', {
-    staticClass: "fa fa-star"
-  })])]), _vm._v(" "), _c('h5', {
-    staticClass: "product-caption-title"
-  }, [_vm._v("Lenovo ThinkPad 11e 11.6\" Notebook, AMD A4-6210 1.8GHz, 4GB RAM, 500GBHDD, W7Pro")]), _vm._v(" "), _c('div', {
-    staticClass: "product-caption-price"
-  }, [_c('span', {
-    staticClass: "product-caption-price-new"
-  }, [_vm._v("$78")])]), _vm._v(" "), _c('ul', {
-    staticClass: "product-caption-feature-list"
-  }, [_c('li', [_vm._v("Free Shipping")])])])])]), _vm._v(" "), _c('div', {
-    staticClass: "col-md-3"
-  }, [_c('div', {
-    staticClass: "product "
-  }, [_c('ul', {
-    staticClass: "product-labels"
-  }, [_c('li', [_vm._v("-50%")]), _vm._v(" "), _c('li', [_vm._v("stuff pick")])]), _vm._v(" "), _c('div', {
-    staticClass: "product-img-wrap"
-  }, [_c('img', {
-    staticClass: "product-img-primary",
-    attrs: {
-      "src": "img/500x500.png",
-      "alt": "Image Alternative text",
-      "title": "Image Title"
-    }
-  }), _vm._v(" "), _c('img', {
-    staticClass: "product-img-alt",
-    attrs: {
-      "src": "img/500x500.png",
-      "alt": "Image Alternative text",
-      "title": "Image Title"
-    }
-  })]), _vm._v(" "), _c('a', {
-    staticClass: "product-link",
-    attrs: {
-      "href": "#"
-    }
-  }), _vm._v(" "), _c('div', {
-    staticClass: "product-caption"
-  }, [_c('ul', {
-    staticClass: "product-caption-rating"
-  }, [_c('li', {
-    staticClass: "rated"
-  }, [_c('i', {
-    staticClass: "fa fa-star"
-  })]), _vm._v(" "), _c('li', {
-    staticClass: "rated"
-  }, [_c('i', {
-    staticClass: "fa fa-star"
-  })]), _vm._v(" "), _c('li', {
-    staticClass: "rated"
-  }, [_c('i', {
-    staticClass: "fa fa-star"
-  })]), _vm._v(" "), _c('li', {
-    staticClass: "rated"
-  }, [_c('i', {
-    staticClass: "fa fa-star"
-  })]), _vm._v(" "), _c('li', [_c('i', {
-    staticClass: "fa fa-star"
-  })])]), _vm._v(" "), _c('h5', {
-    staticClass: "product-caption-title"
-  }, [_vm._v("Apple iPhone 4S 16GB Factory Unlocked Black and White Smartphone")]), _vm._v(" "), _c('div', {
-    staticClass: "product-caption-price"
-  }, [_c('span', {
-    staticClass: "product-caption-price-old"
-  }, [_vm._v("$77")]), _c('span', {
-    staticClass: "product-caption-price-new"
-  }, [_vm._v("$39")])]), _vm._v(" "), _c('ul', {
-    staticClass: "product-caption-feature-list"
-  }, [_c('li', [_vm._v("5 left")]), _vm._v(" "), _c('li', [_vm._v("Free Shipping")])])])])]), _vm._v(" "), _c('div', {
-    staticClass: "col-md-3"
-  }, [_c('div', {
-    staticClass: "product "
-  }, [_c('ul', {
-    staticClass: "product-labels"
-  }, [_c('li', [_vm._v("hot")])]), _vm._v(" "), _c('div', {
-    staticClass: "product-img-wrap"
-  }, [_c('img', {
-    staticClass: "product-img-primary",
-    attrs: {
-      "src": "img/500x500.png",
-      "alt": "Image Alternative text",
-      "title": "Image Title"
-    }
-  }), _vm._v(" "), _c('img', {
-    staticClass: "product-img-alt",
-    attrs: {
-      "src": "img/500x500.png",
-      "alt": "Image Alternative text",
-      "title": "Image Title"
-    }
-  })]), _vm._v(" "), _c('a', {
-    staticClass: "product-link",
-    attrs: {
-      "href": "#"
-    }
-  }), _vm._v(" "), _c('div', {
-    staticClass: "product-caption"
-  }, [_c('ul', {
-    staticClass: "product-caption-rating"
-  }, [_c('li', {
-    staticClass: "rated"
-  }, [_c('i', {
-    staticClass: "fa fa-star"
-  })]), _vm._v(" "), _c('li', {
-    staticClass: "rated"
-  }, [_c('i', {
-    staticClass: "fa fa-star"
-  })]), _vm._v(" "), _c('li', {
-    staticClass: "rated"
-  }, [_c('i', {
-    staticClass: "fa fa-star"
-  })]), _vm._v(" "), _c('li', {
-    staticClass: "rated"
-  }, [_c('i', {
-    staticClass: "fa fa-star"
-  })]), _vm._v(" "), _c('li', {
-    staticClass: "rated"
-  }, [_c('i', {
-    staticClass: "fa fa-star"
-  })])]), _vm._v(" "), _c('h5', {
-    staticClass: "product-caption-title"
-  }, [_vm._v("Nikon COOLPIX L840 Digital Camera, Red - Refurbished by Nikon U.S.A. #26486 B")]), _vm._v(" "), _c('div', {
-    staticClass: "product-caption-price"
-  }, [_c('span', {
-    staticClass: "product-caption-price-new"
-  }, [_vm._v("$70")])]), _vm._v(" "), _c('ul', {
-    staticClass: "product-caption-feature-list"
-  }, [_c('li', [_vm._v("3 left")]), _vm._v(" "), _c('li', [_vm._v("Free Shipping")])])])])])]), _vm._v(" "), _c('div', {
-    staticClass: "row",
-    attrs: {
-      "data-gutter": "15"
-    }
-  }, [_c('div', {
-    staticClass: "col-md-3"
-  }, [_c('div', {
-    staticClass: "product "
-  }, [_c('ul', {
-    staticClass: "product-labels"
-  }, [_c('li', [_vm._v("stuff pick")])]), _vm._v(" "), _c('div', {
-    staticClass: "product-img-wrap"
-  }, [_c('img', {
-    staticClass: "product-img-primary",
-    attrs: {
-      "src": "img/500x500.png",
-      "alt": "Image Alternative text",
-      "title": "Image Title"
-    }
-  }), _vm._v(" "), _c('img', {
-    staticClass: "product-img-alt",
-    attrs: {
-      "src": "img/461x500.png",
-      "alt": "Image Alternative text",
-      "title": "Image Title"
-    }
-  })]), _vm._v(" "), _c('a', {
-    staticClass: "product-link",
-    attrs: {
-      "href": "#"
-    }
-  }), _vm._v(" "), _c('div', {
-    staticClass: "product-caption"
-  }, [_c('ul', {
-    staticClass: "product-caption-rating"
-  }, [_c('li', {
-    staticClass: "rated"
-  }, [_c('i', {
-    staticClass: "fa fa-star"
-  })]), _vm._v(" "), _c('li', {
-    staticClass: "rated"
-  }, [_c('i', {
-    staticClass: "fa fa-star"
-  })]), _vm._v(" "), _c('li', {
-    staticClass: "rated"
-  }, [_c('i', {
-    staticClass: "fa fa-star"
-  })]), _vm._v(" "), _c('li', {
-    staticClass: "rated"
-  }, [_c('i', {
-    staticClass: "fa fa-star"
-  })]), _vm._v(" "), _c('li', {
-    staticClass: "rated"
-  }, [_c('i', {
-    staticClass: "fa fa-star"
-  })])]), _vm._v(" "), _c('h5', {
-    staticClass: "product-caption-title"
-  }, [_vm._v("GoPro HERO4 Black 4K Action Camera Hero 4 Surf Camcorder . CHDHX-401. NEW")]), _vm._v(" "), _c('div', {
-    staticClass: "product-caption-price"
-  }, [_c('span', {
-    staticClass: "product-caption-price-new"
-  }, [_vm._v("$104")])]), _vm._v(" "), _c('ul', {
-    staticClass: "product-caption-feature-list"
-  }, [_c('li', [_vm._v("Free Shipping")])])])])]), _vm._v(" "), _c('div', {
-    staticClass: "col-md-3"
-  }, [_c('div', {
-    staticClass: "product "
-  }, [_c('ul', {
-    staticClass: "product-labels"
-  }, [_c('li', [_vm._v("hot")])]), _vm._v(" "), _c('div', {
-    staticClass: "product-img-wrap"
-  }, [_c('img', {
-    staticClass: "product-img-primary",
-    attrs: {
-      "src": "img/500x500.png",
-      "alt": "Image Alternative text",
-      "title": "Image Title"
-    }
-  }), _vm._v(" "), _c('img', {
-    staticClass: "product-img-alt",
-    attrs: {
-      "src": "img/500x500.png",
-      "alt": "Image Alternative text",
-      "title": "Image Title"
-    }
-  })]), _vm._v(" "), _c('a', {
-    staticClass: "product-link",
-    attrs: {
-      "href": "#"
-    }
-  }), _vm._v(" "), _c('div', {
-    staticClass: "product-caption"
-  }, [_c('ul', {
-    staticClass: "product-caption-rating"
-  }, [_c('li', {
-    staticClass: "rated"
-  }, [_c('i', {
-    staticClass: "fa fa-star"
-  })]), _vm._v(" "), _c('li', {
-    staticClass: "rated"
-  }, [_c('i', {
-    staticClass: "fa fa-star"
-  })]), _vm._v(" "), _c('li', {
-    staticClass: "rated"
-  }, [_c('i', {
-    staticClass: "fa fa-star"
-  })]), _vm._v(" "), _c('li', {
-    staticClass: "rated"
-  }, [_c('i', {
-    staticClass: "fa fa-star"
-  })]), _vm._v(" "), _c('li', [_c('i', {
-    staticClass: "fa fa-star"
-  })])]), _vm._v(" "), _c('h5', {
-    staticClass: "product-caption-title"
-  }, [_vm._v("Nikon D5200 24.1 MP Digital SLR Camera - Black (Kit w/ 18-55 VR Lens)")]), _vm._v(" "), _c('div', {
-    staticClass: "product-caption-price"
-  }, [_c('span', {
-    staticClass: "product-caption-price-new"
-  }, [_vm._v("$147")])]), _vm._v(" "), _c('ul', {
-    staticClass: "product-caption-feature-list"
-  }, [_c('li', [_vm._v("Free Shipping")])])])])]), _vm._v(" "), _c('div', {
-    staticClass: "col-md-3"
-  }, [_c('div', {
-    staticClass: "product "
-  }, [_c('ul', {
-    staticClass: "product-labels"
-  }), _vm._v(" "), _c('div', {
-    staticClass: "product-img-wrap"
-  }, [_c('img', {
-    staticClass: "product-img-primary",
-    attrs: {
-      "src": "img/500x500.png",
-      "alt": "Image Alternative text",
-      "title": "Image Title"
-    }
-  }), _vm._v(" "), _c('img', {
-    staticClass: "product-img-alt",
-    attrs: {
-      "src": "img/500x500.png",
-      "alt": "Image Alternative text",
-      "title": "Image Title"
-    }
-  })]), _vm._v(" "), _c('a', {
-    staticClass: "product-link",
-    attrs: {
-      "href": "#"
-    }
-  }), _vm._v(" "), _c('div', {
-    staticClass: "product-caption"
-  }, [_c('ul', {
-    staticClass: "product-caption-rating"
-  }, [_c('li', {
-    staticClass: "rated"
-  }, [_c('i', {
-    staticClass: "fa fa-star"
-  })]), _vm._v(" "), _c('li', {
-    staticClass: "rated"
-  }, [_c('i', {
-    staticClass: "fa fa-star"
-  })]), _vm._v(" "), _c('li', {
-    staticClass: "rated"
-  }, [_c('i', {
-    staticClass: "fa fa-star"
-  })]), _vm._v(" "), _c('li', {
-    staticClass: "rated"
-  }, [_c('i', {
-    staticClass: "fa fa-star"
-  })]), _vm._v(" "), _c('li', [_c('i', {
-    staticClass: "fa fa-star"
-  })])]), _vm._v(" "), _c('h5', {
-    staticClass: "product-caption-title"
-  }, [_vm._v("Samsung Galaxy S6 Edge+ Factory Unlocked GSM 32GB")]), _vm._v(" "), _c('div', {
-    staticClass: "product-caption-price"
-  }, [_c('span', {
-    staticClass: "product-caption-price-new"
-  }, [_vm._v("$116")])]), _vm._v(" "), _c('ul', {
-    staticClass: "product-caption-feature-list"
-  }, [_c('li', [_vm._v("Free Shipping")])])])])]), _vm._v(" "), _c('div', {
-    staticClass: "col-md-3"
-  }, [_c('div', {
-    staticClass: "product "
-  }, [_c('ul', {
-    staticClass: "product-labels"
-  }, [_c('li', [_vm._v("-30%")])]), _vm._v(" "), _c('div', {
-    staticClass: "product-img-wrap"
-  }, [_c('img', {
-    staticClass: "product-img-primary",
-    attrs: {
-      "src": "img/500x500.png",
-      "alt": "Image Alternative text",
-      "title": "Image Title"
-    }
-  }), _vm._v(" "), _c('img', {
-    staticClass: "product-img-alt",
-    attrs: {
-      "src": "img/500x500.png",
-      "alt": "Image Alternative text",
-      "title": "Image Title"
-    }
-  })]), _vm._v(" "), _c('a', {
-    staticClass: "product-link",
-    attrs: {
-      "href": "#"
-    }
-  }), _vm._v(" "), _c('div', {
-    staticClass: "product-caption"
-  }, [_c('ul', {
-    staticClass: "product-caption-rating"
-  }, [_c('li', {
-    staticClass: "rated"
-  }, [_c('i', {
-    staticClass: "fa fa-star"
-  })]), _vm._v(" "), _c('li', {
-    staticClass: "rated"
-  }, [_c('i', {
-    staticClass: "fa fa-star"
-  })]), _vm._v(" "), _c('li', {
-    staticClass: "rated"
-  }, [_c('i', {
-    staticClass: "fa fa-star"
-  })]), _vm._v(" "), _c('li', [_c('i', {
-    staticClass: "fa fa-star"
-  })]), _vm._v(" "), _c('li', [_c('i', {
-    staticClass: "fa fa-star"
-  })])]), _vm._v(" "), _c('h5', {
-    staticClass: "product-caption-title"
-  }, [_vm._v("Apple iPhone 5s 16GB Factory Unlocked Smartphone Space Gray / Silver / Gold")]), _vm._v(" "), _c('div', {
-    staticClass: "product-caption-price"
-  }, [_c('span', {
-    staticClass: "product-caption-price-old"
-  }, [_vm._v("$58")]), _c('span', {
-    staticClass: "product-caption-price-new"
-  }, [_vm._v("$41")])]), _vm._v(" "), _c('ul', {
-    staticClass: "product-caption-feature-list"
-  }, [_c('li', [_vm._v("Free Shipping")])])])])])]), _vm._v(" "), _c('div', {
-    staticClass: "row",
-    attrs: {
-      "data-gutter": "15"
-    }
-  }, [_c('div', {
-    staticClass: "col-md-3"
-  }, [_c('div', {
-    staticClass: "product "
-  }, [_c('ul', {
-    staticClass: "product-labels"
-  }), _vm._v(" "), _c('div', {
-    staticClass: "product-img-wrap"
-  }, [_c('img', {
-    staticClass: "product-img-primary",
-    attrs: {
-      "src": "img/500x500.png",
-      "alt": "Image Alternative text",
-      "title": "Image Title"
-    }
-  }), _vm._v(" "), _c('img', {
-    staticClass: "product-img-alt",
-    attrs: {
-      "src": "img/500x500.png",
-      "alt": "Image Alternative text",
-      "title": "Image Title"
-    }
-  })]), _vm._v(" "), _c('a', {
-    staticClass: "product-link",
-    attrs: {
-      "href": "#"
-    }
-  }), _vm._v(" "), _c('div', {
-    staticClass: "product-caption"
-  }, [_c('ul', {
-    staticClass: "product-caption-rating"
-  }, [_c('li', {
-    staticClass: "rated"
-  }, [_c('i', {
-    staticClass: "fa fa-star"
-  })]), _vm._v(" "), _c('li', {
-    staticClass: "rated"
-  }, [_c('i', {
-    staticClass: "fa fa-star"
-  })]), _vm._v(" "), _c('li', {
-    staticClass: "rated"
-  }, [_c('i', {
-    staticClass: "fa fa-star"
-  })]), _vm._v(" "), _c('li', [_c('i', {
-    staticClass: "fa fa-star"
-  })]), _vm._v(" "), _c('li', [_c('i', {
-    staticClass: "fa fa-star"
-  })])]), _vm._v(" "), _c('h5', {
-    staticClass: "product-caption-title"
-  }, [_vm._v("LG G3 VS985 - 32GB - Verizon Smartphone - Metallic Black or Silk White - Great")]), _vm._v(" "), _c('div', {
-    staticClass: "product-caption-price"
-  }, [_c('span', {
-    staticClass: "product-caption-price-new"
-  }, [_vm._v("$107")])]), _vm._v(" "), _c('ul', {
-    staticClass: "product-caption-feature-list"
-  }, [_c('li', [_vm._v("5 left")]), _vm._v(" "), _c('li', [_vm._v("Free Shipping")])])])])]), _vm._v(" "), _c('div', {
-    staticClass: "col-md-3"
-  }, [_c('div', {
-    staticClass: "product "
-  }, [_c('ul', {
-    staticClass: "product-labels"
-  }, [_c('li', [_vm._v("-50%")])]), _vm._v(" "), _c('div', {
-    staticClass: "product-img-wrap"
-  }, [_c('img', {
-    staticClass: "product-img-primary",
-    attrs: {
-      "src": "img/500x500.png",
-      "alt": "Image Alternative text",
-      "title": "Image Title"
-    }
-  }), _vm._v(" "), _c('img', {
-    staticClass: "product-img-alt",
-    attrs: {
-      "src": "img/500x500.png",
-      "alt": "Image Alternative text",
-      "title": "Image Title"
-    }
-  })]), _vm._v(" "), _c('a', {
-    staticClass: "product-link",
-    attrs: {
-      "href": "#"
-    }
-  }), _vm._v(" "), _c('div', {
-    staticClass: "product-caption"
-  }, [_c('ul', {
-    staticClass: "product-caption-rating"
-  }, [_c('li', {
-    staticClass: "rated"
-  }, [_c('i', {
-    staticClass: "fa fa-star"
-  })]), _vm._v(" "), _c('li', {
-    staticClass: "rated"
-  }, [_c('i', {
-    staticClass: "fa fa-star"
-  })]), _vm._v(" "), _c('li', {
-    staticClass: "rated"
-  }, [_c('i', {
-    staticClass: "fa fa-star"
-  })]), _vm._v(" "), _c('li', {
-    staticClass: "rated"
-  }, [_c('i', {
-    staticClass: "fa fa-star"
-  })]), _vm._v(" "), _c('li', [_c('i', {
-    staticClass: "fa fa-star"
-  })])]), _vm._v(" "), _c('h5', {
-    staticClass: "product-caption-title"
-  }, [_vm._v("HTC One M8 32GB Factory Unlocked Smartphone  Gold / Silver Gray")]), _vm._v(" "), _c('div', {
-    staticClass: "product-caption-price"
-  }, [_c('span', {
-    staticClass: "product-caption-price-old"
-  }, [_vm._v("$79")]), _c('span', {
-    staticClass: "product-caption-price-new"
-  }, [_vm._v("$40")])]), _vm._v(" "), _c('ul', {
-    staticClass: "product-caption-feature-list"
-  }, [_c('li', [_vm._v("1 left")]), _vm._v(" "), _c('li', [_vm._v("Free Shipping")])])])])]), _vm._v(" "), _c('div', {
-    staticClass: "col-md-3"
-  }, [_c('div', {
-    staticClass: "product "
-  }, [_c('ul', {
-    staticClass: "product-labels"
-  }), _vm._v(" "), _c('div', {
-    staticClass: "product-img-wrap"
-  }, [_c('img', {
-    staticClass: "product-img-primary",
-    attrs: {
-      "src": "img/500x500.png",
-      "alt": "Image Alternative text",
-      "title": "Image Title"
-    }
-  }), _vm._v(" "), _c('img', {
-    staticClass: "product-img-alt",
-    attrs: {
-      "src": "img/500x500.png",
-      "alt": "Image Alternative text",
-      "title": "Image Title"
-    }
-  })]), _vm._v(" "), _c('a', {
-    staticClass: "product-link",
-    attrs: {
-      "href": "#"
-    }
-  }), _vm._v(" "), _c('div', {
-    staticClass: "product-caption"
-  }, [_c('ul', {
-    staticClass: "product-caption-rating"
-  }, [_c('li', {
-    staticClass: "rated"
-  }, [_c('i', {
-    staticClass: "fa fa-star"
-  })]), _vm._v(" "), _c('li', {
-    staticClass: "rated"
-  }, [_c('i', {
-    staticClass: "fa fa-star"
-  })]), _vm._v(" "), _c('li', {
-    staticClass: "rated"
-  }, [_c('i', {
-    staticClass: "fa fa-star"
-  })]), _vm._v(" "), _c('li', [_c('i', {
-    staticClass: "fa fa-star"
-  })]), _vm._v(" "), _c('li', [_c('i', {
-    staticClass: "fa fa-star"
-  })])]), _vm._v(" "), _c('h5', {
-    staticClass: "product-caption-title"
-  }, [_vm._v("Apple 11.6\" MacBook Air Notebook Computer MJVM2LL/A (Early 2015)")]), _vm._v(" "), _c('div', {
-    staticClass: "product-caption-price"
-  }, [_c('span', {
-    staticClass: "product-caption-price-new"
-  }, [_vm._v("$64")])]), _vm._v(" "), _c('ul', {
-    staticClass: "product-caption-feature-list"
-  }, [_c('li', [_vm._v("Free Shipping")])])])])]), _vm._v(" "), _c('div', {
-    staticClass: "col-md-3"
-  }, [_c('div', {
-    staticClass: "product "
-  }, [_c('ul', {
-    staticClass: "product-labels"
-  }, [_c('li', [_vm._v("-70%")])]), _vm._v(" "), _c('div', {
-    staticClass: "product-img-wrap"
-  }, [_c('img', {
-    staticClass: "product-img-primary",
-    attrs: {
-      "src": "img/500x500.png",
-      "alt": "Image Alternative text",
-      "title": "Image Title"
-    }
-  }), _vm._v(" "), _c('img', {
-    staticClass: "product-img-alt",
-    attrs: {
-      "src": "img/500x500.png",
-      "alt": "Image Alternative text",
-      "title": "Image Title"
-    }
-  })]), _vm._v(" "), _c('a', {
-    staticClass: "product-link",
-    attrs: {
-      "href": "#"
-    }
-  }), _vm._v(" "), _c('div', {
-    staticClass: "product-caption"
-  }, [_c('ul', {
-    staticClass: "product-caption-rating"
-  }, [_c('li', {
-    staticClass: "rated"
-  }, [_c('i', {
-    staticClass: "fa fa-star"
-  })]), _vm._v(" "), _c('li', {
-    staticClass: "rated"
-  }, [_c('i', {
-    staticClass: "fa fa-star"
-  })]), _vm._v(" "), _c('li', {
-    staticClass: "rated"
-  }, [_c('i', {
-    staticClass: "fa fa-star"
-  })]), _vm._v(" "), _c('li', {
-    staticClass: "rated"
-  }, [_c('i', {
-    staticClass: "fa fa-star"
-  })]), _vm._v(" "), _c('li', {
-    staticClass: "rated"
-  }, [_c('i', {
-    staticClass: "fa fa-star"
-  })])]), _vm._v(" "), _c('h5', {
-    staticClass: "product-caption-title"
-  }, [_vm._v("LG G Flex D959 - 32GB - Titan Silver GSM Unlocked Android Smartphone (B)")]), _vm._v(" "), _c('div', {
-    staticClass: "product-caption-price"
-  }, [_c('span', {
-    staticClass: "product-caption-price-old"
-  }, [_vm._v("$99")]), _c('span', {
-    staticClass: "product-caption-price-new"
-  }, [_vm._v("$30")])]), _vm._v(" "), _c('ul', {
-    staticClass: "product-caption-feature-list"
-  }, [_c('li', [_vm._v("Free Shipping")])])])])])]), _vm._v(" "), _c('div', {
-    staticClass: "row"
-  }, [_c('div', {
-    staticClass: "col-md-6"
-  }, [_c('p', {
-    staticClass: "category-pagination-sign"
-  }, [_vm._v("58 items found in Cell Phones. Showing 1 - 12")])]), _vm._v(" "), _c('div', {
-    staticClass: "col-md-6"
-  }, [_c('nav', [_c('ul', {
-    staticClass: "pagination category-pagination pull-right"
-  }, [_c('li', {
-    staticClass: "active"
-  }, [_c('a', {
-    attrs: {
-      "href": "#"
-    }
-  }, [_vm._v("1")])]), _vm._v(" "), _c('li', [_c('a', {
-    attrs: {
-      "href": "#"
-    }
-  }, [_vm._v("2")])]), _vm._v(" "), _c('li', [_c('a', {
-    attrs: {
-      "href": "#"
-    }
-  }, [_vm._v("3")])]), _vm._v(" "), _c('li', [_c('a', {
-    attrs: {
-      "href": "#"
-    }
-  }, [_vm._v("4")])]), _vm._v(" "), _c('li', [_c('a', {
-    attrs: {
-      "href": "#"
-    }
-  }, [_vm._v("5")])]), _vm._v(" "), _c('li', {
-    staticClass: "last"
-  }, [_c('a', {
-    attrs: {
-      "href": "#"
-    }
-  }, [_c('i', {
-    staticClass: "fa fa-long-arrow-right"
-  })])])])])])])])
-}]}
-module.exports.render._withStripped = true
-if (false) {
-  module.hot.accept()
-  if (module.hot.data) {
-     require("vue-hot-reload-api").rerender("data-v-9ba7213c", module.exports)
-  }
-}
-
-/***/ }),
-/* 71 */
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _vm._m(0)
-},staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('div', {
-    staticClass: "col-md-3"
-  }, [_c('aside', {
-    staticClass: "category-filters"
-  }, [_c('div', {
-    staticClass: "category-filters-section"
-  }, [_c('h3', {
-    staticClass: "widget-title-sm"
-  }, [_vm._v("Category")]), _vm._v(" "), _c('ul', {
-    staticClass: "cateogry-filters-list"
-  }, [_c('li', [_c('a', {
-    attrs: {
-      "href": "#"
-    }
-  }, [_vm._v("Tv, Audio & Home Theater")])]), _vm._v(" "), _c('li', [_c('a', {
-    attrs: {
-      "href": "#"
-    }
-  }, [_vm._v("Camera, Photo & Video")])]), _vm._v(" "), _c('li', [_c('a', {
-    attrs: {
-      "href": "#"
-    }
-  }, [_vm._v("Computers & Accessories")])]), _vm._v(" "), _c('li', [_c('a', {
-    attrs: {
-      "href": "#"
-    }
-  }, [_vm._v("Cell Phones & Accessories")])]), _vm._v(" "), _c('li', [_c('a', {
-    attrs: {
-      "href": "#"
-    }
-  }, [_vm._v("Business & Office")])]), _vm._v(" "), _c('li', [_c('a', {
-    attrs: {
-      "href": "#"
-    }
-  }, [_vm._v("Car & GPS")])]), _vm._v(" "), _c('li', [_c('a', {
-    attrs: {
-      "href": "#"
-    }
-  }, [_vm._v("Audio & Accessories")])]), _vm._v(" "), _c('li', [_c('a', {
-    attrs: {
-      "href": "#"
-    }
-  }, [_vm._v("Software")])]), _vm._v(" "), _c('li', [_c('a', {
-    attrs: {
-      "href": "#"
-    }
-  }, [_vm._v("Video Games")])])])]), _vm._v(" "), _c('div', {
-    staticClass: "category-filters-section"
-  }, [_c('h3', {
-    staticClass: "widget-title-sm"
-  }, [_vm._v("Price")]), _vm._v(" "), _c('input', {
-    attrs: {
-      "type": "text",
-      "id": "price-slider"
-    }
-  })]), _vm._v(" "), _c('div', {
-    staticClass: "category-filters-section"
-  }, [_c('h3', {
-    staticClass: "widget-title-sm"
-  }, [_vm._v("Relese Date")]), _vm._v(" "), _c('div', {
-    staticClass: "checkbox"
-  }, [_c('label', [_c('input', {
-    staticClass: "i-check",
-    attrs: {
-      "type": "checkbox"
-    }
-  }), _vm._v("Last 30 days"), _c('span', {
-    staticClass: "category-filters-amount"
-  }, [_vm._v("(59)")])])]), _vm._v(" "), _c('div', {
-    staticClass: "checkbox"
-  }, [_c('label', [_c('input', {
-    staticClass: "i-check",
-    attrs: {
-      "type": "checkbox"
-    }
-  }), _vm._v("Last 90 days"), _c('span', {
-    staticClass: "category-filters-amount"
-  }, [_vm._v("(29)")])])]), _vm._v(" "), _c('div', {
-    staticClass: "checkbox"
-  }, [_c('label', [_c('input', {
-    staticClass: "i-check",
-    attrs: {
-      "type": "checkbox"
-    }
-  }), _vm._v("Comming Soon"), _c('span', {
-    staticClass: "category-filters-amount"
-  }, [_vm._v("(20)")])])])]), _vm._v(" "), _c('div', {
-    staticClass: "category-filters-section"
-  }, [_c('h3', {
-    staticClass: "widget-title-sm"
-  }, [_vm._v("Brand")]), _vm._v(" "), _c('div', {
-    staticClass: "checkbox"
-  }, [_c('label', [_c('input', {
-    staticClass: "i-check",
-    attrs: {
-      "type": "checkbox"
-    }
-  }), _vm._v("Apple"), _c('span', {
-    staticClass: "category-filters-amount"
-  }, [_vm._v("(31)")])])]), _vm._v(" "), _c('div', {
-    staticClass: "checkbox"
-  }, [_c('label', [_c('input', {
-    staticClass: "i-check",
-    attrs: {
-      "type": "checkbox"
-    }
-  }), _vm._v("Samsung"), _c('span', {
-    staticClass: "category-filters-amount"
-  }, [_vm._v("(66)")])])]), _vm._v(" "), _c('div', {
-    staticClass: "checkbox"
-  }, [_c('label', [_c('input', {
-    staticClass: "i-check",
-    attrs: {
-      "type": "checkbox"
-    }
-  }), _vm._v("LG"), _c('span', {
-    staticClass: "category-filters-amount"
-  }, [_vm._v("(71)")])])]), _vm._v(" "), _c('div', {
-    staticClass: "checkbox"
-  }, [_c('label', [_c('input', {
-    staticClass: "i-check",
-    attrs: {
-      "type": "checkbox"
-    }
-  }), _vm._v("Sony"), _c('span', {
-    staticClass: "category-filters-amount"
-  }, [_vm._v("(53)")])])]), _vm._v(" "), _c('div', {
-    staticClass: "checkbox"
-  }, [_c('label', [_c('input', {
-    staticClass: "i-check",
-    attrs: {
-      "type": "checkbox"
-    }
-  }), _vm._v("Micosoft"), _c('span', {
-    staticClass: "category-filters-amount"
-  }, [_vm._v("(16)")])])]), _vm._v(" "), _c('div', {
-    staticClass: "checkbox"
-  }, [_c('label', [_c('input', {
-    staticClass: "i-check",
-    attrs: {
-      "type": "checkbox"
-    }
-  }), _vm._v("Dell"), _c('span', {
-    staticClass: "category-filters-amount"
-  }, [_vm._v("(72)")])])]), _vm._v(" "), _c('div', {
-    staticClass: "checkbox"
-  }, [_c('label', [_c('input', {
-    staticClass: "i-check",
-    attrs: {
-      "type": "checkbox"
-    }
-  }), _vm._v("HP"), _c('span', {
-    staticClass: "category-filters-amount"
-  }, [_vm._v("(30)")])])])]), _vm._v(" "), _c('div', {
-    staticClass: "category-filters-section"
-  }, [_c('h3', {
-    staticClass: "widget-title-sm"
-  }, [_vm._v("Discount")]), _vm._v(" "), _c('div', {
-    staticClass: "checkbox"
-  }, [_c('label', [_c('input', {
-    staticClass: "i-check",
-    attrs: {
-      "type": "checkbox"
-    }
-  }), _vm._v("10% Off or More"), _c('span', {
-    staticClass: "category-filters-amount"
-  }, [_vm._v("(78)")])])]), _vm._v(" "), _c('div', {
-    staticClass: "checkbox"
-  }, [_c('label', [_c('input', {
-    staticClass: "i-check",
-    attrs: {
-      "type": "checkbox"
-    }
-  }), _vm._v("25% Off or More"), _c('span', {
-    staticClass: "category-filters-amount"
-  }, [_vm._v("(26)")])])]), _vm._v(" "), _c('div', {
-    staticClass: "checkbox"
-  }, [_c('label', [_c('input', {
-    staticClass: "i-check",
-    attrs: {
-      "type": "checkbox"
-    }
-  }), _vm._v("50% Off or More"), _c('span', {
-    staticClass: "category-filters-amount"
-  }, [_vm._v("(37)")])])]), _vm._v(" "), _c('div', {
-    staticClass: "checkbox"
-  }, [_c('label', [_c('input', {
-    staticClass: "i-check",
-    attrs: {
-      "type": "checkbox"
-    }
-  }), _vm._v("75% Off or More"), _c('span', {
-    staticClass: "category-filters-amount"
-  }, [_vm._v("(89)")])])])]), _vm._v(" "), _c('div', {
-    staticClass: "category-filters-section"
-  }, [_c('h3', {
-    staticClass: "widget-title-sm"
-  }, [_vm._v("Features")]), _vm._v(" "), _c('div', {
-    staticClass: "checkbox"
-  }, [_c('label', [_c('input', {
-    staticClass: "i-check",
-    attrs: {
-      "type": "checkbox"
-    }
-  }), _vm._v("New"), _c('span', {
-    staticClass: "category-filters-amount"
-  }, [_vm._v("(75)")])])]), _vm._v(" "), _c('div', {
-    staticClass: "checkbox"
-  }, [_c('label', [_c('input', {
-    staticClass: "i-check",
-    attrs: {
-      "type": "checkbox"
-    }
-  }), _vm._v("Featured"), _c('span', {
-    staticClass: "category-filters-amount"
-  }, [_vm._v("(27)")])])]), _vm._v(" "), _c('div', {
-    staticClass: "checkbox"
-  }, [_c('label', [_c('input', {
-    staticClass: "i-check",
-    attrs: {
-      "type": "checkbox"
-    }
-  }), _vm._v("On Sale"), _c('span', {
-    staticClass: "category-filters-amount"
-  }, [_vm._v("(32)")])])])])])])
-}]}
-module.exports.render._withStripped = true
-if (false) {
-  module.hot.accept()
-  if (module.hot.data) {
-     require("vue-hot-reload-api").rerender("data-v-c5b76632", module.exports)
-  }
-}
-
-/***/ }),
-/* 72 */
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return (_vm.loginText) ? _c('li', [_c('a', {
-    attrs: {
-      "href": "#",
-      "data-effect": "mfp-move-from-top"
-    },
-    on: {
-      "click": function($event) {
-        _vm.showLoginModal($event)
-      }
-    }
-  }, [_vm._v(_vm._s(_vm.user.name))]), _vm._v(" "), _c('modal', {
-    attrs: {
-      "effect": "fade",
-      "large": "",
-      "width": "400px"
-    },
-    model: {
-      value: (_vm.loginModal),
-      callback: function($$v) {
-        _vm.loginModal = $$v
-      },
-      expression: "loginModal"
-    }
-  }, [_c('div', {
-    staticClass: "modal-header",
-    slot: "modal-header"
-  }, [_c('h3', {
-    staticClass: "widget-title"
-  }, [_vm._v("Member Login")]), _vm._v(" "), _c('p', [_vm._v("Welcome back, friend. Login to get started")])]), _vm._v(" "), _c('div', {
-    staticClass: "modal-body"
-  }, [_c('form', {
-    attrs: {
-      "method": "post",
-      "role": "form"
-    },
-    on: {
-      "submit": function($event) {
-        $event.preventDefault();
-        _vm.validateBeforeSubmit($event)
-      }
-    }
-  }, [_c('div', {
-    staticClass: "form-group"
-  }, [_c('label', [_vm._v("Email")]), _vm._v(" "), _c('input', {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: (_vm.email),
-      expression: "email"
-    }, {
-      name: "validate",
-      rawName: "v-validate",
-      value: ('required|email'),
-      expression: "'required|email'"
-    }],
-    staticClass: "form-control",
-    class: {
-      'input': true, 'is-danger': _vm.errors.has('email')
-    },
-    attrs: {
-      "name": "email",
-      "type": "text",
-      "placeholder": "Email"
-    },
-    domProps: {
-      "value": (_vm.email)
-    },
-    on: {
-      "input": function($event) {
-        if ($event.target.composing) { return; }
-        _vm.email = $event.target.value
-      }
-    }
-  }), _vm._v(" "), _c('i', {
-    directives: [{
-      name: "show",
-      rawName: "v-show",
-      value: (_vm.errors.has('email')),
-      expression: "errors.has('email')"
-    }],
-    staticClass: "fa fa-warning text-danger"
-  }), _vm._v(" "), _c('span', {
-    directives: [{
-      name: "show",
-      rawName: "v-show",
-      value: (_vm.errors.has('email')),
-      expression: "errors.has('email')"
-    }],
-    staticClass: "help text-danger"
-  }, [_vm._v(_vm._s(_vm.errors.first('email')))])]), _vm._v(" "), _c('div', {
-    staticClass: "form-group"
-  }, [_c('div', {
-    staticClass: "form-group"
-  }, [_c('label', [_vm._v("Password")]), _vm._v(" "), _c('input', {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: (_vm.password),
-      expression: "password"
-    }, {
-      name: "validate",
-      rawName: "v-validate",
-      value: ('required'),
-      expression: "'required'"
-    }],
-    staticClass: "form-control",
-    class: {
-      'input': true, 'is-danger': _vm.errors.has('password')
-    },
-    attrs: {
-      "name": "password",
-      "type": "password",
-      "placeholder": "Password"
-    },
-    domProps: {
-      "value": (_vm.password)
-    },
-    on: {
-      "input": function($event) {
-        if ($event.target.composing) { return; }
-        _vm.password = $event.target.value
-      }
-    }
-  }), _vm._v(" "), _c('i', {
-    directives: [{
-      name: "show",
-      rawName: "v-show",
-      value: (_vm.errors.has('password')),
-      expression: "errors.has('password')"
-    }],
-    staticClass: "fa fa-warning text-danger"
-  }), _vm._v(" "), _c('span', {
-    directives: [{
-      name: "show",
-      rawName: "v-show",
-      value: (_vm.errors.has('password')),
-      expression: "errors.has('password')"
-    }],
-    staticClass: "help text-danger"
-  }, [_vm._v(_vm._s(_vm.errors.first('password')))])])]), _vm._v(" "), _c('div', {
-    staticClass: "checkbox"
-  }, [_c('label', [_c('input', {
-    staticClass: "i-check",
-    attrs: {
-      "type": "checkbox"
-    }
-  }), _vm._v("Remeber Me")])]), _vm._v(" "), _c('div', {
-    staticClass: "pull-right"
-  }, [_c('button', {
-    staticClass: "btn btn-default btn-fill",
-    attrs: {
-      "type": "button"
-    },
-    on: {
-      "click": function($event) {
-        _vm.loginModal = false
-      }
-    }
-  }, [_vm._v("Exit")]), _vm._v(" "), _c('input', {
-    staticClass: "btn btn-primary",
-    attrs: {
-      "type": "submit",
-      "value": "Sign In"
-    }
-  })]), _vm._v(" "), _c('div', {
-    staticClass: "gap gap-small"
-  })])]), _vm._v(" "), _c('div', {
-    staticClass: "modal-footer",
-    slot: "modal-footer"
-  }, [_c('ul', {
-    staticClass: "list-inline"
-  }, [_c('li', [_c('a', {
-    staticClass: "popup-text",
-    attrs: {
-      "href": "#nav-account-dialog"
-    }
-  }, [_vm._v("Not Member Yet")])]), _vm._v(" "), _c('li', [_c('a', {
-    staticClass: "popup-text",
-    attrs: {
-      "href": "#nav-pwd-dialog"
-    }
-  }, [_vm._v("Forgot Password?")])])])]), _vm._v(" "), _c('alert', {
-    attrs: {
-      "placement": "top",
-      "type": _vm.alertType,
-      "width": "350px",
-      "dismissable": "",
-      "duration": "4000"
-    },
-    model: {
-      value: (_vm.alertLogin),
-      callback: function($$v) {
-        _vm.alertLogin = $$v
-      },
-      expression: "alertLogin"
-    }
-  }, [_c('i', {
-    staticClass: "fa",
-    class: {
-      'fa-warning': _vm.faWarning, 'fa-check-circle': _vm.faSuccess
-    }
-  }), _vm._v(" "), _c('strong', [_vm._v(_vm._s(_vm.alertTitle))]), _vm._v(" "), _c('p', [_vm._v("    " + _vm._s(_vm.alertMessage))])])], 1)], 1) : _c('li', [_c('router-link', {
-    attrs: {
-      "to": '/user/' + _vm.user.id
-    }
-  }, [_vm._v(_vm._s(_vm.user.name))])], 1)
-},staticRenderFns: []}
-module.exports.render._withStripped = true
-if (false) {
-  module.hot.accept()
-  if (module.hot.data) {
-     require("vue-hot-reload-api").rerender("data-v-f4d3f46c", module.exports)
-  }
-}
-
-/***/ }),
-/* 73 */
+/* 67 */,
+/* 68 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -22209,7 +20296,7 @@ if (inBrowser && window.Vue) {
 
 
 /***/ }),
-/* 74 */
+/* 69 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
@@ -22219,7 +20306,7 @@ var content = __webpack_require__(42);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(4)("263c98fd", content, false);
+var update = __webpack_require__(7)("263c98fd", content, false);
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
@@ -22235,7 +20322,7 @@ if(false) {
 }
 
 /***/ }),
-/* 75 */
+/* 70 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
@@ -22245,7 +20332,7 @@ var content = __webpack_require__(43);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(4)("040dc197", content, false);
+var update = __webpack_require__(7)("040dc197", content, false);
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
@@ -22261,7 +20348,7 @@ if(false) {
 }
 
 /***/ }),
-/* 76 */
+/* 71 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
@@ -22271,33 +20358,7 @@ var content = __webpack_require__(44);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(4)("5d0cd0ba", content, false);
-// Hot Module Replacement
-if(false) {
- // When the styles change, update the <style> tags
- if(!content.locals) {
-   module.hot.accept("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"id\":\"data-v-6ee57ca0\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./page-header.vue", function() {
-     var newContent = require("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"id\":\"data-v-6ee57ca0\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./page-header.vue");
-     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-     update(newContent);
-   });
- }
- // When the module is disposed, remove the <style> tags
- module.hot.dispose(function() { update(); });
-}
-
-/***/ }),
-/* 77 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// style-loader: Adds some css to the DOM by adding a <style> tag
-
-// load the styles
-var content = __webpack_require__(45);
-if(typeof content === 'string') content = [[module.i, content, '']];
-if(content.locals) module.exports = content.locals;
-// add the styles to the DOM
-var update = __webpack_require__(4)("84ce16cc", content, false);
+var update = __webpack_require__(7)("84ce16cc", content, false);
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
@@ -22313,7 +20374,7 @@ if(false) {
 }
 
 /***/ }),
-/* 78 */
+/* 72 */
 /***/ (function(module, exports) {
 
 /**
@@ -22346,7 +20407,7 @@ module.exports = function listToStyles (parentId, list) {
 
 
 /***/ }),
-/* 79 */
+/* 73 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -23159,7 +21220,7 @@ var index_esm = {
 
 
 /***/ }),
-/* 80 */
+/* 74 */
 /***/ (function(module, exports) {
 
 var g;
@@ -23186,7 +21247,7 @@ module.exports = g;
 
 
 /***/ }),
-/* 81 */
+/* 75 */
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(15);
@@ -23194,24 +21255,61 @@ module.exports = __webpack_require__(16);
 
 
 /***/ }),
-/* 82 */,
-/* 83 */,
-/* 84 */
+/* 76 */,
+/* 77 */,
+/* 78 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__page_header_vue__ = __webpack_require__(84);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__page_header_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__page_header_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__category_filters_vue__ = __webpack_require__(82);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__category_filters_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__category_filters_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__category_results_vue__ = __webpack_require__(83);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__category_results_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__category_results_vue__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+
+
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+
+	components: {
+		PageHeader: __WEBPACK_IMPORTED_MODULE_0__page_header_vue___default.a,
+		CategoryFilters: __WEBPACK_IMPORTED_MODULE_1__category_filters_vue___default.a,
+		CategoryResults: __WEBPACK_IMPORTED_MODULE_2__category_results_vue___default.a
+	}
+});
+
+/***/ }),
+/* 79 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var Component = __webpack_require__(0)(
+var Component = __webpack_require__(1)(
   /* script */
-  null,
+  __webpack_require__(78),
   /* template */
-  __webpack_require__(85),
+  __webpack_require__(80),
   /* scopeId */
   null,
   /* cssModules */
   null
 )
-Component.options.__file = "c:\\xampp\\htdocs\\lavue\\resources\\assets\\js\\routes\\dashboard\\profile.vue"
+Component.options.__file = "c:\\xampp\\htdocs\\lavue\\resources\\assets\\js\\routes\\home\\index.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
-if (Component.options.functional) {console.error("[vue-loader] profile.vue: functional components are not supported with templates, they should use render functions.")}
+if (Component.options.functional) {console.error("[vue-loader] index.vue: functional components are not supported with templates, they should use render functions.")}
 
 /* hot reload */
 if (false) {(function () {
@@ -23220,9 +21318,141 @@ if (false) {(function () {
   if (!hotAPI.compatible) return
   module.hot.accept()
   if (!module.hot.data) {
-    hotAPI.createRecord("data-v-7c90b539", Component.options)
+    hotAPI.createRecord("data-v-24201fb2", Component.options)
   } else {
-    hotAPI.reload("data-v-7c90b539", Component.options)
+    hotAPI.reload("data-v-24201fb2", Component.options)
+  }
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 80 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "container"
+  }, [_c('page-header'), _vm._v(" "), _c('div', {
+    staticClass: "row"
+  }, [_c('category-filters'), _vm._v(" "), _c('category-results')], 1)], 1)
+},staticRenderFns: []}
+module.exports.render._withStripped = true
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+     require("vue-hot-reload-api").rerender("data-v-24201fb2", module.exports)
+  }
+}
+
+/***/ }),
+/* 81 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(5)();
+exports.push([module.i, "\n.page-title[data-v-6ee57ca0] {\n\n    font-size: 40px;\n}\n", ""]);
+
+/***/ }),
+/* 82 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var Component = __webpack_require__(1)(
+  /* script */
+  null,
+  /* template */
+  __webpack_require__(87),
+  /* scopeId */
+  null,
+  /* cssModules */
+  null
+)
+Component.options.__file = "c:\\xampp\\htdocs\\lavue\\resources\\assets\\js\\routes\\home\\category-filters.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
+if (Component.options.functional) {console.error("[vue-loader] category-filters.vue: functional components are not supported with templates, they should use render functions.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-c5b76632", Component.options)
+  } else {
+    hotAPI.reload("data-v-c5b76632", Component.options)
+  }
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 83 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var Component = __webpack_require__(1)(
+  /* script */
+  null,
+  /* template */
+  __webpack_require__(86),
+  /* scopeId */
+  null,
+  /* cssModules */
+  null
+)
+Component.options.__file = "c:\\xampp\\htdocs\\lavue\\resources\\assets\\js\\routes\\home\\category-results.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
+if (Component.options.functional) {console.error("[vue-loader] category-results.vue: functional components are not supported with templates, they should use render functions.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-9ba7213c", Component.options)
+  } else {
+    hotAPI.reload("data-v-9ba7213c", Component.options)
+  }
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 84 */
+/***/ (function(module, exports, __webpack_require__) {
+
+
+/* styles */
+__webpack_require__(88)
+
+var Component = __webpack_require__(1)(
+  /* script */
+  null,
+  /* template */
+  __webpack_require__(85),
+  /* scopeId */
+  "data-v-6ee57ca0",
+  /* cssModules */
+  null
+)
+Component.options.__file = "c:\\xampp\\htdocs\\lavue\\resources\\assets\\js\\routes\\home\\page-header.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
+if (Component.options.functional) {console.error("[vue-loader] page-header.vue: functional components are not supported with templates, they should use render functions.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-6ee57ca0", Component.options)
+  } else {
+    hotAPI.reload("data-v-6ee57ca0", Component.options)
   }
 })()}
 
@@ -23236,17 +21466,2228 @@ module.exports = Component.exports
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _vm._m(0)
 },staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('div', {
-    staticClass: "container"
-  }, [_c('h4', [_vm._v("My Profile")])])
+  return _c('header', {
+    staticClass: "page-header"
+  }, [_c('h3', {
+    staticClass: "page-title"
+  }, [_vm._v("Electronics")]), _vm._v(" "), _c('ol', {
+    staticClass: "breadcrumb page-breadcrumb"
+  }, [_c('li', [_c('a', {
+    attrs: {
+      "href": "#"
+    }
+  }, [_vm._v("Home")])]), _vm._v(" "), _c('li', {
+    staticClass: "active"
+  }, [_vm._v("Electronics")])]), _vm._v(" "), _c('ul', {
+    staticClass: "category-selections clearfix"
+  }, [_c('li', [_c('a', {
+    staticClass: "fa fa-th-large category-selections-icon active",
+    attrs: {
+      "href": "#"
+    }
+  })]), _vm._v(" "), _c('li', [_c('a', {
+    staticClass: "fa fa-th-list category-selections-icon",
+    attrs: {
+      "href": "#"
+    }
+  })]), _vm._v(" "), _c('li', [_c('span', {
+    staticClass: "category-selections-sign"
+  }, [_vm._v("Sort by :")]), _vm._v(" "), _c('select', {
+    staticClass: "category-selections-select"
+  }, [_c('option', {
+    attrs: {
+      "selected": ""
+    }
+  }, [_vm._v("Newest First")]), _vm._v(" "), _c('option', [_vm._v("Best Sellers")]), _vm._v(" "), _c('option', [_vm._v("Trending Now")]), _vm._v(" "), _c('option', [_vm._v("Best Raited")]), _vm._v(" "), _c('option', [_vm._v("Price : Lowest First")]), _vm._v(" "), _c('option', [_vm._v("Price : Highest First")]), _vm._v(" "), _c('option', [_vm._v("Title : A - Z")]), _vm._v(" "), _c('option', [_vm._v("Title : Z - A")])])]), _vm._v(" "), _c('li', [_c('span', {
+    staticClass: "category-selections-sign"
+  }, [_vm._v("Items :")]), _vm._v(" "), _c('select', {
+    staticClass: "category-selections-select"
+  }, [_c('option', [_vm._v("9 / page")]), _vm._v(" "), _c('option', {
+    attrs: {
+      "selected": ""
+    }
+  }, [_vm._v("12 / page")]), _vm._v(" "), _c('option', [_vm._v("18 / page")]), _vm._v(" "), _c('option', [_vm._v("All")])])])])])
 }]}
 module.exports.render._withStripped = true
 if (false) {
   module.hot.accept()
   if (module.hot.data) {
-     require("vue-hot-reload-api").rerender("data-v-7c90b539", module.exports)
+     require("vue-hot-reload-api").rerender("data-v-6ee57ca0", module.exports)
   }
 }
+
+/***/ }),
+/* 86 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _vm._m(0)
+},staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "col-md-9"
+  }, [_c('div', {
+    staticClass: "row",
+    attrs: {
+      "data-gutter": "15"
+    }
+  }, [_c('div', {
+    staticClass: "col-md-3"
+  }, [_c('div', {
+    staticClass: "product "
+  }, [_c('ul', {
+    staticClass: "product-labels"
+  }), _vm._v(" "), _c('div', {
+    staticClass: "product-img-wrap"
+  }, [_c('img', {
+    staticClass: "product-img-primary",
+    attrs: {
+      "src": "img/500x500.png",
+      "alt": "Image Alternative text",
+      "title": "Image Title"
+    }
+  }), _vm._v(" "), _c('img', {
+    staticClass: "product-img-alt",
+    attrs: {
+      "src": "img/500x500.png",
+      "alt": "Image Alternative text",
+      "title": "Image Title"
+    }
+  })]), _vm._v(" "), _c('a', {
+    staticClass: "product-link",
+    attrs: {
+      "href": "#"
+    }
+  }), _vm._v(" "), _c('div', {
+    staticClass: "product-caption"
+  }, [_c('ul', {
+    staticClass: "product-caption-rating"
+  }, [_c('li', {
+    staticClass: "rated"
+  }, [_c('i', {
+    staticClass: "fa fa-star"
+  })]), _vm._v(" "), _c('li', {
+    staticClass: "rated"
+  }, [_c('i', {
+    staticClass: "fa fa-star"
+  })]), _vm._v(" "), _c('li', {
+    staticClass: "rated"
+  }, [_c('i', {
+    staticClass: "fa fa-star"
+  })]), _vm._v(" "), _c('li', {
+    staticClass: "rated"
+  }, [_c('i', {
+    staticClass: "fa fa-star"
+  })]), _vm._v(" "), _c('li', {
+    staticClass: "rated"
+  }, [_c('i', {
+    staticClass: "fa fa-star"
+  })])]), _vm._v(" "), _c('h5', {
+    staticClass: "product-caption-title"
+  }, [_vm._v("Apple iPhone 5c - 16GB - GSM Factory Unlocked White Blue Green Pink Yellow")]), _vm._v(" "), _c('div', {
+    staticClass: "product-caption-price"
+  }, [_c('span', {
+    staticClass: "product-caption-price-new"
+  }, [_vm._v("$67")])]), _vm._v(" "), _c('ul', {
+    staticClass: "product-caption-feature-list"
+  }, [_c('li', [_vm._v("Free Shipping")])])])])]), _vm._v(" "), _c('div', {
+    staticClass: "col-md-3"
+  }, [_c('div', {
+    staticClass: "product "
+  }, [_c('ul', {
+    staticClass: "product-labels"
+  }), _vm._v(" "), _c('div', {
+    staticClass: "product-img-wrap"
+  }, [_c('img', {
+    staticClass: "product-img-primary",
+    attrs: {
+      "src": "img/500x500.png",
+      "alt": "Image Alternative text",
+      "title": "Image Title"
+    }
+  }), _vm._v(" "), _c('img', {
+    staticClass: "product-img-alt",
+    attrs: {
+      "src": "img/500x500.png",
+      "alt": "Image Alternative text",
+      "title": "Image Title"
+    }
+  })]), _vm._v(" "), _c('a', {
+    staticClass: "product-link",
+    attrs: {
+      "href": "#"
+    }
+  }), _vm._v(" "), _c('div', {
+    staticClass: "product-caption"
+  }, [_c('ul', {
+    staticClass: "product-caption-rating"
+  }, [_c('li', {
+    staticClass: "rated"
+  }, [_c('i', {
+    staticClass: "fa fa-star"
+  })]), _vm._v(" "), _c('li', {
+    staticClass: "rated"
+  }, [_c('i', {
+    staticClass: "fa fa-star"
+  })]), _vm._v(" "), _c('li', {
+    staticClass: "rated"
+  }, [_c('i', {
+    staticClass: "fa fa-star"
+  })]), _vm._v(" "), _c('li', {
+    staticClass: "rated"
+  }, [_c('i', {
+    staticClass: "fa fa-star"
+  })]), _vm._v(" "), _c('li', [_c('i', {
+    staticClass: "fa fa-star"
+  })])]), _vm._v(" "), _c('h5', {
+    staticClass: "product-caption-title"
+  }, [_vm._v("Samsung Chromebook 11.6\" LED HD 16GB 1.7GHz Webcam Notebook Laptop -XE303C12-A01")]), _vm._v(" "), _c('div', {
+    staticClass: "product-caption-price"
+  }, [_c('span', {
+    staticClass: "product-caption-price-new"
+  }, [_vm._v("$137")])]), _vm._v(" "), _c('ul', {
+    staticClass: "product-caption-feature-list"
+  }, [_c('li', [_vm._v("Free Shipping")])])])])]), _vm._v(" "), _c('div', {
+    staticClass: "col-md-3"
+  }, [_c('div', {
+    staticClass: "product "
+  }, [_c('ul', {
+    staticClass: "product-labels"
+  }, [_c('li', [_vm._v("-30%")])]), _vm._v(" "), _c('div', {
+    staticClass: "product-img-wrap"
+  }, [_c('img', {
+    staticClass: "product-img-primary",
+    attrs: {
+      "src": "img/500x500.png",
+      "alt": "Image Alternative text",
+      "title": "Image Title"
+    }
+  }), _vm._v(" "), _c('img', {
+    staticClass: "product-img-alt",
+    attrs: {
+      "src": "img/500x500.png",
+      "alt": "Image Alternative text",
+      "title": "Image Title"
+    }
+  })]), _vm._v(" "), _c('a', {
+    staticClass: "product-link",
+    attrs: {
+      "href": "#"
+    }
+  }), _vm._v(" "), _c('div', {
+    staticClass: "product-caption"
+  }, [_c('ul', {
+    staticClass: "product-caption-rating"
+  }, [_c('li', {
+    staticClass: "rated"
+  }, [_c('i', {
+    staticClass: "fa fa-star"
+  })]), _vm._v(" "), _c('li', {
+    staticClass: "rated"
+  }, [_c('i', {
+    staticClass: "fa fa-star"
+  })]), _vm._v(" "), _c('li', {
+    staticClass: "rated"
+  }, [_c('i', {
+    staticClass: "fa fa-star"
+  })]), _vm._v(" "), _c('li', [_c('i', {
+    staticClass: "fa fa-star"
+  })]), _vm._v(" "), _c('li', [_c('i', {
+    staticClass: "fa fa-star"
+  })])]), _vm._v(" "), _c('h5', {
+    staticClass: "product-caption-title"
+  }, [_vm._v("New Asus X551MAV 15.6\" HD N2830 2.16GHz 4GB 500GB Windows 8 Laptop Notebook")]), _vm._v(" "), _c('div', {
+    staticClass: "product-caption-price"
+  }, [_c('span', {
+    staticClass: "product-caption-price-old"
+  }, [_vm._v("$53")]), _c('span', {
+    staticClass: "product-caption-price-new"
+  }, [_vm._v("$38")])]), _vm._v(" "), _c('ul', {
+    staticClass: "product-caption-feature-list"
+  }, [_c('li', [_vm._v("Free Shipping")])])])])]), _vm._v(" "), _c('div', {
+    staticClass: "col-md-3"
+  }, [_c('div', {
+    staticClass: "product "
+  }, [_c('ul', {
+    staticClass: "product-labels"
+  }, [_c('li', [_vm._v("hot")])]), _vm._v(" "), _c('div', {
+    staticClass: "product-img-wrap"
+  }, [_c('img', {
+    staticClass: "product-img-primary",
+    attrs: {
+      "src": "img/500x500.png",
+      "alt": "Image Alternative text",
+      "title": "Image Title"
+    }
+  }), _vm._v(" "), _c('img', {
+    staticClass: "product-img-alt",
+    attrs: {
+      "src": "img/490x500.png",
+      "alt": "Image Alternative text",
+      "title": "Image Title"
+    }
+  })]), _vm._v(" "), _c('a', {
+    staticClass: "product-link",
+    attrs: {
+      "href": "#"
+    }
+  }), _vm._v(" "), _c('div', {
+    staticClass: "product-caption"
+  }, [_c('ul', {
+    staticClass: "product-caption-rating"
+  }, [_c('li', {
+    staticClass: "rated"
+  }, [_c('i', {
+    staticClass: "fa fa-star"
+  })]), _vm._v(" "), _c('li', {
+    staticClass: "rated"
+  }, [_c('i', {
+    staticClass: "fa fa-star"
+  })]), _vm._v(" "), _c('li', {
+    staticClass: "rated"
+  }, [_c('i', {
+    staticClass: "fa fa-star"
+  })]), _vm._v(" "), _c('li', {
+    staticClass: "rated"
+  }, [_c('i', {
+    staticClass: "fa fa-star"
+  })]), _vm._v(" "), _c('li', [_c('i', {
+    staticClass: "fa fa-star"
+  })])]), _vm._v(" "), _c('h5', {
+    staticClass: "product-caption-title"
+  }, [_vm._v("Motorola XT1096 Moto X 2nd Generation 16GB Verizon Wireless gsm unlocked")]), _vm._v(" "), _c('div', {
+    staticClass: "product-caption-price"
+  }, [_c('span', {
+    staticClass: "product-caption-price-new"
+  }, [_vm._v("$113")])]), _vm._v(" "), _c('ul', {
+    staticClass: "product-caption-feature-list"
+  }, [_c('li', [_vm._v("4 left")]), _vm._v(" "), _c('li', [_vm._v("Free Shipping")])])])])])]), _vm._v(" "), _c('div', {
+    staticClass: "row",
+    attrs: {
+      "data-gutter": "15"
+    }
+  }, [_c('div', {
+    staticClass: "col-md-3"
+  }, [_c('div', {
+    staticClass: "product "
+  }, [_c('ul', {
+    staticClass: "product-labels"
+  }), _vm._v(" "), _c('div', {
+    staticClass: "product-img-wrap"
+  }, [_c('img', {
+    staticClass: "product-img-primary",
+    attrs: {
+      "src": "img/500x500.png",
+      "alt": "Image Alternative text",
+      "title": "Image Title"
+    }
+  }), _vm._v(" "), _c('img', {
+    staticClass: "product-img-alt",
+    attrs: {
+      "src": "img/500x500.png",
+      "alt": "Image Alternative text",
+      "title": "Image Title"
+    }
+  })]), _vm._v(" "), _c('a', {
+    staticClass: "product-link",
+    attrs: {
+      "href": "#"
+    }
+  }), _vm._v(" "), _c('div', {
+    staticClass: "product-caption"
+  }, [_c('ul', {
+    staticClass: "product-caption-rating"
+  }, [_c('li', {
+    staticClass: "rated"
+  }, [_c('i', {
+    staticClass: "fa fa-star"
+  })]), _vm._v(" "), _c('li', {
+    staticClass: "rated"
+  }, [_c('i', {
+    staticClass: "fa fa-star"
+  })]), _vm._v(" "), _c('li', {
+    staticClass: "rated"
+  }, [_c('i', {
+    staticClass: "fa fa-star"
+  })]), _vm._v(" "), _c('li', [_c('i', {
+    staticClass: "fa fa-star"
+  })]), _vm._v(" "), _c('li', [_c('i', {
+    staticClass: "fa fa-star"
+  })])]), _vm._v(" "), _c('h5', {
+    staticClass: "product-caption-title"
+  }, [_vm._v("Samsung Galaxy Note 4 IV 4G FACTORY UNLOCKED Black or White")]), _vm._v(" "), _c('div', {
+    staticClass: "product-caption-price"
+  }, [_c('span', {
+    staticClass: "product-caption-price-new"
+  }, [_vm._v("$91")])]), _vm._v(" "), _c('ul', {
+    staticClass: "product-caption-feature-list"
+  }, [_c('li', [_vm._v("3 left")]), _vm._v(" "), _c('li', [_vm._v("Free Shipping")])])])])]), _vm._v(" "), _c('div', {
+    staticClass: "col-md-3"
+  }, [_c('div', {
+    staticClass: "product "
+  }, [_c('ul', {
+    staticClass: "product-labels"
+  }), _vm._v(" "), _c('div', {
+    staticClass: "product-img-wrap"
+  }, [_c('img', {
+    staticClass: "product-img-primary",
+    attrs: {
+      "src": "img/500x500.png",
+      "alt": "Image Alternative text",
+      "title": "Image Title"
+    }
+  }), _vm._v(" "), _c('img', {
+    staticClass: "product-img-alt",
+    attrs: {
+      "src": "img/500x500.png",
+      "alt": "Image Alternative text",
+      "title": "Image Title"
+    }
+  })]), _vm._v(" "), _c('a', {
+    staticClass: "product-link",
+    attrs: {
+      "href": "#"
+    }
+  }), _vm._v(" "), _c('div', {
+    staticClass: "product-caption"
+  }, [_c('ul', {
+    staticClass: "product-caption-rating"
+  }, [_c('li', {
+    staticClass: "rated"
+  }, [_c('i', {
+    staticClass: "fa fa-star"
+  })]), _vm._v(" "), _c('li', {
+    staticClass: "rated"
+  }, [_c('i', {
+    staticClass: "fa fa-star"
+  })]), _vm._v(" "), _c('li', {
+    staticClass: "rated"
+  }, [_c('i', {
+    staticClass: "fa fa-star"
+  })]), _vm._v(" "), _c('li', {
+    staticClass: "rated"
+  }, [_c('i', {
+    staticClass: "fa fa-star"
+  })]), _vm._v(" "), _c('li', {
+    staticClass: "rated"
+  }, [_c('i', {
+    staticClass: "fa fa-star"
+  })])]), _vm._v(" "), _c('h5', {
+    staticClass: "product-caption-title"
+  }, [_vm._v("Lenovo ThinkPad 11e 11.6\" Notebook, AMD A4-6210 1.8GHz, 4GB RAM, 500GBHDD, W7Pro")]), _vm._v(" "), _c('div', {
+    staticClass: "product-caption-price"
+  }, [_c('span', {
+    staticClass: "product-caption-price-new"
+  }, [_vm._v("$78")])]), _vm._v(" "), _c('ul', {
+    staticClass: "product-caption-feature-list"
+  }, [_c('li', [_vm._v("Free Shipping")])])])])]), _vm._v(" "), _c('div', {
+    staticClass: "col-md-3"
+  }, [_c('div', {
+    staticClass: "product "
+  }, [_c('ul', {
+    staticClass: "product-labels"
+  }, [_c('li', [_vm._v("-50%")]), _vm._v(" "), _c('li', [_vm._v("stuff pick")])]), _vm._v(" "), _c('div', {
+    staticClass: "product-img-wrap"
+  }, [_c('img', {
+    staticClass: "product-img-primary",
+    attrs: {
+      "src": "img/500x500.png",
+      "alt": "Image Alternative text",
+      "title": "Image Title"
+    }
+  }), _vm._v(" "), _c('img', {
+    staticClass: "product-img-alt",
+    attrs: {
+      "src": "img/500x500.png",
+      "alt": "Image Alternative text",
+      "title": "Image Title"
+    }
+  })]), _vm._v(" "), _c('a', {
+    staticClass: "product-link",
+    attrs: {
+      "href": "#"
+    }
+  }), _vm._v(" "), _c('div', {
+    staticClass: "product-caption"
+  }, [_c('ul', {
+    staticClass: "product-caption-rating"
+  }, [_c('li', {
+    staticClass: "rated"
+  }, [_c('i', {
+    staticClass: "fa fa-star"
+  })]), _vm._v(" "), _c('li', {
+    staticClass: "rated"
+  }, [_c('i', {
+    staticClass: "fa fa-star"
+  })]), _vm._v(" "), _c('li', {
+    staticClass: "rated"
+  }, [_c('i', {
+    staticClass: "fa fa-star"
+  })]), _vm._v(" "), _c('li', {
+    staticClass: "rated"
+  }, [_c('i', {
+    staticClass: "fa fa-star"
+  })]), _vm._v(" "), _c('li', [_c('i', {
+    staticClass: "fa fa-star"
+  })])]), _vm._v(" "), _c('h5', {
+    staticClass: "product-caption-title"
+  }, [_vm._v("Apple iPhone 4S 16GB Factory Unlocked Black and White Smartphone")]), _vm._v(" "), _c('div', {
+    staticClass: "product-caption-price"
+  }, [_c('span', {
+    staticClass: "product-caption-price-old"
+  }, [_vm._v("$77")]), _c('span', {
+    staticClass: "product-caption-price-new"
+  }, [_vm._v("$39")])]), _vm._v(" "), _c('ul', {
+    staticClass: "product-caption-feature-list"
+  }, [_c('li', [_vm._v("5 left")]), _vm._v(" "), _c('li', [_vm._v("Free Shipping")])])])])]), _vm._v(" "), _c('div', {
+    staticClass: "col-md-3"
+  }, [_c('div', {
+    staticClass: "product "
+  }, [_c('ul', {
+    staticClass: "product-labels"
+  }, [_c('li', [_vm._v("hot")])]), _vm._v(" "), _c('div', {
+    staticClass: "product-img-wrap"
+  }, [_c('img', {
+    staticClass: "product-img-primary",
+    attrs: {
+      "src": "img/500x500.png",
+      "alt": "Image Alternative text",
+      "title": "Image Title"
+    }
+  }), _vm._v(" "), _c('img', {
+    staticClass: "product-img-alt",
+    attrs: {
+      "src": "img/500x500.png",
+      "alt": "Image Alternative text",
+      "title": "Image Title"
+    }
+  })]), _vm._v(" "), _c('a', {
+    staticClass: "product-link",
+    attrs: {
+      "href": "#"
+    }
+  }), _vm._v(" "), _c('div', {
+    staticClass: "product-caption"
+  }, [_c('ul', {
+    staticClass: "product-caption-rating"
+  }, [_c('li', {
+    staticClass: "rated"
+  }, [_c('i', {
+    staticClass: "fa fa-star"
+  })]), _vm._v(" "), _c('li', {
+    staticClass: "rated"
+  }, [_c('i', {
+    staticClass: "fa fa-star"
+  })]), _vm._v(" "), _c('li', {
+    staticClass: "rated"
+  }, [_c('i', {
+    staticClass: "fa fa-star"
+  })]), _vm._v(" "), _c('li', {
+    staticClass: "rated"
+  }, [_c('i', {
+    staticClass: "fa fa-star"
+  })]), _vm._v(" "), _c('li', {
+    staticClass: "rated"
+  }, [_c('i', {
+    staticClass: "fa fa-star"
+  })])]), _vm._v(" "), _c('h5', {
+    staticClass: "product-caption-title"
+  }, [_vm._v("Nikon COOLPIX L840 Digital Camera, Red - Refurbished by Nikon U.S.A. #26486 B")]), _vm._v(" "), _c('div', {
+    staticClass: "product-caption-price"
+  }, [_c('span', {
+    staticClass: "product-caption-price-new"
+  }, [_vm._v("$70")])]), _vm._v(" "), _c('ul', {
+    staticClass: "product-caption-feature-list"
+  }, [_c('li', [_vm._v("3 left")]), _vm._v(" "), _c('li', [_vm._v("Free Shipping")])])])])])]), _vm._v(" "), _c('div', {
+    staticClass: "row",
+    attrs: {
+      "data-gutter": "15"
+    }
+  }, [_c('div', {
+    staticClass: "col-md-3"
+  }, [_c('div', {
+    staticClass: "product "
+  }, [_c('ul', {
+    staticClass: "product-labels"
+  }, [_c('li', [_vm._v("stuff pick")])]), _vm._v(" "), _c('div', {
+    staticClass: "product-img-wrap"
+  }, [_c('img', {
+    staticClass: "product-img-primary",
+    attrs: {
+      "src": "img/500x500.png",
+      "alt": "Image Alternative text",
+      "title": "Image Title"
+    }
+  }), _vm._v(" "), _c('img', {
+    staticClass: "product-img-alt",
+    attrs: {
+      "src": "img/461x500.png",
+      "alt": "Image Alternative text",
+      "title": "Image Title"
+    }
+  })]), _vm._v(" "), _c('a', {
+    staticClass: "product-link",
+    attrs: {
+      "href": "#"
+    }
+  }), _vm._v(" "), _c('div', {
+    staticClass: "product-caption"
+  }, [_c('ul', {
+    staticClass: "product-caption-rating"
+  }, [_c('li', {
+    staticClass: "rated"
+  }, [_c('i', {
+    staticClass: "fa fa-star"
+  })]), _vm._v(" "), _c('li', {
+    staticClass: "rated"
+  }, [_c('i', {
+    staticClass: "fa fa-star"
+  })]), _vm._v(" "), _c('li', {
+    staticClass: "rated"
+  }, [_c('i', {
+    staticClass: "fa fa-star"
+  })]), _vm._v(" "), _c('li', {
+    staticClass: "rated"
+  }, [_c('i', {
+    staticClass: "fa fa-star"
+  })]), _vm._v(" "), _c('li', {
+    staticClass: "rated"
+  }, [_c('i', {
+    staticClass: "fa fa-star"
+  })])]), _vm._v(" "), _c('h5', {
+    staticClass: "product-caption-title"
+  }, [_vm._v("GoPro HERO4 Black 4K Action Camera Hero 4 Surf Camcorder . CHDHX-401. NEW")]), _vm._v(" "), _c('div', {
+    staticClass: "product-caption-price"
+  }, [_c('span', {
+    staticClass: "product-caption-price-new"
+  }, [_vm._v("$104")])]), _vm._v(" "), _c('ul', {
+    staticClass: "product-caption-feature-list"
+  }, [_c('li', [_vm._v("Free Shipping")])])])])]), _vm._v(" "), _c('div', {
+    staticClass: "col-md-3"
+  }, [_c('div', {
+    staticClass: "product "
+  }, [_c('ul', {
+    staticClass: "product-labels"
+  }, [_c('li', [_vm._v("hot")])]), _vm._v(" "), _c('div', {
+    staticClass: "product-img-wrap"
+  }, [_c('img', {
+    staticClass: "product-img-primary",
+    attrs: {
+      "src": "img/500x500.png",
+      "alt": "Image Alternative text",
+      "title": "Image Title"
+    }
+  }), _vm._v(" "), _c('img', {
+    staticClass: "product-img-alt",
+    attrs: {
+      "src": "img/500x500.png",
+      "alt": "Image Alternative text",
+      "title": "Image Title"
+    }
+  })]), _vm._v(" "), _c('a', {
+    staticClass: "product-link",
+    attrs: {
+      "href": "#"
+    }
+  }), _vm._v(" "), _c('div', {
+    staticClass: "product-caption"
+  }, [_c('ul', {
+    staticClass: "product-caption-rating"
+  }, [_c('li', {
+    staticClass: "rated"
+  }, [_c('i', {
+    staticClass: "fa fa-star"
+  })]), _vm._v(" "), _c('li', {
+    staticClass: "rated"
+  }, [_c('i', {
+    staticClass: "fa fa-star"
+  })]), _vm._v(" "), _c('li', {
+    staticClass: "rated"
+  }, [_c('i', {
+    staticClass: "fa fa-star"
+  })]), _vm._v(" "), _c('li', {
+    staticClass: "rated"
+  }, [_c('i', {
+    staticClass: "fa fa-star"
+  })]), _vm._v(" "), _c('li', [_c('i', {
+    staticClass: "fa fa-star"
+  })])]), _vm._v(" "), _c('h5', {
+    staticClass: "product-caption-title"
+  }, [_vm._v("Nikon D5200 24.1 MP Digital SLR Camera - Black (Kit w/ 18-55 VR Lens)")]), _vm._v(" "), _c('div', {
+    staticClass: "product-caption-price"
+  }, [_c('span', {
+    staticClass: "product-caption-price-new"
+  }, [_vm._v("$147")])]), _vm._v(" "), _c('ul', {
+    staticClass: "product-caption-feature-list"
+  }, [_c('li', [_vm._v("Free Shipping")])])])])]), _vm._v(" "), _c('div', {
+    staticClass: "col-md-3"
+  }, [_c('div', {
+    staticClass: "product "
+  }, [_c('ul', {
+    staticClass: "product-labels"
+  }), _vm._v(" "), _c('div', {
+    staticClass: "product-img-wrap"
+  }, [_c('img', {
+    staticClass: "product-img-primary",
+    attrs: {
+      "src": "img/500x500.png",
+      "alt": "Image Alternative text",
+      "title": "Image Title"
+    }
+  }), _vm._v(" "), _c('img', {
+    staticClass: "product-img-alt",
+    attrs: {
+      "src": "img/500x500.png",
+      "alt": "Image Alternative text",
+      "title": "Image Title"
+    }
+  })]), _vm._v(" "), _c('a', {
+    staticClass: "product-link",
+    attrs: {
+      "href": "#"
+    }
+  }), _vm._v(" "), _c('div', {
+    staticClass: "product-caption"
+  }, [_c('ul', {
+    staticClass: "product-caption-rating"
+  }, [_c('li', {
+    staticClass: "rated"
+  }, [_c('i', {
+    staticClass: "fa fa-star"
+  })]), _vm._v(" "), _c('li', {
+    staticClass: "rated"
+  }, [_c('i', {
+    staticClass: "fa fa-star"
+  })]), _vm._v(" "), _c('li', {
+    staticClass: "rated"
+  }, [_c('i', {
+    staticClass: "fa fa-star"
+  })]), _vm._v(" "), _c('li', {
+    staticClass: "rated"
+  }, [_c('i', {
+    staticClass: "fa fa-star"
+  })]), _vm._v(" "), _c('li', [_c('i', {
+    staticClass: "fa fa-star"
+  })])]), _vm._v(" "), _c('h5', {
+    staticClass: "product-caption-title"
+  }, [_vm._v("Samsung Galaxy S6 Edge+ Factory Unlocked GSM 32GB")]), _vm._v(" "), _c('div', {
+    staticClass: "product-caption-price"
+  }, [_c('span', {
+    staticClass: "product-caption-price-new"
+  }, [_vm._v("$116")])]), _vm._v(" "), _c('ul', {
+    staticClass: "product-caption-feature-list"
+  }, [_c('li', [_vm._v("Free Shipping")])])])])]), _vm._v(" "), _c('div', {
+    staticClass: "col-md-3"
+  }, [_c('div', {
+    staticClass: "product "
+  }, [_c('ul', {
+    staticClass: "product-labels"
+  }, [_c('li', [_vm._v("-30%")])]), _vm._v(" "), _c('div', {
+    staticClass: "product-img-wrap"
+  }, [_c('img', {
+    staticClass: "product-img-primary",
+    attrs: {
+      "src": "img/500x500.png",
+      "alt": "Image Alternative text",
+      "title": "Image Title"
+    }
+  }), _vm._v(" "), _c('img', {
+    staticClass: "product-img-alt",
+    attrs: {
+      "src": "img/500x500.png",
+      "alt": "Image Alternative text",
+      "title": "Image Title"
+    }
+  })]), _vm._v(" "), _c('a', {
+    staticClass: "product-link",
+    attrs: {
+      "href": "#"
+    }
+  }), _vm._v(" "), _c('div', {
+    staticClass: "product-caption"
+  }, [_c('ul', {
+    staticClass: "product-caption-rating"
+  }, [_c('li', {
+    staticClass: "rated"
+  }, [_c('i', {
+    staticClass: "fa fa-star"
+  })]), _vm._v(" "), _c('li', {
+    staticClass: "rated"
+  }, [_c('i', {
+    staticClass: "fa fa-star"
+  })]), _vm._v(" "), _c('li', {
+    staticClass: "rated"
+  }, [_c('i', {
+    staticClass: "fa fa-star"
+  })]), _vm._v(" "), _c('li', [_c('i', {
+    staticClass: "fa fa-star"
+  })]), _vm._v(" "), _c('li', [_c('i', {
+    staticClass: "fa fa-star"
+  })])]), _vm._v(" "), _c('h5', {
+    staticClass: "product-caption-title"
+  }, [_vm._v("Apple iPhone 5s 16GB Factory Unlocked Smartphone Space Gray / Silver / Gold")]), _vm._v(" "), _c('div', {
+    staticClass: "product-caption-price"
+  }, [_c('span', {
+    staticClass: "product-caption-price-old"
+  }, [_vm._v("$58")]), _c('span', {
+    staticClass: "product-caption-price-new"
+  }, [_vm._v("$41")])]), _vm._v(" "), _c('ul', {
+    staticClass: "product-caption-feature-list"
+  }, [_c('li', [_vm._v("Free Shipping")])])])])])]), _vm._v(" "), _c('div', {
+    staticClass: "row",
+    attrs: {
+      "data-gutter": "15"
+    }
+  }, [_c('div', {
+    staticClass: "col-md-3"
+  }, [_c('div', {
+    staticClass: "product "
+  }, [_c('ul', {
+    staticClass: "product-labels"
+  }), _vm._v(" "), _c('div', {
+    staticClass: "product-img-wrap"
+  }, [_c('img', {
+    staticClass: "product-img-primary",
+    attrs: {
+      "src": "img/500x500.png",
+      "alt": "Image Alternative text",
+      "title": "Image Title"
+    }
+  }), _vm._v(" "), _c('img', {
+    staticClass: "product-img-alt",
+    attrs: {
+      "src": "img/500x500.png",
+      "alt": "Image Alternative text",
+      "title": "Image Title"
+    }
+  })]), _vm._v(" "), _c('a', {
+    staticClass: "product-link",
+    attrs: {
+      "href": "#"
+    }
+  }), _vm._v(" "), _c('div', {
+    staticClass: "product-caption"
+  }, [_c('ul', {
+    staticClass: "product-caption-rating"
+  }, [_c('li', {
+    staticClass: "rated"
+  }, [_c('i', {
+    staticClass: "fa fa-star"
+  })]), _vm._v(" "), _c('li', {
+    staticClass: "rated"
+  }, [_c('i', {
+    staticClass: "fa fa-star"
+  })]), _vm._v(" "), _c('li', {
+    staticClass: "rated"
+  }, [_c('i', {
+    staticClass: "fa fa-star"
+  })]), _vm._v(" "), _c('li', [_c('i', {
+    staticClass: "fa fa-star"
+  })]), _vm._v(" "), _c('li', [_c('i', {
+    staticClass: "fa fa-star"
+  })])]), _vm._v(" "), _c('h5', {
+    staticClass: "product-caption-title"
+  }, [_vm._v("LG G3 VS985 - 32GB - Verizon Smartphone - Metallic Black or Silk White - Great")]), _vm._v(" "), _c('div', {
+    staticClass: "product-caption-price"
+  }, [_c('span', {
+    staticClass: "product-caption-price-new"
+  }, [_vm._v("$107")])]), _vm._v(" "), _c('ul', {
+    staticClass: "product-caption-feature-list"
+  }, [_c('li', [_vm._v("5 left")]), _vm._v(" "), _c('li', [_vm._v("Free Shipping")])])])])]), _vm._v(" "), _c('div', {
+    staticClass: "col-md-3"
+  }, [_c('div', {
+    staticClass: "product "
+  }, [_c('ul', {
+    staticClass: "product-labels"
+  }, [_c('li', [_vm._v("-50%")])]), _vm._v(" "), _c('div', {
+    staticClass: "product-img-wrap"
+  }, [_c('img', {
+    staticClass: "product-img-primary",
+    attrs: {
+      "src": "img/500x500.png",
+      "alt": "Image Alternative text",
+      "title": "Image Title"
+    }
+  }), _vm._v(" "), _c('img', {
+    staticClass: "product-img-alt",
+    attrs: {
+      "src": "img/500x500.png",
+      "alt": "Image Alternative text",
+      "title": "Image Title"
+    }
+  })]), _vm._v(" "), _c('a', {
+    staticClass: "product-link",
+    attrs: {
+      "href": "#"
+    }
+  }), _vm._v(" "), _c('div', {
+    staticClass: "product-caption"
+  }, [_c('ul', {
+    staticClass: "product-caption-rating"
+  }, [_c('li', {
+    staticClass: "rated"
+  }, [_c('i', {
+    staticClass: "fa fa-star"
+  })]), _vm._v(" "), _c('li', {
+    staticClass: "rated"
+  }, [_c('i', {
+    staticClass: "fa fa-star"
+  })]), _vm._v(" "), _c('li', {
+    staticClass: "rated"
+  }, [_c('i', {
+    staticClass: "fa fa-star"
+  })]), _vm._v(" "), _c('li', {
+    staticClass: "rated"
+  }, [_c('i', {
+    staticClass: "fa fa-star"
+  })]), _vm._v(" "), _c('li', [_c('i', {
+    staticClass: "fa fa-star"
+  })])]), _vm._v(" "), _c('h5', {
+    staticClass: "product-caption-title"
+  }, [_vm._v("HTC One M8 32GB Factory Unlocked Smartphone  Gold / Silver Gray")]), _vm._v(" "), _c('div', {
+    staticClass: "product-caption-price"
+  }, [_c('span', {
+    staticClass: "product-caption-price-old"
+  }, [_vm._v("$79")]), _c('span', {
+    staticClass: "product-caption-price-new"
+  }, [_vm._v("$40")])]), _vm._v(" "), _c('ul', {
+    staticClass: "product-caption-feature-list"
+  }, [_c('li', [_vm._v("1 left")]), _vm._v(" "), _c('li', [_vm._v("Free Shipping")])])])])]), _vm._v(" "), _c('div', {
+    staticClass: "col-md-3"
+  }, [_c('div', {
+    staticClass: "product "
+  }, [_c('ul', {
+    staticClass: "product-labels"
+  }), _vm._v(" "), _c('div', {
+    staticClass: "product-img-wrap"
+  }, [_c('img', {
+    staticClass: "product-img-primary",
+    attrs: {
+      "src": "img/500x500.png",
+      "alt": "Image Alternative text",
+      "title": "Image Title"
+    }
+  }), _vm._v(" "), _c('img', {
+    staticClass: "product-img-alt",
+    attrs: {
+      "src": "img/500x500.png",
+      "alt": "Image Alternative text",
+      "title": "Image Title"
+    }
+  })]), _vm._v(" "), _c('a', {
+    staticClass: "product-link",
+    attrs: {
+      "href": "#"
+    }
+  }), _vm._v(" "), _c('div', {
+    staticClass: "product-caption"
+  }, [_c('ul', {
+    staticClass: "product-caption-rating"
+  }, [_c('li', {
+    staticClass: "rated"
+  }, [_c('i', {
+    staticClass: "fa fa-star"
+  })]), _vm._v(" "), _c('li', {
+    staticClass: "rated"
+  }, [_c('i', {
+    staticClass: "fa fa-star"
+  })]), _vm._v(" "), _c('li', {
+    staticClass: "rated"
+  }, [_c('i', {
+    staticClass: "fa fa-star"
+  })]), _vm._v(" "), _c('li', [_c('i', {
+    staticClass: "fa fa-star"
+  })]), _vm._v(" "), _c('li', [_c('i', {
+    staticClass: "fa fa-star"
+  })])]), _vm._v(" "), _c('h5', {
+    staticClass: "product-caption-title"
+  }, [_vm._v("Apple 11.6\" MacBook Air Notebook Computer MJVM2LL/A (Early 2015)")]), _vm._v(" "), _c('div', {
+    staticClass: "product-caption-price"
+  }, [_c('span', {
+    staticClass: "product-caption-price-new"
+  }, [_vm._v("$64")])]), _vm._v(" "), _c('ul', {
+    staticClass: "product-caption-feature-list"
+  }, [_c('li', [_vm._v("Free Shipping")])])])])]), _vm._v(" "), _c('div', {
+    staticClass: "col-md-3"
+  }, [_c('div', {
+    staticClass: "product "
+  }, [_c('ul', {
+    staticClass: "product-labels"
+  }, [_c('li', [_vm._v("-70%")])]), _vm._v(" "), _c('div', {
+    staticClass: "product-img-wrap"
+  }, [_c('img', {
+    staticClass: "product-img-primary",
+    attrs: {
+      "src": "img/500x500.png",
+      "alt": "Image Alternative text",
+      "title": "Image Title"
+    }
+  }), _vm._v(" "), _c('img', {
+    staticClass: "product-img-alt",
+    attrs: {
+      "src": "img/500x500.png",
+      "alt": "Image Alternative text",
+      "title": "Image Title"
+    }
+  })]), _vm._v(" "), _c('a', {
+    staticClass: "product-link",
+    attrs: {
+      "href": "#"
+    }
+  }), _vm._v(" "), _c('div', {
+    staticClass: "product-caption"
+  }, [_c('ul', {
+    staticClass: "product-caption-rating"
+  }, [_c('li', {
+    staticClass: "rated"
+  }, [_c('i', {
+    staticClass: "fa fa-star"
+  })]), _vm._v(" "), _c('li', {
+    staticClass: "rated"
+  }, [_c('i', {
+    staticClass: "fa fa-star"
+  })]), _vm._v(" "), _c('li', {
+    staticClass: "rated"
+  }, [_c('i', {
+    staticClass: "fa fa-star"
+  })]), _vm._v(" "), _c('li', {
+    staticClass: "rated"
+  }, [_c('i', {
+    staticClass: "fa fa-star"
+  })]), _vm._v(" "), _c('li', {
+    staticClass: "rated"
+  }, [_c('i', {
+    staticClass: "fa fa-star"
+  })])]), _vm._v(" "), _c('h5', {
+    staticClass: "product-caption-title"
+  }, [_vm._v("LG G Flex D959 - 32GB - Titan Silver GSM Unlocked Android Smartphone (B)")]), _vm._v(" "), _c('div', {
+    staticClass: "product-caption-price"
+  }, [_c('span', {
+    staticClass: "product-caption-price-old"
+  }, [_vm._v("$99")]), _c('span', {
+    staticClass: "product-caption-price-new"
+  }, [_vm._v("$30")])]), _vm._v(" "), _c('ul', {
+    staticClass: "product-caption-feature-list"
+  }, [_c('li', [_vm._v("Free Shipping")])])])])])]), _vm._v(" "), _c('div', {
+    staticClass: "row"
+  }, [_c('div', {
+    staticClass: "col-md-6"
+  }, [_c('p', {
+    staticClass: "category-pagination-sign"
+  }, [_vm._v("58 items found in Cell Phones. Showing 1 - 12")])]), _vm._v(" "), _c('div', {
+    staticClass: "col-md-6"
+  }, [_c('nav', [_c('ul', {
+    staticClass: "pagination category-pagination pull-right"
+  }, [_c('li', {
+    staticClass: "active"
+  }, [_c('a', {
+    attrs: {
+      "href": "#"
+    }
+  }, [_vm._v("1")])]), _vm._v(" "), _c('li', [_c('a', {
+    attrs: {
+      "href": "#"
+    }
+  }, [_vm._v("2")])]), _vm._v(" "), _c('li', [_c('a', {
+    attrs: {
+      "href": "#"
+    }
+  }, [_vm._v("3")])]), _vm._v(" "), _c('li', [_c('a', {
+    attrs: {
+      "href": "#"
+    }
+  }, [_vm._v("4")])]), _vm._v(" "), _c('li', [_c('a', {
+    attrs: {
+      "href": "#"
+    }
+  }, [_vm._v("5")])]), _vm._v(" "), _c('li', {
+    staticClass: "last"
+  }, [_c('a', {
+    attrs: {
+      "href": "#"
+    }
+  }, [_c('i', {
+    staticClass: "fa fa-long-arrow-right"
+  })])])])])])])])
+}]}
+module.exports.render._withStripped = true
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+     require("vue-hot-reload-api").rerender("data-v-9ba7213c", module.exports)
+  }
+}
+
+/***/ }),
+/* 87 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _vm._m(0)
+},staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "col-md-3"
+  }, [_c('aside', {
+    staticClass: "category-filters"
+  }, [_c('div', {
+    staticClass: "category-filters-section"
+  }, [_c('h3', {
+    staticClass: "widget-title-sm"
+  }, [_vm._v("Category")]), _vm._v(" "), _c('ul', {
+    staticClass: "cateogry-filters-list"
+  }, [_c('li', [_c('a', {
+    attrs: {
+      "href": "#"
+    }
+  }, [_vm._v("Tv, Audio & Home Theater")])]), _vm._v(" "), _c('li', [_c('a', {
+    attrs: {
+      "href": "#"
+    }
+  }, [_vm._v("Camera, Photo & Video")])]), _vm._v(" "), _c('li', [_c('a', {
+    attrs: {
+      "href": "#"
+    }
+  }, [_vm._v("Computers & Accessories")])]), _vm._v(" "), _c('li', [_c('a', {
+    attrs: {
+      "href": "#"
+    }
+  }, [_vm._v("Cell Phones & Accessories")])]), _vm._v(" "), _c('li', [_c('a', {
+    attrs: {
+      "href": "#"
+    }
+  }, [_vm._v("Business & Office")])]), _vm._v(" "), _c('li', [_c('a', {
+    attrs: {
+      "href": "#"
+    }
+  }, [_vm._v("Car & GPS")])]), _vm._v(" "), _c('li', [_c('a', {
+    attrs: {
+      "href": "#"
+    }
+  }, [_vm._v("Audio & Accessories")])]), _vm._v(" "), _c('li', [_c('a', {
+    attrs: {
+      "href": "#"
+    }
+  }, [_vm._v("Software")])]), _vm._v(" "), _c('li', [_c('a', {
+    attrs: {
+      "href": "#"
+    }
+  }, [_vm._v("Video Games")])])])]), _vm._v(" "), _c('div', {
+    staticClass: "category-filters-section"
+  }, [_c('h3', {
+    staticClass: "widget-title-sm"
+  }, [_vm._v("Price")]), _vm._v(" "), _c('input', {
+    attrs: {
+      "type": "text",
+      "id": "price-slider"
+    }
+  })]), _vm._v(" "), _c('div', {
+    staticClass: "category-filters-section"
+  }, [_c('h3', {
+    staticClass: "widget-title-sm"
+  }, [_vm._v("Relese Date")]), _vm._v(" "), _c('div', {
+    staticClass: "checkbox"
+  }, [_c('label', [_c('input', {
+    staticClass: "i-check",
+    attrs: {
+      "type": "checkbox"
+    }
+  }), _vm._v("Last 30 days"), _c('span', {
+    staticClass: "category-filters-amount"
+  }, [_vm._v("(59)")])])]), _vm._v(" "), _c('div', {
+    staticClass: "checkbox"
+  }, [_c('label', [_c('input', {
+    staticClass: "i-check",
+    attrs: {
+      "type": "checkbox"
+    }
+  }), _vm._v("Last 90 days"), _c('span', {
+    staticClass: "category-filters-amount"
+  }, [_vm._v("(29)")])])]), _vm._v(" "), _c('div', {
+    staticClass: "checkbox"
+  }, [_c('label', [_c('input', {
+    staticClass: "i-check",
+    attrs: {
+      "type": "checkbox"
+    }
+  }), _vm._v("Comming Soon"), _c('span', {
+    staticClass: "category-filters-amount"
+  }, [_vm._v("(20)")])])])]), _vm._v(" "), _c('div', {
+    staticClass: "category-filters-section"
+  }, [_c('h3', {
+    staticClass: "widget-title-sm"
+  }, [_vm._v("Brand")]), _vm._v(" "), _c('div', {
+    staticClass: "checkbox"
+  }, [_c('label', [_c('input', {
+    staticClass: "i-check",
+    attrs: {
+      "type": "checkbox"
+    }
+  }), _vm._v("Apple"), _c('span', {
+    staticClass: "category-filters-amount"
+  }, [_vm._v("(31)")])])]), _vm._v(" "), _c('div', {
+    staticClass: "checkbox"
+  }, [_c('label', [_c('input', {
+    staticClass: "i-check",
+    attrs: {
+      "type": "checkbox"
+    }
+  }), _vm._v("Samsung"), _c('span', {
+    staticClass: "category-filters-amount"
+  }, [_vm._v("(66)")])])]), _vm._v(" "), _c('div', {
+    staticClass: "checkbox"
+  }, [_c('label', [_c('input', {
+    staticClass: "i-check",
+    attrs: {
+      "type": "checkbox"
+    }
+  }), _vm._v("LG"), _c('span', {
+    staticClass: "category-filters-amount"
+  }, [_vm._v("(71)")])])]), _vm._v(" "), _c('div', {
+    staticClass: "checkbox"
+  }, [_c('label', [_c('input', {
+    staticClass: "i-check",
+    attrs: {
+      "type": "checkbox"
+    }
+  }), _vm._v("Sony"), _c('span', {
+    staticClass: "category-filters-amount"
+  }, [_vm._v("(53)")])])]), _vm._v(" "), _c('div', {
+    staticClass: "checkbox"
+  }, [_c('label', [_c('input', {
+    staticClass: "i-check",
+    attrs: {
+      "type": "checkbox"
+    }
+  }), _vm._v("Micosoft"), _c('span', {
+    staticClass: "category-filters-amount"
+  }, [_vm._v("(16)")])])]), _vm._v(" "), _c('div', {
+    staticClass: "checkbox"
+  }, [_c('label', [_c('input', {
+    staticClass: "i-check",
+    attrs: {
+      "type": "checkbox"
+    }
+  }), _vm._v("Dell"), _c('span', {
+    staticClass: "category-filters-amount"
+  }, [_vm._v("(72)")])])]), _vm._v(" "), _c('div', {
+    staticClass: "checkbox"
+  }, [_c('label', [_c('input', {
+    staticClass: "i-check",
+    attrs: {
+      "type": "checkbox"
+    }
+  }), _vm._v("HP"), _c('span', {
+    staticClass: "category-filters-amount"
+  }, [_vm._v("(30)")])])])]), _vm._v(" "), _c('div', {
+    staticClass: "category-filters-section"
+  }, [_c('h3', {
+    staticClass: "widget-title-sm"
+  }, [_vm._v("Discount")]), _vm._v(" "), _c('div', {
+    staticClass: "checkbox"
+  }, [_c('label', [_c('input', {
+    staticClass: "i-check",
+    attrs: {
+      "type": "checkbox"
+    }
+  }), _vm._v("10% Off or More"), _c('span', {
+    staticClass: "category-filters-amount"
+  }, [_vm._v("(78)")])])]), _vm._v(" "), _c('div', {
+    staticClass: "checkbox"
+  }, [_c('label', [_c('input', {
+    staticClass: "i-check",
+    attrs: {
+      "type": "checkbox"
+    }
+  }), _vm._v("25% Off or More"), _c('span', {
+    staticClass: "category-filters-amount"
+  }, [_vm._v("(26)")])])]), _vm._v(" "), _c('div', {
+    staticClass: "checkbox"
+  }, [_c('label', [_c('input', {
+    staticClass: "i-check",
+    attrs: {
+      "type": "checkbox"
+    }
+  }), _vm._v("50% Off or More"), _c('span', {
+    staticClass: "category-filters-amount"
+  }, [_vm._v("(37)")])])]), _vm._v(" "), _c('div', {
+    staticClass: "checkbox"
+  }, [_c('label', [_c('input', {
+    staticClass: "i-check",
+    attrs: {
+      "type": "checkbox"
+    }
+  }), _vm._v("75% Off or More"), _c('span', {
+    staticClass: "category-filters-amount"
+  }, [_vm._v("(89)")])])])]), _vm._v(" "), _c('div', {
+    staticClass: "category-filters-section"
+  }, [_c('h3', {
+    staticClass: "widget-title-sm"
+  }, [_vm._v("Features")]), _vm._v(" "), _c('div', {
+    staticClass: "checkbox"
+  }, [_c('label', [_c('input', {
+    staticClass: "i-check",
+    attrs: {
+      "type": "checkbox"
+    }
+  }), _vm._v("New"), _c('span', {
+    staticClass: "category-filters-amount"
+  }, [_vm._v("(75)")])])]), _vm._v(" "), _c('div', {
+    staticClass: "checkbox"
+  }, [_c('label', [_c('input', {
+    staticClass: "i-check",
+    attrs: {
+      "type": "checkbox"
+    }
+  }), _vm._v("Featured"), _c('span', {
+    staticClass: "category-filters-amount"
+  }, [_vm._v("(27)")])])]), _vm._v(" "), _c('div', {
+    staticClass: "checkbox"
+  }, [_c('label', [_c('input', {
+    staticClass: "i-check",
+    attrs: {
+      "type": "checkbox"
+    }
+  }), _vm._v("On Sale"), _c('span', {
+    staticClass: "category-filters-amount"
+  }, [_vm._v("(32)")])])])])])])
+}]}
+module.exports.render._withStripped = true
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+     require("vue-hot-reload-api").rerender("data-v-c5b76632", module.exports)
+  }
+}
+
+/***/ }),
+/* 88 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(81);
+if(typeof content === 'string') content = [[module.i, content, '']];
+if(content.locals) module.exports = content.locals;
+// add the styles to the DOM
+var update = __webpack_require__(7)("5d0cd0ba", content, false);
+// Hot Module Replacement
+if(false) {
+ // When the styles change, update the <style> tags
+ if(!content.locals) {
+   module.hot.accept("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"id\":\"data-v-6ee57ca0\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./page-header.vue", function() {
+     var newContent = require("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"id\":\"data-v-6ee57ca0\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./page-header.vue");
+     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+     update(newContent);
+   });
+ }
+ // When the module is disposed, remove the <style> tags
+ module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+/* 89 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_axios__ = __webpack_require__(2);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_axios__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vue_strap_src_modal__ = __webpack_require__(46);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vue_strap_src_modal___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_vue_strap_src_modal__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_vue_strap_src_alert__ = __webpack_require__(6);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_vue_strap_src_alert___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_vue_strap_src_alert__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+	data: function data() {
+
+		return {
+
+			loginModal: false,
+			email: '',
+			password: '',
+			location: window.location.origin + '/',
+			alertLogin: false,
+			alertType: '',
+			alertTitle: '',
+			faWarning: false,
+			faSuccess: false
+
+		};
+	},
+	created: function created() {},
+
+	components: {
+
+		modal: __WEBPACK_IMPORTED_MODULE_1_vue_strap_src_modal___default.a, alert: __WEBPACK_IMPORTED_MODULE_2_vue_strap_src_alert___default.a
+	},
+	computed: {
+		loginText: function loginText() {
+
+			return this.$store.getters.loginText;
+		},
+		alertMessage: function alertMessage() {
+
+			return this.$store.getters.alertMessage;
+		},
+		userName: function userName() {
+
+			return this.$store.getters.userName;
+		},
+		user: function user() {
+
+			return this.$store.getters.user;
+		}
+	},
+	methods: {
+		logout: function logout() {
+			var store = this.$store;
+			__WEBPACK_IMPORTED_MODULE_0_axios___default.a.get(this.location + 'logout').then(function (response) {
+				store.commit('user', { name: 'Sign-in', id: '' });
+				store.commit('loginText', true);
+			}).catch();
+		},
+		showLoginModal: function showLoginModal(e) {
+			e.preventDefault();
+			this.loginModal = true;
+		},
+		login: function login(e) {
+
+			var store = this.$store;
+			var vm = this;
+			e.preventDefault();
+			__WEBPACK_IMPORTED_MODULE_0_axios___default.a.post(this.location + 'api/login', {
+
+				email: this.email,
+				password: this.password
+			}).then(function (response) {
+
+				vm.alertType = 'success';
+				vm.alertTitle = 'Authentication Success';
+				vm.faSuccess = true;
+				store.commit('alertMessage', response.data.message);
+				store.commit('user', response.data.user);
+				vm.alertLogin = true;
+
+				store.commit('loginText', false);
+
+				setTimeout(function () {
+					vm.loginModal = false;
+				}, 5000);
+			}).catch(function (error) {
+				console.log(error);
+				store.commit('alertMessage', error.response.data);
+				vm.alertTitle = 'Authentication Failed!';
+				vm.alertType = 'danger';
+				vm.alertLogin = true;
+			});
+		},
+		validateBeforeSubmit: function validateBeforeSubmit(e) {
+			var vm = this;
+			var store = this.$store;
+
+			this.$validator.validateAll().then(function () {
+
+				vm.login(e);
+			}).catch(function () {
+				vm.alertTitle = 'Authentication Failed!';
+				vm.alertType = 'danger';
+				vm.alertLogin = true;
+				vm.faWarning = true;
+				store.commit('alertMessage', 'Please correct all fields!');
+			});
+		}
+	}
+});
+
+/***/ }),
+/* 90 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var Component = __webpack_require__(1)(
+  /* script */
+  __webpack_require__(89),
+  /* template */
+  __webpack_require__(91),
+  /* scopeId */
+  null,
+  /* cssModules */
+  null
+)
+Component.options.__file = "c:\\xampp\\htdocs\\lavue\\resources\\assets\\js\\routes\\home\\navbar-right.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
+if (Component.options.functional) {console.error("[vue-loader] navbar-right.vue: functional components are not supported with templates, they should use render functions.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-4876e4da", Component.options)
+  } else {
+    hotAPI.reload("data-v-4876e4da", Component.options)
+  }
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 91 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('ul', {
+    staticClass: "nav navbar-nav navbar-right"
+  }, [(_vm.loginText === false) ? _c('li', [_c('router-link', {
+    attrs: {
+      "to": "/"
+    }
+  }, [_c('i', {
+    staticClass: "fa fa-home"
+  }), _vm._v(" Home")])], 1) : _vm._e(), _vm._v(" "), (_vm.loginText) ? _c('li', [_c('a', {
+    attrs: {
+      "href": "#",
+      "data-effect": "mfp-move-from-top"
+    },
+    on: {
+      "click": function($event) {
+        _vm.showLoginModal($event)
+      }
+    }
+  }, [_vm._v(" " + _vm._s(_vm.user.name))])]) : _c('li', [_c('router-link', {
+    attrs: {
+      "to": '/user/' + _vm.user.id
+    }
+  }, [_c('i', {
+    staticClass: "fa fa-user"
+  }), _vm._v(" " + _vm._s(_vm.user.name))])], 1), _vm._v(" "), (_vm.loginText) ? _c('li', [_c('a', {
+    staticClass: "popup-text",
+    attrs: {
+      "href": "#nav-account-dialog",
+      "data-effect": "mfp-move-from-top"
+    }
+  }, [_vm._v(" Create Account")])]) : _c('li', [_c('router-link', {
+    attrs: {
+      "to": "/"
+    },
+    nativeOn: {
+      "click": function($event) {
+        _vm.logout($event)
+      }
+    }
+  }, [_c('i', {
+    staticClass: "fa fa-power-off",
+    attrs: {
+      "aria-hidden": "true"
+    }
+  }), _vm._v(" Log-out")])], 1), _vm._v(" "), _vm._m(0), _vm._v(" "), _c('modal', {
+    attrs: {
+      "effect": "fade",
+      "large": "",
+      "width": "400px"
+    },
+    model: {
+      value: (_vm.loginModal),
+      callback: function($$v) {
+        _vm.loginModal = $$v
+      },
+      expression: "loginModal"
+    }
+  }, [_c('div', {
+    staticClass: "modal-header",
+    slot: "modal-header"
+  }, [_c('h3', {
+    staticClass: "widget-title"
+  }, [_vm._v("Member Login")]), _vm._v(" "), _c('p', [_vm._v("Welcome back, friend. Login to get started")])]), _vm._v(" "), _c('div', {
+    staticClass: "modal-body"
+  }, [_c('form', {
+    attrs: {
+      "method": "post",
+      "role": "form"
+    },
+    on: {
+      "submit": function($event) {
+        $event.preventDefault();
+        _vm.validateBeforeSubmit($event)
+      }
+    }
+  }, [_c('div', {
+    staticClass: "form-group"
+  }, [_c('label', [_vm._v("Email")]), _vm._v(" "), _c('input', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.email),
+      expression: "email"
+    }, {
+      name: "validate",
+      rawName: "v-validate",
+      value: ('required|email'),
+      expression: "'required|email'"
+    }],
+    staticClass: "form-control",
+    class: {
+      'input': true, 'is-danger': _vm.errors.has('email')
+    },
+    attrs: {
+      "name": "email",
+      "type": "text",
+      "placeholder": "Email"
+    },
+    domProps: {
+      "value": (_vm.email)
+    },
+    on: {
+      "input": function($event) {
+        if ($event.target.composing) { return; }
+        _vm.email = $event.target.value
+      }
+    }
+  }), _vm._v(" "), _c('i', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (_vm.errors.has('email')),
+      expression: "errors.has('email')"
+    }],
+    staticClass: "fa fa-warning text-danger"
+  }), _vm._v(" "), _c('span', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (_vm.errors.has('email')),
+      expression: "errors.has('email')"
+    }],
+    staticClass: "help text-danger"
+  }, [_vm._v(_vm._s(_vm.errors.first('email')))])]), _vm._v(" "), _c('div', {
+    staticClass: "form-group"
+  }, [_c('div', {
+    staticClass: "form-group"
+  }, [_c('label', [_vm._v("Password")]), _vm._v(" "), _c('input', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.password),
+      expression: "password"
+    }, {
+      name: "validate",
+      rawName: "v-validate",
+      value: ('required'),
+      expression: "'required'"
+    }],
+    staticClass: "form-control",
+    class: {
+      'input': true, 'is-danger': _vm.errors.has('password')
+    },
+    attrs: {
+      "name": "password",
+      "type": "password",
+      "placeholder": "Password"
+    },
+    domProps: {
+      "value": (_vm.password)
+    },
+    on: {
+      "input": function($event) {
+        if ($event.target.composing) { return; }
+        _vm.password = $event.target.value
+      }
+    }
+  }), _vm._v(" "), _c('i', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (_vm.errors.has('password')),
+      expression: "errors.has('password')"
+    }],
+    staticClass: "fa fa-warning text-danger"
+  }), _vm._v(" "), _c('span', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (_vm.errors.has('password')),
+      expression: "errors.has('password')"
+    }],
+    staticClass: "help text-danger"
+  }, [_vm._v(_vm._s(_vm.errors.first('password')))])])]), _vm._v(" "), _c('div', {
+    staticClass: "checkbox"
+  }, [_c('label', [_c('input', {
+    staticClass: "i-check",
+    attrs: {
+      "type": "checkbox"
+    }
+  }), _vm._v("Remeber Me")])]), _vm._v(" "), _c('div', {
+    staticClass: "pull-right"
+  }, [_c('button', {
+    staticClass: "btn btn-default btn-fill",
+    attrs: {
+      "type": "button"
+    },
+    on: {
+      "click": function($event) {
+        _vm.loginModal = false
+      }
+    }
+  }, [_vm._v("Exit")]), _vm._v(" "), _c('input', {
+    staticClass: "btn btn-primary",
+    attrs: {
+      "type": "submit",
+      "value": "Sign In"
+    }
+  })]), _vm._v(" "), _c('div', {
+    staticClass: "gap gap-small"
+  })])]), _vm._v(" "), _c('div', {
+    staticClass: "modal-footer",
+    slot: "modal-footer"
+  }, [_c('ul', {
+    staticClass: "list-inline"
+  }, [_c('li', [_c('a', {
+    staticClass: "popup-text",
+    attrs: {
+      "href": "#nav-account-dialog"
+    }
+  }, [_vm._v("Not Member Yet")])]), _vm._v(" "), _c('li', [_c('a', {
+    staticClass: "popup-text",
+    attrs: {
+      "href": "#nav-pwd-dialog"
+    }
+  }, [_vm._v("Forgot Password?")])])])]), _vm._v(" "), _c('alert', {
+    attrs: {
+      "placement": "top",
+      "type": _vm.alertType,
+      "width": "350px",
+      "dismissable": "",
+      "duration": "4000"
+    },
+    model: {
+      value: (_vm.alertLogin),
+      callback: function($$v) {
+        _vm.alertLogin = $$v
+      },
+      expression: "alertLogin"
+    }
+  }, [_c('i', {
+    staticClass: "fa",
+    class: {
+      'fa-warning': _vm.faWarning, 'fa-check-circle': _vm.faSuccess
+    }
+  }), _vm._v(" "), _c('strong', [_vm._v(_vm._s(_vm.alertTitle))]), _vm._v(" "), _c('p', [_vm._v("    " + _vm._s(_vm.alertMessage))])])], 1)], 1)
+},staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('li', {
+    staticClass: "dropdown"
+  }, [_c('a', {
+    staticClass: "fa fa-shopping-cart",
+    attrs: {
+      "href": "shopping-cart.html"
+    }
+  }), _vm._v(" "), _c('ul', {
+    staticClass: "dropdown-menu dropdown-menu-shipping-cart"
+  }, [_c('li', [_c('a', {
+    staticClass: "dropdown-menu-shipping-cart-img",
+    attrs: {
+      "href": "#"
+    }
+  }, [_c('img', {
+    attrs: {
+      "src": "img/100x100.png",
+      "alt": "Image Alternative text",
+      "title": "Image Title"
+    }
+  })]), _vm._v(" "), _c('div', {
+    staticClass: "dropdown-menu-shipping-cart-inner"
+  }, [_c('p', {
+    staticClass: "dropdown-menu-shipping-cart-price"
+  }, [_vm._v("$58")]), _vm._v(" "), _c('p', {
+    staticClass: "dropdown-menu-shipping-cart-item"
+  }, [_c('a', {
+    attrs: {
+      "href": "#"
+    }
+  }, [_vm._v("Gucci Patent Leather Open Toe Platform")])])])]), _vm._v(" "), _c('li', [_c('a', {
+    staticClass: "dropdown-menu-shipping-cart-img",
+    attrs: {
+      "href": "#"
+    }
+  }, [_c('img', {
+    attrs: {
+      "src": "img/100x100.png",
+      "alt": "Image Alternative text",
+      "title": "Image Title"
+    }
+  })]), _vm._v(" "), _c('div', {
+    staticClass: "dropdown-menu-shipping-cart-inner"
+  }, [_c('p', {
+    staticClass: "dropdown-menu-shipping-cart-price"
+  }, [_vm._v("$51")]), _vm._v(" "), _c('p', {
+    staticClass: "dropdown-menu-shipping-cart-item"
+  }, [_c('a', {
+    attrs: {
+      "href": "#"
+    }
+  }, [_vm._v("Nikon D5200 24.1 MP Digital SLR Camera")])])])]), _vm._v(" "), _c('li', [_c('a', {
+    staticClass: "dropdown-menu-shipping-cart-img",
+    attrs: {
+      "href": "#"
+    }
+  }, [_c('img', {
+    attrs: {
+      "src": "img/100x100.png",
+      "alt": "Image Alternative text",
+      "title": "Image Title"
+    }
+  })]), _vm._v(" "), _c('div', {
+    staticClass: "dropdown-menu-shipping-cart-inner"
+  }, [_c('p', {
+    staticClass: "dropdown-menu-shipping-cart-price"
+  }, [_vm._v("$61")]), _vm._v(" "), _c('p', {
+    staticClass: "dropdown-menu-shipping-cart-item"
+  }, [_c('a', {
+    attrs: {
+      "href": "#"
+    }
+  }, [_vm._v("Apple 11.6\" MacBook Air Notebook ")])])])]), _vm._v(" "), _c('li', [_c('a', {
+    staticClass: "dropdown-menu-shipping-cart-img",
+    attrs: {
+      "href": "#"
+    }
+  }, [_c('img', {
+    attrs: {
+      "src": "img/100x100.png",
+      "alt": "Image Alternative text",
+      "title": "Image Title"
+    }
+  })]), _vm._v(" "), _c('div', {
+    staticClass: "dropdown-menu-shipping-cart-inner"
+  }, [_c('p', {
+    staticClass: "dropdown-menu-shipping-cart-price"
+  }, [_vm._v("$99")]), _vm._v(" "), _c('p', {
+    staticClass: "dropdown-menu-shipping-cart-item"
+  }, [_c('a', {
+    attrs: {
+      "href": "#"
+    }
+  }, [_vm._v("Fossil Women's Original Boyfriend")])])])]), _vm._v(" "), _c('li', [_c('p', {
+    staticClass: "dropdown-menu-shipping-cart-total"
+  }, [_vm._v("Total: $150")]), _vm._v(" "), _c('button', {
+    staticClass: "dropdown-menu-shipping-cart-checkout btn btn-primary"
+  }, [_vm._v("Checkout")])])])])
+}]}
+module.exports.render._withStripped = true
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+     require("vue-hot-reload-api").rerender("data-v-4876e4da", module.exports)
+  }
+}
+
+/***/ }),
+/* 92 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({});
+
+/***/ }),
+/* 93 */,
+/* 94 */,
+/* 95 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var Component = __webpack_require__(1)(
+  /* script */
+  __webpack_require__(102),
+  /* template */
+  __webpack_require__(96),
+  /* scopeId */
+  null,
+  /* cssModules */
+  null
+)
+Component.options.__file = "c:\\xampp\\htdocs\\lavue\\resources\\assets\\js\\routes\\home\\category\\maincategory.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
+if (Component.options.functional) {console.error("[vue-loader] maincategory.vue: functional components are not supported with templates, they should use render functions.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-cb32e506", Component.options)
+  } else {
+    hotAPI.reload("data-v-cb32e506", Component.options)
+  }
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 96 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', [_c('h1', [_vm._v("Main Category " + _vm._s(_vm.$route.params.id))])])
+},staticRenderFns: []}
+module.exports.render._withStripped = true
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+     require("vue-hot-reload-api").rerender("data-v-cb32e506", module.exports)
+  }
+}
+
+/***/ }),
+/* 97 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var Component = __webpack_require__(1)(
+  /* script */
+  __webpack_require__(101),
+  /* template */
+  __webpack_require__(98),
+  /* scopeId */
+  null,
+  /* cssModules */
+  null
+)
+Component.options.__file = "c:\\xampp\\htdocs\\lavue\\resources\\assets\\js\\routes\\home\\category\\category.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
+if (Component.options.functional) {console.error("[vue-loader] category.vue: functional components are not supported with templates, they should use render functions.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-4bd4dc44", Component.options)
+  } else {
+    hotAPI.reload("data-v-4bd4dc44", Component.options)
+  }
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 98 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "container"
+  }, [_c('page-header'), _vm._v(" "), _c('div', {
+    staticClass: "row"
+  }, [_c('category-filters'), _vm._v(" "), _c('category-results')], 1)], 1)
+},staticRenderFns: []}
+module.exports.render._withStripped = true
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+     require("vue-hot-reload-api").rerender("data-v-4bd4dc44", module.exports)
+  }
+}
+
+/***/ }),
+/* 99 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var Component = __webpack_require__(1)(
+  /* script */
+  __webpack_require__(103),
+  /* template */
+  __webpack_require__(100),
+  /* scopeId */
+  null,
+  /* cssModules */
+  null
+)
+Component.options.__file = "c:\\xampp\\htdocs\\lavue\\resources\\assets\\js\\routes\\home\\category\\subcategory.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
+if (Component.options.functional) {console.error("[vue-loader] subcategory.vue: functional components are not supported with templates, they should use render functions.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-3e778730", Component.options)
+  } else {
+    hotAPI.reload("data-v-3e778730", Component.options)
+  }
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 100 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', [_c('h1', [_vm._v("Subcategory " + _vm._s(_vm.$route.params.id))])])
+},staticRenderFns: []}
+module.exports.render._withStripped = true
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+     require("vue-hot-reload-api").rerender("data-v-3e778730", module.exports)
+  }
+}
+
+/***/ }),
+/* 101 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__page_header_vue__ = __webpack_require__(84);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__page_header_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__page_header_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__category_filters_vue__ = __webpack_require__(82);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__category_filters_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__category_filters_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__category_results_vue__ = __webpack_require__(83);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__category_results_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__category_results_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_axios__ = __webpack_require__(2);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_axios__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+	data: function data() {
+
+		return {};
+	},
+
+	components: {
+		PageHeader: __WEBPACK_IMPORTED_MODULE_0__page_header_vue___default.a,
+		CategoryFilters: __WEBPACK_IMPORTED_MODULE_1__category_filters_vue___default.a,
+		CategoryResults: __WEBPACK_IMPORTED_MODULE_2__category_results_vue___default.a
+	},
+	created: function created() {},
+
+	computed: {
+		baseUrl: function baseUrl() {
+
+			return this.$store.getters.baseUrl;
+		}
+	},
+	methods: {
+		getProducts: function getProducts() {
+
+			__WEBPACK_IMPORTED_MODULE_3_axios___default.a.get(this.baseUrl + 'api/category-products');
+		}
+	},
+	watch: {
+		'$route': function $route(to, from) {
+
+			console.log(this.$route.params.id);
+		}
+	}
+});
+
+/***/ }),
+/* 102 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+
+	watch: {
+		'$route': function $route(to, from) {
+
+			console.log(this.$route.params.id);
+		}
+	}
+});
+
+/***/ }),
+/* 103 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+
+	watch: {
+		'$route': function $route(to, from) {
+
+			console.log(this.$route.params.id);
+		}
+	}
+});
 
 /***/ })
 /******/ ]);

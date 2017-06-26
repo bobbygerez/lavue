@@ -3,15 +3,11 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
-use Jenssegers\Optimus\Optimus;
-use Obfuscate;
 
-class MainCategory extends Model
+class Category extends Model
 {
-    
-
-    protected $table = 'maincategories';
-
+	protected $table = 'categories';
+	
     protected $fillable = [
     	'user_id', 'name', 'description'
     ];
@@ -36,5 +32,4 @@ class MainCategory extends Model
 
         return str_slug($value);
     }
-    
 }
