@@ -15,13 +15,20 @@ export const store = new Vuex.Store({
 		alertMessage: '',
 		loginText: true,
 		pageTitle: '',
-		baseUrl: window.location.origin + '/'
+		baseUrl: window.location.origin + '/',
+		categoryId: '',
+		countries: []
 		
 	},
 	mutations: {
-		
+		countries(state, countries){
+			state.countries = countries
+		},
+		categoryId(state, categoryId){
+			state.categoryId = categoryId
+		},
 		pageTitle(state, pageTitle){
-
+			state.pageTitle = pageTitle
 		},
 		loginText(state, loginText){
 			state.loginText = loginText
@@ -45,7 +52,13 @@ export const store = new Vuex.Store({
 
 	},
 	getters: {
+		countries(){
+			return store.state.countries
+		},
+		categoryId(){
 
+			return store.state.categoryId
+		},
 		baseUrl(){
 
 			return store.state.baseUrl

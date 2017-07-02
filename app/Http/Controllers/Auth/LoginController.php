@@ -57,7 +57,7 @@ class LoginController extends Controller
             
         return response()->json([
 
-            'message' => 'You have successfully Log-in!',
+            'message' => 'You have successfully Log-in.',
             'user' => ['name' => Auth::User()->name, 'id' => Obfuscate::encode(Auth::User()->id)],
             'error' => false
 

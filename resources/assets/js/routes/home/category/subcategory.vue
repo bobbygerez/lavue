@@ -1,17 +1,28 @@
 <template>
-	<div>
-		<h1>Subcategory {{ $route.params.id }}</h1>
+	<div class="container">
+		<page-header></page-header>
 	</div>
 </template>
 
 <script type="text/javascript">
-	
+
+import PageHeader from '../page-header.vue'
+
 	export default {
 
+		components: {
+			PageHeader
+		},
+
+		created(){
+
+			this.$store.commit('pageTitle', this.$route.params.subcategory);
+
+		},
 		watch: {
 		    '$route'(to, from) {
 		      
-		     	console.log(this.$route.params.id)
+		     	this.$store.commit('pageTitle', this.$route.params.subcategory);
 		    }
 		}
 	}

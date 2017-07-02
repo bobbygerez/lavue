@@ -115,9 +115,9 @@
 					</ul>
 				</div>
 				<alert v-model="alertLogin" placement="top" :type="alertType" width="350px" dismissable duration="4000">
-					<i class="fa" :class="{'fa-warning' : faWarning, 'fa-check-circle' : faSuccess }"> </i>
-					<strong>{{ alertTitle }}</strong>
-					<p>&nbsp; &nbsp; {{ alertMessage }}</p>
+					<i class="fa alert-icon-float-left" :class="{'fa-warning' : faWarning, 'fa-check-circle' : faSuccess }"> </i>
+					<strong>{{ alertTitle }}!</strong>
+					<p> {{ alertMessage }}</p>
 				</alert>
 			</modal>
 		</ul>
@@ -245,3 +245,11 @@
 		}
 	}
 </script>
+<style type="text/css" scoped>
+	.alert-icon-float-left{
+      font-size:40px;
+      float:left;
+      margin: 5px;
+      margin-right:20px;
+    }
+</style>

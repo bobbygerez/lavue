@@ -1,28 +1,12 @@
 <template>
-	<div class="col-md-3">
+	<div class="col-md-4">
                     <aside class="category-filters">
                         <div class="category-filters-section">
-                            <h3 class="widget-title-sm">Category</h3>
-                            <ul class="cateogry-filters-list">
-                                <li><a href="#">Tv, Audio & Home Theater</a>
-                                </li>
-                                <li><a href="#">Camera, Photo &amp; Video</a>
-                                </li>
-                                <li><a href="#">Computers &amp; Accessories</a>
-                                </li>
-                                <li><a href="#">Cell Phones &amp; Accessories</a>
-                                </li>
-                                <li><a href="#">Business &amp; Office</a>
-                                </li>
-                                <li><a href="#">Car &amp; GPS</a>
-                                </li>
-                                <li><a href="#">Audio &amp; Accessories</a>
-                                </li>
-                                <li><a href="#">Software</a>
-                                </li>
-                                <li><a href="#">Video Games</a>
-                                </li>
-                            </ul>
+                            <h3 class="widget-title-sm">Filter Results</h3>
+                              <div class="form-group">
+                                  <label>Select Country:</label>
+                                   <v-select :on-change="countryCallback"  value="id" label="name" v-model="vCountrySelected" :options="vCountries"></v-select>
+                              </div>
                         </div>
                         <div class="category-filters-section">
                             <h3 class="widget-title-sm">Price</h3>
@@ -128,3 +112,60 @@
                     </aside>
                 </div>
 </template>
+
+<script type="text/javascript">
+    import vSelect from 'vue-select' 
+    import axios from 'axios'
+
+    export default {
+        data(){
+
+            return {
+
+                windowLocation: window.location.origin + '/',
+                vCountrySelected: ''
+            }
+        },
+        components: {
+            vSelect
+        },
+
+        created(){
+
+            this.getCountries()
+        },
+        computed:{
+
+            vCountries(){
+
+                return this.$store.getters.countries
+            }
+        },
+        methods: {
+
+            getCountries(){
+
+                var store = this.$store
+                axios.get(this.windowLocation + 'api/countries')
+                    .then(function(response){
+                        store.commit('countries', response.data.countries );
+                    })
+                    .catch(function(){
+
+                    })
+
+            },
+            countryCallback(val){
+                 var store = this.$store
+                 axios.get(this.windowLocation + 'api/provinces?country_id=' + val.id)
+                 .then(function(response){
+
+
+                 })
+                 .catch(function(){
+
+                 })
+              }
+        }
+    }
+</script>

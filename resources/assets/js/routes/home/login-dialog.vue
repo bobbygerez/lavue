@@ -34,7 +34,7 @@
 			</ul>
 
 			<alert v-model="alertLogin" placement="top" :type="alertType" width="350px" dismissable duration="4000">
-                <span class="icon-info-circled alert-icon-float-left"></span>
+                <i class="fa fa-check-circle alert-icon-float-left"></i>
                 <strong>{{ alertTitle }}</strong>
                 <p>&nbsp; &nbsp; {{ alertMessage }}</p>
              </alert>
@@ -128,3 +128,12 @@
 		
 	}
 </script>
+
+<style type="text/css" scoped>
+	.alert-icon-float-left{
+      font-size:40px;
+      float:left;
+      margin: 5px;
+      margin-right:20px;
+    }
+</style>

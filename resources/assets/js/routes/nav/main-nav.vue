@@ -12,16 +12,23 @@
                 <ul class="nav navbar-nav">
                     <li class="dropdown"><a href="#"><i class="fa fa-reorder"></i>&nbsp; Shop by Category<i class="drop-caret" data-toggle="dropdown"></i></a>
                         <ul class="dropdown-menu dropdown-menu-category">
-                            <li v-for="maincategory in maincategories"><router-link :to="'/category/'+ maincategory.id"> {{ maincategory.name }} </router-link>
+                            <li v-for="maincategory in maincategories"><router-link :to="'/category/'+ maincategory.name + '/' + maincategory.id"> {{ maincategory.name }} </router-link>
                                 <div class="dropdown-menu-category-section">
                                     <div class="dropdown-menu-category-section-inner">
                                         <div class="dropdown-menu-category-section-content">
                                             <div class="row">
                                                 <div class="col-md-6" v-for="merchantCat in maincategory.merchant_category">
                                                     <h5 class="dropdown-menu-category-title">
-                                                    <router-link :to="'/category/maincategory/'+ merchantCat.id">{{ merchantCat.name }}</router-link></h5>
+                                                    <router-link :to="'/category/'
+                                                    + maincategory.name + '/' + maincategory.id + '/'
+                                                    + merchantCat.name + '/' + merchantCat.id">{{ merchantCat.name }}</router-link></h5>
                                                     <ul class="dropdown-menu-category-list">
-                                                        <li v-for="sub in merchantCat.merchant_subcategory"><router-link :to="'/category/maincategory/subcategory/'+sub.id"> {{ sub.name }} </router-link>
+                                                        <li v-for="sub in merchantCat.merchant_subcategory"><router-link 
+                                                        :to="'/category/' 
+                                                        + maincategory.name + '/' + maincategory.id + '/'
+                                                        + merchantCat.name +'/'+ merchantCat.id 
+                                                        +'/'+ sub.name + '/' + sub.id"> 
+                                                        {{ sub.name }} </router-link>
                                                         </li>
                                                         
                                                     </ul>

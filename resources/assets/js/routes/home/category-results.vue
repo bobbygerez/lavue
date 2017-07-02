@@ -1,5 +1,5 @@
 <template>
-	<div class="col-md-9">
+	<div class="col-md-8">
                     <div class="row" data-gutter="15">
                         <div class="col-md-3">
                             <div class="product ">
