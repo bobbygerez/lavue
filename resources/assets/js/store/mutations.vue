@@ -1,7 +1,12 @@
 <script type="text/javascript">
 	
 	export const mutations =  {
-		
+		provinces(state, provinces){
+			state.provinces = provinces
+		},
+		countries(state, countries){
+			state.countries = countries
+		},
 		categoryId(state, categoryId){
 			state.categoryId = categoryId
 		},

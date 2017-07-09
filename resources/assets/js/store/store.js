@@ -11,16 +11,26 @@ export const store = new Vuex.Store({
 			name: 'Sign-in',
 			id: ''
 		},
-		maincategories: {},
+		maincategories: [],
+		merchantCategories: [],
 		alertMessage: '',
 		loginText: true,
 		pageTitle: '',
 		baseUrl: window.location.origin + '/',
 		categoryId: '',
-		countries: []
+		countries: [],
+		provinces: [],
+		cities: [],
 		
 	},
 	mutations: {
+
+		cities(state, cities){
+			state.cities = cities
+		},
+		provinces(state, provinces){
+			state.provinces = provinces
+		},
 		countries(state, countries){
 			state.countries = countries
 		},
@@ -40,6 +50,9 @@ export const store = new Vuex.Store({
 
 			store.state.user = user
 		},
+		merchantCategories(state, merchantCategories){
+			store.state.merchantCategories = merchantCategories
+		},
 		maincategories(state, maincategories){
 
 			store.state.maincategories = maincategories
@@ -48,10 +61,14 @@ export const store = new Vuex.Store({
 			store.state.alertMessage = alertMessage
 		}
 	},
-	actions: {
-
-	},
 	getters: {
+
+		cities(){
+			return store.state.cities
+		},
+		provinces(){
+			return store.state.provinces
+		},
 		countries(){
 			return store.state.countries
 		},
@@ -79,6 +96,9 @@ export const store = new Vuex.Store({
 		user(){
 
 			return store.state.user
+		},
+		merchantCategories(){
+			return store.state.merchantCategories
 		},
 		maincategories(){
 

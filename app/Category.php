@@ -30,6 +30,6 @@ class Category extends Model
     
     public function getNameAttribute( $value ){
 
-        return str_slug($value);
+        return ucwords($value);
     }
 }

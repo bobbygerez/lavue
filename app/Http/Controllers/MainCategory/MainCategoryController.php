@@ -1,14 +1,14 @@
 <?php
 
-namespace App\Http\Controllers\Category;
+namespace App\Http\Controllers\MainCategory;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Repo\MainCategory\MainCategoryInterface;
 
-class CategoryController extends Controller
-{	
-	protected $mainCategory;
+class MainCategoryController extends Controller
+{
+    protected $mainCategory;
 
     public function __construct(MainCategoryInterface $category){
 

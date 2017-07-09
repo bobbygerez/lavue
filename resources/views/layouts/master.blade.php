@@ -21,7 +21,6 @@
 <body>
     <div id="app">
     <div class="global-wrapper clearfix" id="global-wrapper">
-        <navbar-before></navbar-before>
         <login-dialog></login-dialog>
         <account-dialog></account-dialog>
         <password-recovery></password-recovery>

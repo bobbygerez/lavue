@@ -5,9 +5,12 @@
 Route::group(['prefix' => 'api'], function(){
 
 	/** Locations **/
-	Route::resource('countries', 'Country\CountryController');
+	Route::resource('city', 'City\CityController');
+	Route::resource('province', 'Province\ProvinceController');
+	Route::resource('country', 'Country\CountryController');
 
-	/** Products **/
+	Route::resource('maincategory', 'Category\CategoryController');
+	Route::resource('merchant_category','Merchant\MerchantCategoryController');
 	
 	Route::post('login', 'Auth\LoginController@login');
 	Route::post('phone/unique', 'Auth\RegisterController@phoneUnique');

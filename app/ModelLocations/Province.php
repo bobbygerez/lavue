@@ -8,4 +8,10 @@ class Province extends Model
 {
     
     protected $table = 'refprovince';
+
+    public function getDescriptionAttribute($value){
+
+    	$lower = strtolower($value);
+    	return ucwords($lower);
+    }
 }

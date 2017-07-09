@@ -28,11 +28,9 @@ class NavController extends Controller
 
 	 public function mainCategories(){
 
-    	$mainCategories = $this->mainCategory->with(['merchantCategory.merchantSubcategory'])->get();
-
     	return response()->json([
 
-    			'maincategories' => $mainCategories
+    			'maincategories' => $this->mainCategory->all()
     		]);
 
     }
