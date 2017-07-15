@@ -20,12 +20,13 @@
 
 <body>
     <div id="app">
-    <div class="global-wrapper clearfix" id="global-wrapper">
+
+    <div class="global-wrapper clearfix" id="global-wrapper" >
+
         <login-dialog></login-dialog>
         <account-dialog></account-dialog>
         <password-recovery></password-recovery>
         <main-nav></main-nav>
-
         <router-view></router-view>
         
         <div class="gap"></div>

@@ -1,6 +1,5 @@
 <template>
 	<div class="container">
-		
 		<page-header></page-header>
 		<div class="row">
 			<category-filters></category-filters>
@@ -22,9 +21,9 @@ import CategoryResults from './category-results.vue'
 		  	CategoryFilters,
 		  	CategoryResults
 		},
-		created(){
+		mounted(){
 
-			this.$store.commit('pageTitle', 'RbSell');
+			// this.$store.commit('catTitle', 'RbSell');
 		}
 	}
 </script>

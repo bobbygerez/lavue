@@ -30,7 +30,7 @@ class NavController extends Controller
 
     	return response()->json([
 
-    			'maincategories' => $this->mainCategory->all()
+    			'maincategories' => $this->mainCategory->orderBy('name', 'asc')->with(['merchantCategory.merchantSubcategory'])->get()
     		]);
 
     }

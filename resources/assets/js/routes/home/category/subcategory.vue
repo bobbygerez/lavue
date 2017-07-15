@@ -19,7 +19,7 @@ import PageHeader from '../page-header.vue'
             PageHeader, CategoryFilters, CategoryResults
         },
 
-		created(){
+		mounted(){
 
 			this.$store.commit('pageTitle', this.$route.params.subcategory);
 

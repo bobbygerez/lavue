@@ -4,7 +4,7 @@
                 <ol class="breadcrumb page-breadcrumb">
                     <li class="active"><router-link to="/">Home</router-link>
                     </li>
-                <!--     <li class="active" v-if="$route.params.category != null">
+                    <li class="active" v-if="$route.params.category != null">
                         <router-link :to="/category/
                             + $route.params.category + '/' + $route.params.categoryid">
                             {{ $route.params.category }}
@@ -27,7 +27,7 @@
                             ">
                             {{ $route.params.subcategory }}
                         </router-link>
-                    </li> -->
+                    </li>
                 </ol>
                 <ul class="category-selections clearfix">
                     <li>
@@ -52,7 +52,7 @@
                         </select>
                     </li>
                 </ul>
-            </header>
+    </header>
 </template>
 
 <script type="text/javascript">

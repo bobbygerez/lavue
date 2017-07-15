@@ -10,8 +10,8 @@
 		categoryId(state, categoryId){
 			state.categoryId = categoryId
 		},
-		pageTitle(state, pageTitle){
-			state.pageTitle = pageTitle
+		catTitle(state, catTitle){
+			state.catTitle = catTitle
 		},
 		loginText(state, loginText){
 			state.loginText = loginText

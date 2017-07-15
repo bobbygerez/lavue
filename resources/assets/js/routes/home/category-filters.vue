@@ -1,7 +1,7 @@
 <template>
 	<div class="col-md-4">
         <aside class="category-filters">
-            <div class="category-filters-section">
+            <!-- <div class="category-filters-section">
                 <h3 class="widget-title-sm">Filter Results</h3>
                 <div class="form-group">
                       <label>Category</label>
@@ -11,10 +11,10 @@
                       <label>Sub-Category</label>
                        <v-select :on-change="merchantCategoryCallback" value="id" label="name" v-model="vMerchantCategorySelected" :options="vMerchantCategories"></v-select>
                   </div>
-            </div>
+            </div> -->
 
             <div class="category-filters-section">
-                 
+                  <h3 class="widget-title-sm">Filter Results</h3>
                   <div class="form-group">
                       <label>Province</label>
                        <v-select :on-change="provinceCallback" value="id" label="description" v-model="vProvinceSelected" :options="vProvinces"></v-select>
@@ -116,23 +116,23 @@
                 console.log(val)
 
             },
-            categoryCallback(val){
+            // categoryCallback(val){
 
-                var store = this.$store
-                 axios.get(this.windowLocation + 'api/merchant_category?maincategory_id='+val.id)
-                 .then(function(response){
-                     store.commit('merchantCategories', response.data.merchantCategories);
+            //     var store = this.$store
+            //      axios.get(this.windowLocation + 'api/merchant_category?maincategory_id='+val.id)
+            //      .then(function(response){
+            //          store.commit('merchantCategories', response.data.merchantCategories);
 
-                 })
-                 .catch(function(){
+            //      })
+            //      .catch(function(){
 
-                 })
-                this.$store.commit('pageTitle', val.name);
-            },
-            merchantCategoryCallback(val){
+            //      })
+            //     // this.$store.commit('pageTitle', val.name);
+            // },
+            // merchantCategoryCallback(val){
 
-                this.$store.commit('pageTitle', val.name);
-            }
+            //     // this.$store.commit('pageTitle', val.name);
+            // }
 
         }
     }

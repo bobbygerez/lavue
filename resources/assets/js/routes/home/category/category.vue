@@ -18,10 +18,8 @@ import PageHeader from '../page-header.vue'
         components: {
             PageHeader, CategoryFilters, CategoryResults
         },
-        created(){
-
-            this.$store.commit('pageTitle', this.$route.params.category);
-
+        mounted(){
+              this.$store.commit('pageTitle', this.$route.params.category);
         },
         watch: {
             '$route'(to, from) {
